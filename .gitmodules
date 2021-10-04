@@ -1,0 +1,3 @@
+[submodule "ARC-Core"]
+	path = ARC-Core
+	url = https://github.com/Andover-Robotics/ARC-Core

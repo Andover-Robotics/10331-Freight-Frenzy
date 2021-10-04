@@ -10,9 +10,35 @@
 // Custom definitions may go here
 // Include common definitions from above.
 apply from: '../build.common.gradle'
+
+buildscript {
+    ext.kotlin_version = '1.5.20'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+apply plugin: 'kotlin-android'
+
 dependencies {
     /*
      * Other Modules
      */
+    implementation 'org.ftclib.ftclib:vision:1.2.0' // vision
+    implementation 'org.ftclib.ftclib:core:1.2.1' // core
+    implementation 'com.acmerobotics.roadrunner:core:0.5.3'
+    implementation('com.acmerobotics.dashboard:dashboard:0.4.0') {
+        exclude group: 'org.firstinspires.ftc'
+    }
+    implementation 'org.openftc:rev-extensions-2:1.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'org.openftc:easyopencv:1.5.0'
+
+
     implementation project(':FtcRobotController')
 }
