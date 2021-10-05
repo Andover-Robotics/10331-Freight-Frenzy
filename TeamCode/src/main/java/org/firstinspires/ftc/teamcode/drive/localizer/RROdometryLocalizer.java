@@ -34,7 +34,7 @@ public class RROdometryLocalizer extends ThreeTrackingWheelLocalizer {
         new Pose2d(-sidePose.getX(), -sidePose.getY(), 0), // right (relative to front)
         centerPose // center
     ));
-    //TODO change encoder deviceNames to fit motor config
+
     leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, EncoderValues.leftEncoderPort));
     rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, EncoderValues.rightEncoderPort));
     centerEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, EncoderValues.centerEncoderPort));

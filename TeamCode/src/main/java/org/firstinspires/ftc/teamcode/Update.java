@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
 public class Update extends LinearOpMode {
-
+  //TODO: look into openftc/opmode configurer
   @Override
   public void runOpMode() throws InterruptedException {
     telemetry.addData("update",
