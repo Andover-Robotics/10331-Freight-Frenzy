@@ -68,7 +68,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     //TODO: change depending on mode
     driveSpeed = 1 - 0.35 * (triggerSignal(Trigger.LEFT_TRIGGER) + triggerSignal(Trigger.RIGHT_TRIGGER));
 
-    if(justPressed(Button.START)){
+    if(justPressed(Button.BACK)){
       isManual = !isManual;
     }
 
@@ -99,7 +99,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     Bumper
     L:none/switch to previous path      R:none/switch to next path
     Other
-    Start:switch between automation and driving  Back:
+    Start:  Back:switch between automation and driving
 
     Controller 2
     A:      B:      X:      Y:
@@ -112,7 +112,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     Bumper
     L:none/switch to previous path      R:none/switch to next path
     Other
-    Start:switch between automation and driving  Back:
+    Start:  Back:switch between automation and driving
      */
 
 
@@ -139,7 +139,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     updateState();
 
     final double gyroAngle =
-        bot.imu.getAngularOrientation().toAngleUnit(AngleUnit.DEGREES).firstAngle
+        bot.imu.getAngularOrientation().toAngleUnit(AngleUnit.DEGREES).firstAngle//TODO: make sure that the orientation is correct
             - fieldCentricOffset;
     Vector2d driveVector = stickSignal(Direction.LEFT),
         turnVector = new Vector2d(
@@ -175,7 +175,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     if(!follower.isTrajectory(state, part)){
       drive();
     } else {
-      percent += stickSignal(Direction.LEFT).getY() * state.progressRate;
+      percent += stickSignal(Direction.LEFT).getY() * state.progressRate * driveSpeed;
     }
     percent = Math.max(0, Math.min(100, percent));
 
@@ -183,16 +183,15 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     if(justPressed(Button.RIGHT_BUMPER) || percent >= 100){
       percent = 0;
       part += 1;
-      if(part > follower.getPathsInfo().get(state) - 1){
+      if(part > follower.getPathsInfo().get(state) - 1)//epic java syntax
         part = 0;
         //TODO: add automatic state changer?
-      }
+
     } else if(justPressed(Button.LEFT_BUMPER) || percent <= 0){
       percent = 100;
       part -= 1;
-      if(part < 0){
+      if(part < 0)//epic java syntax
         part = follower.getPathsInfo().get(state) - 1;
-      }
     }
 
     follower.followPath(state, percent, part);

@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.GlobalConfig;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 import org.firstinspires.ftc.teamcode.util.Encoder.Direction;
 
@@ -16,13 +17,13 @@ public class SensorFusionData {
   public double heading1, heading2;
 
   public SensorFusionData(HardwareMap map, BNO055IMU i1, BNO055IMU i2) {
-    left = new Encoder(map.get(DcMotorEx.class, "intake"));
-    right = new Encoder(map.get(DcMotorEx.class, "rightEncoder"));
-    center = new Encoder(map.get(DcMotorEx.class, "motorFL"));
+    left = new Encoder(map.get(DcMotorEx.class, GlobalConfig.EncoderValues.leftEncoderPort));
+    right = new Encoder(map.get(DcMotorEx.class, GlobalConfig.EncoderValues.rightEncoderPort));
+    center = new Encoder(map.get(DcMotorEx.class, GlobalConfig.EncoderValues.centerEncoderPort));
 
-    left.setDirection(Direction.FORWARD);
-    right.setDirection(Direction.FORWARD);
-    center.setDirection(Direction.REVERSE);
+    left.setDirection(GlobalConfig.EncoderValues.leftEncoderDirection);
+    right.setDirection(GlobalConfig.EncoderValues.rightEncoderDirection);
+    center.setDirection(GlobalConfig.EncoderValues.centerEncoderDirection);
     imu1 = i1;
     imu2 = i2;
   }
