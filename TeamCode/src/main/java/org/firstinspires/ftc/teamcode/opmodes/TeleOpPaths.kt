@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.trajectory.MarkerCallback
 import com.acmerobotics.roadrunner.trajectory.Trajectory
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -64,6 +65,7 @@ class TeleOpPaths(val opMode/*unused? keep for action cases*/: OpMode) {
     }
 
     fun makeActionPath(name: String, trajectory: Trajectory, action: (Double) -> () -> Unit): TeleOpPathElement.ActionPath{
+        lastPosition = trajectory.end()
         return TeleOpPathElement.ActionPath(name, trajectory, action)
     }
 
@@ -128,8 +130,19 @@ class TeleOpPaths(val opMode/*unused? keep for action cases*/: OpMode) {
                             {bot.templateSubsystem.operateSlides(4 - 4*percent)}
                         }
                 )
+            },
+            MainTeleOp.TemplateState.OUTTAKE to run{
+                listOf(
+                    makePath("a",
+                            drive.trajectoryBuilder(startPose)
+                                .splineTo(Vector2d(0.0, 0.0), 0.0)
+                                .build()),
+                    makePath("b",
+                        drive.trajectoryBuilder(lastPosition)
+                            .splineTo(Vector2d(12.0, 12.0), 45.0)
+                            .build())
+                )
             }
-//
     )
 
 
