@@ -53,4 +53,9 @@ public class RROdometryLocalizerIMU extends TwoTrackingWheelLocalizer {
   public double getHeading() {
     return imu == 1 ? dataSource.heading1 : dataSource.heading2;
   }
+
+  @Override
+  public void setPoseEstimate(@NonNull Pose2d value) {
+    super.setPoseEstimate(value);
+  }
 }

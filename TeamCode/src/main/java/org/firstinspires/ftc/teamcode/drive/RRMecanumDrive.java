@@ -65,8 +65,8 @@ public class RRMecanumDrive extends MecanumDrive {
   public static boolean VIRTUAL = false;
 
   // TODO tune these
-  public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.15, 0.3);
-  public static PIDCoefficients HEADING_PID = new PIDCoefficients(2.8, 0, 0.6);
+  public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.15, 0.6);
+  public static PIDCoefficients HEADING_PID = new PIDCoefficients(2.8, 0, 0.3);
 
   public static double LATERAL_MULTIPLIER = 1;
 
@@ -151,6 +151,10 @@ public class RRMecanumDrive extends MecanumDrive {
     leftRear = hardwareMap.get(DcMotorEx.class, GlobalConfig.motorBL);
     rightRear = hardwareMap.get(DcMotorEx.class, GlobalConfig.motorBR);
     rightFront = hardwareMap.get(DcMotorEx.class, GlobalConfig.motorFR);
+    leftFront.setDirection(Direction.REVERSE);
+    leftRear.setDirection(Direction.REVERSE);
+    rightFront.setDirection(Direction.FORWARD);
+    rightRear.setDirection(Direction.FORWARD);
 
     motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -172,8 +176,7 @@ public class RRMecanumDrive extends MecanumDrive {
       setPIDFCoefficients(RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
     }
 
-    leftFront.setDirection(Direction.REVERSE);
-    leftRear.setDirection(Direction.REVERSE);
+
 
     localizer = new SensorFusionLocalizer(hardwareMap, imu, imu2);
     setLocalizer(localizer);

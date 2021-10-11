@@ -17,6 +17,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
 public class PathFollower {//May or may not be used depending on the game
+  //TODO: INVESTIGATE PURE PURSUIT
   private Bot bot = Bot.getInstance();
   private RRMecanumDrive drive = bot.roadRunner;
   private OpMode opmode;
@@ -28,12 +29,12 @@ public class PathFollower {//May or may not be used depending on the game
   }
 
   private void goToPose(Pose2d pose){
-    if(!drive.isBusy())
+    if(Math.abs(drive.getPoseEstimate().getX() - pose.getX()) + Math.abs(drive.getPoseEstimate().getY() - pose.getY()) > 0.5 ||
+      Math.abs(drive.getPoseEstimate().minus(pose).getHeading()) > 0.5)
       drive.followTrajectoryAsync(
           drive.trajectoryBuilder(drive.getPoseEstimate())
           .lineToLinearHeading(pose)
-          .build()
-      );
+          .build());
   }
 
   private void followAction(TemplateState state, Function0<Unit> runner){
@@ -51,6 +52,16 @@ public class PathFollower {//May or may not be used depending on the game
       goToPose(((TeleOpPathElement.ActionPath)element).getTrajPose(percent));
       followAction(state, ((TeleOpPathElement.ActionPath)element).getRunner(percent));
     }
+  }
+
+  public Pose2d getPose(TemplateState state, int percent, int part){
+    TeleOpPathElement element = getElement(state, part);
+    if(element instanceof TeleOpPathElement.Path){
+      return ((TeleOpPathElement.Path) element).getTrajPose(percent);
+    }else if(element instanceof TeleOpPathElement.ActionPath){
+      return ((TeleOpPathElement.ActionPath) element).getTrajPose(percent);
+    }
+    return null;
   }
 
   public boolean isTrajectory(TemplateState state, int part){

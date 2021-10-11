@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.trajectory.MarkerCallback
 import com.acmerobotics.roadrunner.trajectory.Trajectory
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -64,6 +65,7 @@ class TeleOpPaths(val opMode/*unused? keep for action cases*/: OpMode) {
     }
 
     fun makeActionPath(name: String, trajectory: Trajectory, action: (Double) -> () -> Unit): TeleOpPathElement.ActionPath{
+        lastPosition = trajectory.end()
         return TeleOpPathElement.ActionPath(name, trajectory, action)
     }
 
@@ -89,7 +91,7 @@ class TeleOpPaths(val opMode/*unused? keep for action cases*/: OpMode) {
     //            4 to Pose2d(48 - 5.1, -48.0 - 3.0556 - 3f, (-90.0 + 30.268).toRadians)
     //    )
 
-    val startPose = Pose2d(-48.0 - 24 + 9, -34.0, PI)
+    val startPose = Pose2d(0.0,0.0,0.0)
 
     //TODO: insert action vals here
 
@@ -114,19 +116,15 @@ class TeleOpPaths(val opMode/*unused? keep for action cases*/: OpMode) {
                 listOf(
                         makePath("part 1",
                                 drive.trajectoryBuilder(startPose)
-                                        .forward(10.0)
+                                        .splineTo(Vector2d(8.0, 8.0), 0.0.toRadians)
                                         .build()),
 
-                        makeAction("do something") {percent: Double ->
-                            {bot.templateSubsystem.operateSlides(4 * percent)}
-                        },
 
-                        makeActionPath("part 2",
+                        makePath("part 2",
                                 drive.trajectoryBuilder(lastPosition)
-                                        .forward(10.0)
-                                        .build()) {percent: Double ->
-                            {bot.templateSubsystem.operateSlides(4 - 4*percent)}
-                        }
+                                        .splineTo(Vector2d(0.0,0.0), 180.0.toRadians)
+                                        .build()
+                        )
                 )
             }
 //

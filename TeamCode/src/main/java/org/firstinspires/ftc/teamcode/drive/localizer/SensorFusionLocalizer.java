@@ -27,7 +27,7 @@ public class SensorFusionLocalizer implements Localizer {
 
   public SensorFusionLocalizer(HardwareMap hardwareMap, BNO055IMU imu1, BNO055IMU imu2){
     rightPose = GlobalConfig.EncoderValues.sideEncoder;
-    leftPose = GlobalConfig.EncoderValues.sideEncoder.minus(new Pose2d( 2 * GlobalConfig.EncoderValues.sideEncoder.getX(), 0, 0));
+    leftPose = GlobalConfig.EncoderValues.sideEncoder.minus(new Pose2d( 0, 2 * GlobalConfig.EncoderValues.sideEncoder.getY(), 0));
     centerPose = GlobalConfig.EncoderValues.centerEncoder;
     
     data = new SensorFusionData(hardwareMap, imu1, imu2);

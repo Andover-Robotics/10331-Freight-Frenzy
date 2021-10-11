@@ -19,7 +19,7 @@ public class RROdometryLocalizer extends ThreeTrackingWheelLocalizer {
   public static double TICKS_PER_REV = 8192;
   public static double WHEEL_RADIUS = 38.75 / 2 / 25.4; // in
   public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
-  public static double CENTER_MULT = 24 / 23.55;
+  public static double CENTER_MULT = 1;
 
   private final Encoder leftEncoder, rightEncoder, centerEncoder;
 
@@ -30,8 +30,8 @@ public class RROdometryLocalizer extends ThreeTrackingWheelLocalizer {
   public RROdometryLocalizer(HardwareMap hardwareMap, Pose2d sidePose, Pose2d centerPose) {
     // First calculated in https://docs.google.com/document/d/1s6HzvajxItlIaULulVud0IRhnVrH16yjvsGW4jbwosQ/edit
     super(Arrays.asList(
-        new Pose2d(-sidePose.getX(), sidePose.getY(), 0), // left (relative to front)
-        new Pose2d(-sidePose.getX(), -sidePose.getY(), 0), // right (relative to front)
+        new Pose2d(sidePose.getX(), sidePose.getY(), sidePose.getHeading()), // left (relative to front)
+        new Pose2d(sidePose.getX(), -sidePose.getY(), sidePose.getHeading()), // right (relative to front)
         centerPose // center
     ));
 
@@ -66,5 +66,10 @@ public class RROdometryLocalizer extends ThreeTrackingWheelLocalizer {
         encoderTicksToInches(rightEncoder.getCorrectedVelocity()),
         encoderTicksToInches(CENTER_MULT * centerEncoder.getCorrectedVelocity())
     );
+  }
+
+  @Override
+  public void setPoseEstimate(@NonNull Pose2d value) {
+    super.setPoseEstimate(value);
   }
 }

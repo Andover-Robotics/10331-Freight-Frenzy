@@ -21,15 +21,15 @@ public class Bot {
 
   //TODO: Declare subsystems here
   //example
-  public final TemplateSubsystem templateSubsystem;
+//  public final TemplateSubsystem templateSubsystem;
 
 
   //required subsystems
   public final MecanumDrive drive;
   public final RRMecanumDrive roadRunner;
   public final BNO055IMU imu;
-  public final Cosmetics cosmetics;
-  public Pair<ExpansionHubEx, ExpansionHubEx> hubs = null;
+//  public final Cosmetics cosmetics;
+//  public Pair<ExpansionHubEx, ExpansionHubEx> hubs = null;
   public OpMode opMode;
 
   /** Get the current Bot instance from somewhere other than an OpMode */
@@ -56,8 +56,8 @@ public class Bot {
     this.opMode = opMode;
     enableAutoBulkRead();
     try {
-      this.hubs = Pair.create(opMode.hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1"), // TODO: check if revextensions2 works with sdk7.0 and control hubs
-          opMode.hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 2"));
+//      this.hubs = Pair.create(opMode.hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1"), // TODO: check if revextensions2 works with sdk7.0 and control hubs
+//          opMode.hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 2"));
     } catch (Exception e) {
       // Avoid catastrophic errors if RevExtensions don't behave as expected. Limited trust of stability
       e.printStackTrace();
@@ -65,7 +65,7 @@ public class Bot {
 
     //TODO: initialize subsystems
     //example
-    this.templateSubsystem = new TemplateSubsystem(opMode);
+//    this.templateSubsystem = new TemplateSubsystem(opMode);
 
 
 
@@ -76,7 +76,7 @@ public class Bot {
         new MotorEx(opMode.hardwareMap, GlobalConfig.motorBL),
         new MotorEx(opMode.hardwareMap, GlobalConfig.motorBR));
     this.roadRunner = new RRMecanumDrive(opMode.hardwareMap);
-    this.cosmetics = new Cosmetics(opMode);
+//    this.cosmetics = new Cosmetics(opMode);
     imu = roadRunner.imu;
   }
 

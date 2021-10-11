@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger;
@@ -22,7 +24,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   private boolean centricity = false;
   private PathFollower follower;
   private boolean isManual = true;
-  private int percent = 0, part = 0;
+  private int percent = 1, part = 0;
 
 
 
@@ -83,7 +85,12 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
     //TODO: insert actual teleop stuff here
     if(justPressed(Button.A) || gamepadEx1.wasJustReleased(Button.A)){
-      bot.templateSubsystem.operateSlides(1);
+//     bot.templateSubsystem.operateSlides(1);
+      bot.roadRunner.localizer.setPoseEstimate(bot.roadRunner.getPoseEstimate());
+    }
+
+    if(justPressed(Button.B)){
+      bot.roadRunner.followTrajectory(bot.roadRunner.trajectoryBuilder(bot.roadRunner.getPoseEstimate()).lineToSplineHeading(new Pose2d()).build());
     }
 
 
@@ -127,6 +134,9 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
     // TODO organize this test code
     updateLocalization();
+    telemetry.addData("percent", percent);
+    telemetry.addData("part", part);
+    telemetry.addData("pose", follower.getPose(state, percent, part));
     telemetry.addData("cycle", cycle);
     telemetry.addData("x", bot.roadRunner.getPoseEstimate().getX());
     telemetry.addData("y", bot.roadRunner.getPoseEstimate().getY());
@@ -154,8 +164,8 @@ public class MainTeleOp extends BaseOpMode {//required vars here
             gyroAngle);
       else
         bot.drive.driveRobotCentric(
-            -driveVector.getX() * driveSpeed,
-            -driveVector.getY() * driveSpeed,
+            driveVector.getX() * driveSpeed,
+            driveVector.getY() * driveSpeed,
             turnVector.getX() * driveSpeed
         );
     }
@@ -175,20 +185,21 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     if(!follower.isTrajectory(state, part)){
       drive();
     } else {
+      telemetry.addData("left stick", stickSignal(Direction.LEFT).getY());
       percent += stickSignal(Direction.LEFT).getY() * state.progressRate * driveSpeed;
     }
     percent = Math.max(0, Math.min(100, percent));
 
 
     if(justPressed(Button.RIGHT_BUMPER) || percent >= 100){
-      percent = 0;
+      percent = 1;
       part += 1;
       if(part > follower.getPathsInfo().get(state) - 1)//epic java syntax
         part = 0;
         //TODO: add automatic state changer?
 
     } else if(justPressed(Button.LEFT_BUMPER) || percent <= 0){
-      percent = 100;
+      percent = 99;
       part -= 1;
       if(part < 0)//epic java syntax
         part = follower.getPathsInfo().get(state) - 1;

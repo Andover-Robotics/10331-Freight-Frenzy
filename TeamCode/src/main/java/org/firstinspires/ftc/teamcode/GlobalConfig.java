@@ -16,13 +16,13 @@ public class GlobalConfig {//make all fields final
 
 
   public static class SensorFusionValues{
-    public static final double[] sensorFusionHeadingWeights = {0.225, 0.225, 0.225, 0.225, 0.1},
+    public static final double[] sensorFusionHeadingWeights = {0.225, 0.225, 0.225, 0.225, 0},
         sensorFusionPositionWeights = {0.15, 0.15, 0.15, 0.15, 0.4};
   }
 
   public static class EncoderValues{
-    public static final Pose2d sideEncoder = new Pose2d(-0.55, 7.3, 0), centerEncoder = new Pose2d(5.6, 0.512, Math.toRadians(90));
-    public static final String leftEncoderPort = "intake", rightEncoderPort = "motorFL", centerEncoderPort = "fdas";
-    public static final Direction leftEncoderDirection = Direction.FORWARD, rightEncoderDirection = Direction.FORWARD, centerEncoderDirection = Direction.REVERSE;
+    public static final Pose2d sideEncoder = new Pose2d(-0.4, 4.133, 0), centerEncoder = new Pose2d(-1.18, 0, Math.toRadians(90));
+    public static final String leftEncoderPort = "motorFL", rightEncoderPort = "motorBL", centerEncoderPort = "motorFR";
+    public static final Direction leftEncoderDirection = Direction.REVERSE, rightEncoderDirection = Direction.REVERSE, centerEncoderDirection = Direction.REVERSE;
   }
 }
