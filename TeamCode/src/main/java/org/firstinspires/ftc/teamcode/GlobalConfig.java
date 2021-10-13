@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.util.Encoder.Direction;
+import org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.d_util.utilclasses.Encoder.Direction;
 
 public class GlobalConfig {//make all fields final
   //control + click class to go to it
