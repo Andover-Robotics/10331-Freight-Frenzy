@@ -66,7 +66,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     timingScheduler.run();
 
     //Movement =================================================================================================
-    //TODO: change depending on mode
+    //TODO: change depending on mode :)
     driveSpeed = 1 - 0.35 * (triggerSignal(Trigger.LEFT_TRIGGER) + triggerSignal(Trigger.RIGHT_TRIGGER));
 
     if(justPressed(Button.BACK)){
