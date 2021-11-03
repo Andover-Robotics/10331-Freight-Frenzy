@@ -63,7 +63,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     //update stuff=================================================================================================
     cycle = 1.0/(time-prevRead);
     prevRead = time;
-    timingScheduler.run();
+    timingScheduler.run();//:)
 
     //Movement =================================================================================================
     //TODO: change depending on mode :)
