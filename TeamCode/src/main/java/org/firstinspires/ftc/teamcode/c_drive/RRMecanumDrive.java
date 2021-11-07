@@ -179,7 +179,7 @@ public class RRMecanumDrive extends MecanumDrive {
 
 
     localizer = new SensorFusionLocalizer(hardwareMap, imu, imu2);
-    setLocalizer(localizer);
+//    setLocalizer(localizer);
   }
 
   public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {

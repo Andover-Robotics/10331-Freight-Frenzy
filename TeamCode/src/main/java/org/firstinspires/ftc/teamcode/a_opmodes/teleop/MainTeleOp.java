@@ -168,8 +168,8 @@ public class MainTeleOp extends BaseOpMode {//required vars here
             gyroAngle);
       else
         bot.drive.driveRobotCentric(
-            driveVector.getX() * driveSpeed,
             driveVector.getY() * driveSpeed,
+            -driveVector.getX() * driveSpeed,
             turnVector.getX() * driveSpeed
         );
     }
