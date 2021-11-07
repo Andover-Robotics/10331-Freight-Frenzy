@@ -1,17 +1,20 @@
 package org.firstinspires.ftc.teamcode.a_opmodes.auto
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.trajectory.MarkerCallback
 import com.acmerobotics.roadrunner.trajectory.Trajectory
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.a_opmodes.auto.pipeline.TemplateDetector
-import org.firstinspires.ftc.teamcode.b_hardware.drive.RRMecanumDrive
+import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive
 import org.firstinspires.ftc.teamcode.b_hardware.Bot
 import java.lang.Math.toRadians
 import kotlin.math.PI
 import kotlin.math.roundToInt
 
 class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths functionality to this
+
+    //TODO: reverse this
 
     sealed class AutoPathElement(open val name: String) {
         class Path(override val name: String, val trajectory: Trajectory): AutoPathElement(name)
@@ -77,7 +80,7 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
     //            4 to Pose2d(48 - 5.1, -48.0 - 3.0556 - 3f, (-90.0 + 30.268).toRadians)
     //    )
 
-    val startPose = Pose2d(-48.0 - 24 + 9, -34.0, PI)
+    val startPose = Pose2d(0.0, 0.0, 0.0)
 
     //TODO: Make Trajectories in trajectorySets
 
@@ -86,21 +89,62 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
             //use !! when accessing maps ie: dropSecondWobble[0]!!
             //example
             TemplateDetector.PipelineResult.LEFT to run{
-                val specificPose = Pose2d()
                 listOf(
-                        makePath("part 1",
-                            drive.trajectoryBuilder(startPose)
-                                    .back(10.0)
-                                    .build()),
+                makePath("forward 4",
+                    drive.trajectoryBuilder(startPose)
+                        .lineToConstantHeading(Vector2d(0.0, 12.0))
+                        .build())
+                )
+            },
+            TemplateDetector.PipelineResult.RIGHT to run{
+                listOf(
+                    makePath("forward 8",
+                        drive.trajectoryBuilder(startPose)
+                            .lineToConstantHeading(Vector2d(0.0, 24.0))
+                            .build()),
+                    makePath("left 8",
+                        drive.trajectoryBuilder(lastPosition)
+                            .lineToConstantHeading(Vector2d(24.0, 24.0))
+                            .build()),
+                    makePath("back 8",
+                        drive.trajectoryBuilder(lastPosition)
+                            .lineToConstantHeading(Vector2d(24.0, 0.0))
+                            .build()),
+                    makePath("right 8",
+                        drive.trajectoryBuilder(lastPosition)
+                            .lineToConstantHeading(startPose.vec())
+                            .build()),
+                    makeAction("wait for 3 seconds"){
+                        Thread.sleep(3000)
+                    },
+                    makePath("spline forward",
+                        drive.trajectoryBuilder(lastPosition)
+                            .splineTo(Vector2d(24.0, 24.0), 0.0)
+                            .build()),
+                    makePath("spline backward",
+                        drive.trajectoryBuilder(lastPosition, 180.0)
+                            .splineTo(startPose.vec(), 180.0)
+                            .build()),
+                    makeAction("wait for 3 seconds"){
+                        Thread.sleep(3000)
+                    },
+                    makePath("forward 8",
+                        drive.trajectoryBuilder(startPose)
+                            .lineToLinearHeading(Pose2d(0.0, 24.0, 90.toRadians))
+                            .build()),
+                    makePath("left 8",
+                        drive.trajectoryBuilder(lastPosition)
+                            .lineToLinearHeading(Pose2d(24.0, 24.0, PI))
+                            .build()),
+                    makePath("back 8",
+                        drive.trajectoryBuilder(lastPosition)
+                            .lineToLinearHeading(Pose2d(24.0, 0.0, -90.toRadians))
+                            .build()),
+                    makePath("right 8",
+                        drive.trajectoryBuilder(lastPosition)
+                            .lineToLinearHeading(startPose)
+                            .build())
 
-                        makeAction("intake something") {
-                            Thread.sleep(1000)
-                        },
-
-                        makePath("part 2",
-                            drive.trajectoryBuilder(lastPosition)
-                                    .forward(10.0)
-                                    .build())
                 )
             }
 //

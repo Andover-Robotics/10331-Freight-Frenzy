@@ -8,7 +8,9 @@ import com.qualcomm.hardware.lynx.LynxModule.BulkCachingMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.GlobalConfig;
-import org.firstinspires.ftc.teamcode.b_hardware.drive.RRMecanumDrive;
+import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Carousel;
+import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive;
 
 public class Bot {
   // in TeleOp and Autonomous we should be able to call "new Bot(this)"
@@ -18,6 +20,8 @@ public class Bot {
 
   //TODO: Declare subsystems here
   //example
+  public final Carousel carousel;
+  public final Intake intake;
 //  public final TemplateSubsystem templateSubsystem;
 
 
@@ -63,6 +67,8 @@ public class Bot {
     //TODO: initialize subsystems
     //example
 //    this.templateSubsystem = new TemplateSubsystem(opMode);
+    this.carousel = new Carousel(opMode);
+    this.intake = new Intake(opMode);
 
 
 

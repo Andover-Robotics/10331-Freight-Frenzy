@@ -28,12 +28,11 @@ import java.util.function.Function;
 public abstract class BaseOpMode extends OpMode {
 
   Bot bot;
+  double driveSpeed;
   GamepadEx gamepadEx1, gamepadEx2;
 
   //button reader syntax
   // (g1 or g2)  (a, b, lt, lb, etc)
-  Map<String, ToggleButtonReader> toggleButtonReaders = new HashMap<>();
-  double driveSpeed;
 
   @Override
   public void init() {
@@ -56,9 +55,6 @@ public abstract class BaseOpMode extends OpMode {
   abstract void subLoop();
 
   void updateButtons(){
-    for(ToggleButtonReader t : toggleButtonReaders.values()){
-      t.readValue();
-    }
     gamepadEx1.readButtons();
     gamepadEx2.readButtons();
   }

@@ -5,11 +5,13 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger;
 import com.arcrobotics.ftclib.geometry.Vector2d;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.b_hardware.drive.RRMecanumDrive.Mode;
+import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive.Mode;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.TimingScheduler;
 
 import java.util.Map;
@@ -21,7 +23,6 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   private double prevRead = 0;
   private TimingScheduler timingScheduler;
   private boolean centricity = false;
-  private PathFollower follower;
   private boolean isManual = true;
   private int percent = 1, part = 0;
 
@@ -50,12 +51,14 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   //If there is a module-specific var, put it in the module class ie slideStage goes in the slides module
 
 
-
+  private MotorEx carousel;
 
   void subInit() {
     //TODO: initialize subsystems not initialized in bot constructor
     timingScheduler = new TimingScheduler(this);
-    follower = new PathFollower(this);
+    carousel = new MotorEx(hardwareMap, "carousel");
+    carousel.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+    carousel.set(0);
   }
 
   @Override
@@ -83,13 +86,16 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
 
     //TODO: insert actual teleop stuff here
-    if(justPressed(Button.A) || gamepadEx1.wasJustReleased(Button.A)){
-//     bot.templateSubsystem.operateSlides(1);
-      bot.roadRunner.localizer.setPoseEstimate(bot.roadRunner.getPoseEstimate());
+    if(buttonSignal(Button.DPAD_UP)){
+      bot.carousel.run();
+    }else{
+      bot.carousel.stop();
     }
 
-    if(justPressed(Button.B)){
-      bot.roadRunner.followTrajectory(bot.roadRunner.trajectoryBuilder(bot.roadRunner.getPoseEstimate()).lineToSplineHeading(new Pose2d()).build());
+    if(buttonSignal(Button.B)){
+      bot.intake.run();
+    }else{
+      bot.intake.stop();
     }
 
 
@@ -99,9 +105,9 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     DPAD
     L:      D:     U:      R:
     Joystick
-    L:movement/reset field centric or progress automation
-    R:movement/switch robotfield centric or none
-    Trigger L/R: slow driving
+    L:Field centric movement
+    R:Set orientation / Rotation (Determine through practice)
+    Trigger L/R: slow driving (maybe)
     Bumper
     L:none/switch to previous path      R:none/switch to next path
     Other
@@ -135,7 +141,6 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     updateLocalization();
     telemetry.addData("percent", percent);
     telemetry.addData("part", part);
-    telemetry.addData("pose", follower.getPose(state, percent, part));
     telemetry.addData("cycle", cycle);
     telemetry.addData("x", bot.roadRunner.getPoseEstimate().getX());
     telemetry.addData("y", bot.roadRunner.getPoseEstimate().getY());
@@ -148,7 +153,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     updateState();
 
     final double gyroAngle =
-        bot.imu.getAngularOrientation().toAngleUnit(AngleUnit.DEGREES).firstAngle//TODO: make sure that the orientation is correct
+        bot.imu.getAngularOrientation().toAngleUnit(AngleUnit.DEGREES).secondAngle//TODO: make sure that the orientation is correct
             - fieldCentricOffset;
     Vector2d driveVector = stickSignal(Direction.LEFT),
         turnVector = new Vector2d(
@@ -180,31 +185,6 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   private void followPath(){//Path following ===================================================================================
 
     updateState();
-
-    if(!follower.isTrajectory(state, part)){
-      drive();
-    } else {
-      telemetry.addData("left stick", stickSignal(Direction.LEFT).getY());
-      percent += stickSignal(Direction.LEFT).getY() * state.progressRate * driveSpeed;
-    }
-    percent = Math.max(0, Math.min(100, percent));
-
-
-    if(justPressed(Button.RIGHT_BUMPER) || percent >= 100){
-      percent = 1;
-      part += 1;
-      if(part > follower.getPathsInfo().get(state) - 1)//epic java syntax
-        part = 0;
-        //TODO: add automatic state changer?
-
-    } else if(justPressed(Button.LEFT_BUMPER) || percent <= 0){
-      percent = 99;
-      part -= 1;
-      if(part < 0)//epic java syntax
-        part = follower.getPathsInfo().get(state) - 1;
-    }
-
-    follower.followPath(state, percent, part);
 
   }
 

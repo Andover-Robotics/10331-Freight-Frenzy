@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.b_hardware.drive.opmode;
+package org.firstinspires.ftc.teamcode.c_drive.opmode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.b_hardware.drive.RRMecanumDrive;
+import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal

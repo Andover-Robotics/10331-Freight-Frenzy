@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.b_hardware.Bot;
 import java.util.List;
 
 @Autonomous(name = "Main Autonomous", group = "Competition")
-public class MainAutonomous extends LinearOpMode {
+public class MainAutonomous extends LinearOpMode {//TODO: add reversing for competition
 
   private Bot bot;
 
@@ -33,7 +33,7 @@ public class MainAutonomous extends LinearOpMode {
     gamepad = new GamepadEx(gamepad1);
 
     AutoPaths paths = new AutoPaths(this);
-    pipeline = new TemplateDetector(this);
+//    pipeline = new TemplateDetector(this);
 
     //TODO: add initialization here
 
@@ -42,37 +42,37 @@ public class MainAutonomous extends LinearOpMode {
 
     //Pipeline stuff
 
-    while (!isStarted()) {
-      if (isStopRequested())
-        return;
-      // keep getting results from the pipeline
-      pipeline.currentlyDetected()
-          .ifPresent((pair) -> {
-            telemetry.addData("detected", pair.first);
-            telemetry.addData("confidence", pair.second);
-            telemetry.update();
-            detected = pair.first;
-            confidence = pair.second;
-          });
-      if (gamepad1.x) {
-        performActions = false;
-      }
-      if (gamepad.wasJustPressed(Button.Y)) {
-        pipeline.saveImage();
-      }
-    }
+//    while (!isStarted()) {
+//      if (isStopRequested())
+//        return;
+//      // keep getting results from the pipeline
+//      pipeline.currentlyDetected()
+//          .ifPresent((pair) -> {
+//            telemetry.addData("detected", pair.first);
+//            telemetry.addData("confidence", pair.second);
+//            telemetry.update();
+//            detected = pair.first;
+//            confidence = pair.second;
+//          });
+//      if (gamepad1.x) {
+//        performActions = false;
+//      }
+//      if (gamepad.wasJustPressed(Button.Y)) {
+//        pipeline.saveImage();
+//      }
+//    }
+//
+//    pipeline.currentlyDetected().ifPresent(pair -> {
+//      detected = pair.first;
+//      confidence = pair.second;
+//    });
+//
+//    if (detected == null)
+//      detected = PipelineResult.LEFT;
 
-    pipeline.currentlyDetected().ifPresent(pair -> {
-      detected = pair.first;
-      confidence = pair.second;
-    });
-
-    if (detected == null)
-      detected = PipelineResult.LEFT;
-
-    detected = PipelineResult.LEFT;
+    detected = PipelineResult.RIGHT;
     List<AutoPathElement> trajectories = paths.getTrajectories(detected);
-    pipeline.close();
+//    pipeline.close();
 
 
     //Roadrunner stuff

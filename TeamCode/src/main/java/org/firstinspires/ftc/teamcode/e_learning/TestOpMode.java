@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.c_learning;
+package org.firstinspires.ftc.teamcode.e_learning;
 
 
 import com.arcrobotics.ftclib.geometry.Pose2d;
@@ -28,6 +28,9 @@ public class TestOpMode extends OpMode {
 
     @Override
     public void loop() {
-        testPath.followPath(bot.drive, bot.roadRunner.localizer);//TODO: make ftclib odometry
+//        testPath.followPath(bot.drive, bot.roadRunner.localizer);//TODO: make ftclib odometry
+
+        //testing music
+//        MediaPlayer.create(hardwareMap.appContext, R.raw.rickroll).start();
     }
 }

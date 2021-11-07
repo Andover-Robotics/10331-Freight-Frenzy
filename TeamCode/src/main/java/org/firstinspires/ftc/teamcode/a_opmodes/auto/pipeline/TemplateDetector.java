@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.a_opmodes.auto.pipeline;
 
-import static org.firstinspires.ftc.teamcode.a_opmodes.auto.pipeline.TemplateDetector.PipelineResult.LEFT;
-
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.util.Pair;
@@ -120,7 +118,7 @@ public class TemplateDetector {//TODO: Change this to control hub
 
     // returns a pair containing verdict and confidence from 0 to 1
     private Optional<Pair<PipelineResult, Double>> identifyStackFromBounds() {
-      return Optional.of(Pair.create(LEFT, 1.0));
+      return Optional.of(Pair.create(PipelineResult.LEFT, 1.0));
     }
 
 

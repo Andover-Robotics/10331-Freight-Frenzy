@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.b_hardware.drive.opmode;
+package org.firstinspires.ftc.teamcode.c_drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -16,8 +16,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.b_hardware.drive.RRMecanumDrive;
+import org.firstinspires.ftc.teamcode.c_drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive;
 
 import java.util.List;
 

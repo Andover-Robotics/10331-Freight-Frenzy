@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.b_hardware.drive.opmode;
+package org.firstinspires.ftc.teamcode.c_drive.opmode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.b_hardware.drive.RRMecanumDrive;
+import org.firstinspires.ftc.teamcode.c_drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive;
 
 import java.util.Objects;
 

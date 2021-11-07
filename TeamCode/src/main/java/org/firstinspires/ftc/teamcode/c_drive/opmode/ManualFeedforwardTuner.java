@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.b_hardware.drive.opmode;
+package org.firstinspires.ftc.teamcode.c_drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.b_hardware.drive.RRMecanumDrive;
+import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive;
 
 import java.util.Objects;
 

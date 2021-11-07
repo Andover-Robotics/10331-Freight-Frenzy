@@ -1,16 +1,16 @@
-package org.firstinspires.ftc.teamcode.b_hardware.drive;
+package org.firstinspires.ftc.teamcode.c_drive;
 
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.b_hardware.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.c_drive.DriveConstants.kV;
 
 import androidx.annotation.NonNull;
 
@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.teamcode.GlobalConfig;
-import org.firstinspires.ftc.teamcode.b_hardware.drive.localizer.SensorFusionLocalizer;
+import org.firstinspires.ftc.teamcode.c_drive.localizer.SensorFusionLocalizer;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.AxesSigns;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.BNO055IMUUtil;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.DashboardUtil;
