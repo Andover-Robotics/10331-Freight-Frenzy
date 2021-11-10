@@ -52,6 +52,9 @@ import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManagerFactory
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.network.NetworkStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PeerStatus;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.FileNotFoundException;
 
 @SuppressWarnings("WeakerAccess")
 public class UpdateUI {
@@ -93,7 +96,13 @@ public class UpdateUI {
             @Override public void run() {
               // Actually restart the robot on the UI thread, just as the user would if
               // using the robot controller menus
-              requestRobotRestart();
+              try {
+                requestRobotRestart();
+              } catch (FileNotFoundException e) {
+                e.printStackTrace();
+              } catch (XmlPullParserException e) {
+                e.printStackTrace();
+              }
             }
           });
         }
@@ -360,7 +369,7 @@ public class UpdateUI {
     this.restarter = restarter;
   }
 
-  private void requestRobotRestart() {
+  private void requestRobotRestart() throws FileNotFoundException, XmlPullParserException {
     restarter.requestRestart();
   }
 
