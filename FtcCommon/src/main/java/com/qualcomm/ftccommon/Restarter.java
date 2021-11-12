@@ -31,7 +31,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftccommon;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.FileNotFoundException;
+
 public interface Restarter {
 
-  public void requestRestart();
+  public void requestRestart() throws FileNotFoundException, XmlPullParserException;
 }
