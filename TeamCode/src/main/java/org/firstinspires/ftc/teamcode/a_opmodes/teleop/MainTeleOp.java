@@ -86,17 +86,17 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
 
     //TODO: insert actual teleop stuff here
-    if(buttonSignal(Button.DPAD_UP)){
-      bot.carousel.run();
-    }else{
-      bot.carousel.stop();
-    }
-
-    if(buttonSignal(Button.B)){
-      bot.intake.run();
-    }else{
-      bot.intake.stop();
-    }
+//    if(buttonSignal(Button.DPAD_UP)){
+//      bot.carousel.run();
+//    }else{
+//      bot.carousel.stop();
+//    }
+//
+//    if(buttonSignal(Button.B)){
+//      bot.intake.run();
+//    }else{
+//      bot.intake.stop();
+//    }
 
 
     /*//TODO: make control scheme
@@ -168,8 +168,8 @@ public class MainTeleOp extends BaseOpMode {//required vars here
             gyroAngle);
       else
         bot.drive.driveRobotCentric(
+            driveVector.getX() * driveSpeed,
             driveVector.getY() * driveSpeed,
-            -driveVector.getX() * driveSpeed,
             turnVector.getX() * driveSpeed
         );
     }
