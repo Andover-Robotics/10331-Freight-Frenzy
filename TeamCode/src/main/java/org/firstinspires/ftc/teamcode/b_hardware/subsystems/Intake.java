@@ -13,10 +13,7 @@ public class Intake extends SubsystemBase {
 
     private enum state {
         ON,
-        OFF,
-        REVERSE,
-        LEFT,
-        RIGHT
+        OFF
     }
 
     public state runState = state.OFF;
@@ -79,4 +76,3 @@ public class Intake extends SubsystemBase {
     }
 }
 
-}
