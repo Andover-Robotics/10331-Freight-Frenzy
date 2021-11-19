@@ -7,7 +7,9 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.lynx.LynxModule.BulkCachingMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.robotserver.internal.webserver.controlhubupdater.ChUpdaterCommManager;
 import org.firstinspires.ftc.teamcode.GlobalConfig;
+import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive;
 
 public class Bot {
@@ -27,11 +29,13 @@ public class Bot {
   public final MecanumDrive drive;
   public final RRMecanumDrive roadRunner;
   public final BNO055IMU imu;
+  public final Intake intake;
 //  public final Cosmetics cosmetics;
 //  public Pair<ExpansionHubEx, ExpansionHubEx> hubs = null;
   public OpMode opMode;
+//    public ChUpdaterCommManager.ChUpdaterBroadcastReceiver.AllowancePeriodExpiredRunnable intake;
 
-  /** Get the current Bot instance from somewhere other than an OpMode */
+    /** Get the current Bot instance from somewhere other than an OpMode */
   public static Bot getInstance() {
     if (instance == null) {
       throw new IllegalStateException("tried to getInstance of Bot when uninitialized");
@@ -64,6 +68,7 @@ public class Bot {
 
     //TODO: initialize subsystems
     //example
+    this.intake = new Intake(opMode);
 //    this.templateSubsystem = new TemplateSubsystem(opMode);
 //    this.carousel = new Carousel(opMode);
 //    this.intake = new Intake(opMode);
