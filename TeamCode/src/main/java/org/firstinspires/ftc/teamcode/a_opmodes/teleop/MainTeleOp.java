@@ -25,6 +25,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   private boolean centricity = false;
   private boolean isManual = true;
   private int percent = 1, part = 0;
+  private boolean isLeftIntakeRunning = false;
 
 
 
@@ -83,8 +84,6 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
 
 
-
-
     //TODO: insert actual teleop stuff here
 //    if(buttonSignal(Button.DPAD_UP)){
 //      bot.carousel.run();
@@ -92,11 +91,20 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //      bot.carousel.stop();
 //    }
 //
-//    if(buttonSignal(Button.B)){
-//      bot.intake.run();
-//    }else{
-//      bot.intake.stop();
-//    }
+    //clicking intake
+    if(gamepadEx1.stateJustChanged(Button.X) && runState==state.OFF){
+      bot.intake.run();
+    }
+    else if(gamepadEx1.stateJustChanged(Button.X) && runState==state.ON){
+      bot.intake.stop();
+    }
+    //hold down button
+    if(gamepadEx1.isDown(Button.B)){
+      bot.intake.run();
+    }
+    else{
+      bot.intake.stop();
+    }
 
 
     /*//TODO: make control scheme
