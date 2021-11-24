@@ -11,7 +11,7 @@ public class Intake extends SubsystemBase {
     public static final double SPEED=0.5;
     MotorEx leftIntake;
 
-    private enum state {
+    public enum state {
         ON,
         OFF
     }

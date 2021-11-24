@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive.Mode;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.TimingScheduler;
 
@@ -92,18 +93,27 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //    }
 //
     //clicking intake
-    if(gamepadEx1.stateJustChanged(Button.X) && runState==state.OFF){
+    if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.state.OFF){
       bot.intake.run();
     }
-    else if(gamepadEx1.stateJustChanged(Button.X) && runState==state.ON){
+    else if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.state.ON){
       bot.intake.stop();
     }
+
     //hold down button
     if(gamepadEx1.isDown(Button.B)){
       bot.intake.run();
     }
     else{
       bot.intake.stop();
+    }
+
+    //hold down button
+    if(gamepadEx1.isDown(Button.Y)){
+      carousel.set(0.5);
+    }
+    else{
+      carousel.set(0);
     }
 
 
