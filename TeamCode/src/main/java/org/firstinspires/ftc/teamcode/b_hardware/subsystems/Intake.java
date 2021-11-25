@@ -1,19 +1,16 @@
 package org.firstinspires.ftc.teamcode.b_hardware.subsystems;
 
 
-import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
 public class Intake extends SubsystemBase {
     public static final double SPEED=0.5;
     MotorEx leftIntake;
 
-    public enum state {
+    private enum state {
         ON,
-        OFF
+        OFF,
+        REVERSE,
+        LEFT,
+        RIGHT
     }
 
     public state runState = state.OFF;
@@ -21,7 +18,7 @@ public class Intake extends SubsystemBase {
     public Intake(OpMode opMode){
         leftIntake = new MotorEx(opMode.hardwareMap, "leftIntake", Motor.GoBILDA.RPM_312);
         leftIntake.setRunMode(Motor.RunMode.RawPower);
-        leftIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftIntake.motor.setDirection(DcMotorSimple.Direction.FORWARD);
 //        rightIntake = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_312);
 //        rightIntake.setRunMode(Motor.RunMode.RawPower);
 //        rightIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -76,3 +73,4 @@ public class Intake extends SubsystemBase {
     }
 }
 
+}
