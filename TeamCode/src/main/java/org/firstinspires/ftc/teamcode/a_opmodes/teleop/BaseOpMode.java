@@ -3,15 +3,12 @@ package org.firstinspires.ftc.teamcode.a_opmodes.teleop;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger;
-import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.b_hardware.Bot;
+import org.firstinspires.ftc.teamcode.b_hardware.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 /**

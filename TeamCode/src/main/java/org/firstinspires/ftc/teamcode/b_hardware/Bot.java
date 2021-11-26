@@ -7,9 +7,10 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.lynx.LynxModule.BulkCachingMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.robotserver.internal.webserver.controlhubupdater.ChUpdaterCommManager;
 import org.firstinspires.ftc.teamcode.GlobalConfig;
+import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive;
 
 public class Bot {
@@ -30,6 +31,8 @@ public class Bot {
   public final RRMecanumDrive roadRunner;
   public final BNO055IMU imu;
   public final Intake intake;
+  public final Outtake outtake;
+  public final Gate gate;
 //  public final Cosmetics cosmetics;
 //  public Pair<ExpansionHubEx, ExpansionHubEx> hubs = null;
   public OpMode opMode;
@@ -69,6 +72,8 @@ public class Bot {
     //TODO: initialize subsystems
     //example
     this.intake = new Intake(opMode);
+    this.outtake = new Outtake (opMode);
+    this.gate = new Gate(opMode);
 //    this.templateSubsystem = new TemplateSubsystem(opMode);
 //    this.carousel = new Carousel(opMode);
 //    this.intake = new Intake(opMode);

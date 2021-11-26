@@ -5,18 +5,13 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-
-public class Outake extends SubsystemBase {
+public class Outtake extends SubsystemBase {
     public static final double SPEED = 0.25;
     private MotorEx armMotor;
 
-    private enum STATE {
+    public enum State {
         ON,
         OFF,
         REVERSE,
@@ -24,7 +19,7 @@ public class Outake extends SubsystemBase {
         RIGHT
     }
 
-    public state runState = state.OFF;
+    public State runState = State.OFF;
 
 
     public Outtake (OpMode opMode){
@@ -33,31 +28,31 @@ public class Outake extends SubsystemBase {
         armMotor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void gateToggle (){
-        if(runState == state.OFF) {
-            run();
-        }
-        else {
-            stop();
-        }
-    }
+//    public void gateToggle (){
+//        if(runState == State.OFF) {
+//            run();
+//        }
+//        else {
+//            stop();
+//        }
+//    }
 
 
     public void run(){
         armMotor.set(SPEED);
-        runState = STATE.ON;
+        runState = State.ON;
     }
 
 
     public void down(){
         armMotor.set(-SPEED);
-        runState = STATE.ON;
+        runState = State.ON;
     }
 
 
     public void stop(){
         armMotor.set(0.0);
-        runState = state.OFF;
+        runState = State.OFF;
     }
 
 

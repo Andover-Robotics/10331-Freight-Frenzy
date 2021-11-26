@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.a_opmodes.teleop;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger;
@@ -11,12 +10,10 @@ import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive.Mode;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.TimingScheduler;
-
-import java.util.Map;
-import java.util.Map.Entry;
 
 @TeleOp(name = "Main TeleOp", group = "Competition")
 public class MainTeleOp extends BaseOpMode {//required vars here
@@ -44,9 +41,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     TemplateState(double progressRate){this.progressRate = progressRate;}
   }
 
-  Map<TemplateState, Map<Button, TemplateState>> stateMap = new StateMap().getStateMap();
 
-  public TemplateState state = TemplateState.INTAKE;
 
 
   //opmode vars here ==============================================================================================
@@ -93,10 +88,10 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //    }
 //
     //clicking intake
-    if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.state.OFF){
+    if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.State.OFF){
       bot.intake.run();
     }
-    else if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.state.ON){
+    else if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.State.ON){
       bot.intake.stop();
     }
 
@@ -117,10 +112,10 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
 
     //clicking gate
-    if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.state.OFF){
+    if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.OFF){
       bot.gate.closeGateFlap();
     }
-    else if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.state.ON){
+    else if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.ON){
       bot.gate.openGateFlap();
     }
 
@@ -134,7 +129,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
 
     //hold down trigger for outtake to go up
-    if(gamepadEx2.isDown(Trigger.LEFT_TRIGGER)){
+    if(gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER)>0.01){
       bot.outtake.run();
     }
     else{
@@ -142,7 +137,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
 
     //hold down trigger for outtake to go down
-    if(gamepadEx2.isDown(Trigger.RIGHT_TRIGGER)){
+    if(gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
       bot.outtake.down();
     }
     else{
@@ -244,12 +239,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   }
 
   private void updateState(){
-    for(Entry<Button, TemplateState> pair : stateMap.get(state).entrySet()){
-      if(justPressed(pair.getKey())){
-        state = pair.getValue();
-        percent = 0;
-      }
-    }
+
   }
 
   private void updateLocalization() {
