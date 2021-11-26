@@ -58,7 +58,7 @@ public class Bot {
     //TODO: add reset code here
   }
 
-  private Bot(OpMode opMode){
+  private Bot (OpMode opMode){
     this.opMode = opMode;
     enableAutoBulkRead();
     try {
