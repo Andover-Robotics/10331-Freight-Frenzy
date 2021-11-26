@@ -14,10 +14,9 @@ import java.util.concurrent.Future;
 
 public class Outake extends SubsystemBase {
     public static final double SPEED = 0.25;
-    public static final double REVERSE = -0.25;
     private MotorEx armMotor;
 
-    private enum state {
+    private enum STATE {
         ON,
         OFF,
         REVERSE,
@@ -28,7 +27,7 @@ public class Outake extends SubsystemBase {
     public state runState = state.OFF;
 
 
-    public Outtake(OpMode opMode){
+    public Outtake (OpMode opMode){
         armMotor = new MotorEx(opMode.hardwareMap, "armMotor", Motor.GoBILDA.RPM_312);
         armMotor.setRunMode(Motor.RunMode.RawPower);
         armMotor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -51,7 +50,7 @@ public class Outake extends SubsystemBase {
 
 
     public void down(){
-        armMotor.set(REVERSE);
+        armMotor.set(-SPEED);
         runState = STATE.ON;
     }
 
