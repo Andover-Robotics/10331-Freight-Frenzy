@@ -11,7 +11,7 @@ public class Intake extends SubsystemBase {
     public static final double SPEED=-0.5;
     MotorEx leftIntake;
 
-    private enum state {
+    public enum STATE {
         ON,
         OFF,
         REVERSE,
@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
         RIGHT
     }
 
-    public state runState = state.OFF;
+    public STATE runState = STATE.OFF;
 
     public Intake(OpMode opMode){
         leftIntake = new MotorEx(opMode.hardwareMap, "leftIntake", Motor.GoBILDA.RPM_312);
@@ -31,7 +31,7 @@ public class Intake extends SubsystemBase {
     }
 //
     public void runToggle() {
-        if(runState == state.OFF) {
+        if(runState == STATE.OFF) {
             run();
         }
         else {
@@ -42,7 +42,7 @@ public class Intake extends SubsystemBase {
     public void run(){
         leftIntake.set(SPEED);
 //        rightIntake.set(SPEED);
-        runState = state.ON;
+        runState = STATE.ON;
     }
 
 //    public void reverse() {
@@ -75,8 +75,6 @@ public class Intake extends SubsystemBase {
     public void stop(){
         leftIntake.set(0.0);
 //        rightIntake.set(0.0);
-        runState = state.OFF;
+        runState = STATE.OFF;
     }
-}
-
 }

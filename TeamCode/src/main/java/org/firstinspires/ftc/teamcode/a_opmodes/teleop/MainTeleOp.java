@@ -100,7 +100,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.intake.stop();
     }
 
-    //hold down button
+    //hold down button for intake
     if(gamepadEx1.isDown(Button.B)){
       bot.intake.run();
     }
@@ -108,13 +108,50 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.intake.stop();
     }
 
-    //hold down button
+    //hold down button for carousel
     if(gamepadEx1.isDown(Button.Y)){
       carousel.set(0.5);
     }
     else{
       carousel.set(0);
     }
+
+    //clicking gate
+    if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.state.OFF){
+      bot.gate.closeGateFlap();
+    }
+    else if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.state.ON){
+      bot.gate.openGateFlap();
+    }
+
+    //hold down button
+    if(gamepadEx1.isDown(Button.A)){
+      bot.gate.closeGateFlap();
+    }
+    else{
+      bot.gate.openGateFlap();
+    }
+
+
+    //hold down trigger for outtake to go up
+    if(gamepadEx2.isDown(Trigger.LEFT_TRIGGER)){
+      bot.outtake.run();
+    }
+    else{
+      bot.outtake.stop();
+    }
+
+    //hold down trigger for outtake to go down
+    if(gamepadEx2.isDown(Trigger.RIGHT_TRIGGER)){
+      bot.outtake.down();
+    }
+    else{
+      bot.outtake.stop();
+    }
+
+
+
+
 
 
     /*//TODO: make control scheme
