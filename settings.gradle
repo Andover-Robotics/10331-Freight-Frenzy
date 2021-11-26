@@ -1,2 +1,2 @@
 include ':Tfod'
-include ':RobotCore', ':Blocks', ':RobotServer', ':FtcRobotController', ':FtcCommon', ':Hardware', ':Inspection', ':ARC-Core', ':TeamCode', ':OpenRC'
+include ':RobotCore', ':Blocks', ':RobotServer', ':FtcRobotController', ':FtcCommon', ':Hardware', ':Inspection', ':TeamCode', ':OpenRC'
