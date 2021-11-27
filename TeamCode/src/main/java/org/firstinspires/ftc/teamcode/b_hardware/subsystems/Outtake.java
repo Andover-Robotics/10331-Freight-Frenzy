@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Outtake extends SubsystemBase {
     public static final double SPEED = 0.25;
-    private MotorEx armMotor;
+    private MotorEx outtake;
 
     public enum State {
         ON,
@@ -23,9 +23,9 @@ public class Outtake extends SubsystemBase {
 
 
     public Outtake (OpMode opMode){
-        armMotor = new MotorEx(opMode.hardwareMap, "armMotor", Motor.GoBILDA.RPM_312);
-        armMotor.setRunMode(Motor.RunMode.RawPower);
-        armMotor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtake = new MotorEx(opMode.hardwareMap, "outtake", Motor.GoBILDA.RPM_312);
+        outtake.setRunMode(Motor.RunMode.RawPower);
+        outtake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
 //    public void gateToggle (){
@@ -39,19 +39,19 @@ public class Outtake extends SubsystemBase {
 
 
     public void run(){
-        armMotor.set(SPEED);
+        outtake.set(SPEED);
         runState = State.ON;
     }
 
 
     public void down(){
-        armMotor.set(-SPEED);
+        outtake.set(-SPEED);
         runState = State.ON;
     }
 
 
     public void stop(){
-        armMotor.set(0.0);
+        outtake.set(0.0);
         runState = State.OFF;
     }
 

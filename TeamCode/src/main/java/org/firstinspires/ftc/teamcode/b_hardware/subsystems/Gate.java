@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Gate extends SubsystemBase {
     private static final double OPEN = 0.0;
     private static final double CLOSE = 0.5;
-    private Servo gateFlap;
+    private Servo gate;
 
 
     public enum State {
@@ -23,9 +23,9 @@ public class Gate extends SubsystemBase {
 
 
     public Gate(OpMode opMode) {
-        gateFlap = opMode.hardwareMap.servo.get("gateFlap");
-        gateFlap.setDirection(Servo.Direction.REVERSE);
-        gateFlap.setPosition(OPEN);
+        gate = opMode.hardwareMap.servo.get("gate");
+        gate.setDirection(Servo.Direction.REVERSE);
+        gate.setPosition(OPEN);
     }
 
     public void gateToggle() {
@@ -38,14 +38,14 @@ public class Gate extends SubsystemBase {
 
 
     public void closeGateFlap() {
-        gateFlap.setDirection(Servo.Direction.FORWARD);
-        gateFlap.setPosition(CLOSE);
+        gate.setDirection(Servo.Direction.FORWARD);
+        gate.setPosition(CLOSE);
     }
 
 
     public void openGateFlap() {
-        gateFlap.setDirection(Servo.Direction.REVERSE);
-        gateFlap.setPosition(OPEN);
+        gate.setDirection(Servo.Direction.REVERSE);
+        gate.setPosition(OPEN);
     }
 
 }

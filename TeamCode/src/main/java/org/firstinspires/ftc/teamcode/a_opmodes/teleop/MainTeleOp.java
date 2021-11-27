@@ -88,10 +88,10 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //    }
 //
     //clicking intake
-    if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.State.OFF){
+    if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.OFF){
       bot.intake.run();
     }
-    else if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.State.ON){
+    else if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.ON){
       bot.intake.stop();
     }
 
@@ -102,6 +102,10 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     else{
       bot.intake.stop();
     }
+
+
+
+
 
     //hold down button for carousel
     if(gamepadEx1.isDown(Button.Y)){

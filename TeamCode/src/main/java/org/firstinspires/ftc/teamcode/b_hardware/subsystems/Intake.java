@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class Intake extends SubsystemBase {
     public static final double SPEED=-0.5;
     MotorEx leftIntake;
+    MotorEx rightIntake;
 
     public enum STATE {
         ON,
@@ -25,13 +26,13 @@ public class Intake extends SubsystemBase {
         leftIntake = new MotorEx(opMode.hardwareMap, "leftIntake", Motor.GoBILDA.RPM_312);
         leftIntake.setRunMode(Motor.RunMode.RawPower);
         leftIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
-//        rightIntake = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_312);
-//        rightIntake.setRunMode(Motor.RunMode.RawPower);
-//        rightIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightIntake = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_312);
+        rightIntake.setRunMode(Motor.RunMode.RawPower);
+        rightIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 //
     public void runToggle() {
-        if(runState == State.OFF) {
+        if(runState == STATE.OFF) {
             run();
         }
         else {
@@ -41,9 +42,10 @@ public class Intake extends SubsystemBase {
 
     public void run(){
         leftIntake.set(SPEED);
-//        rightIntake.set(SPEED);
-        runState = State.ON;
+        rightIntake.set(SPEED);
+        runState = STATE.ON;
     }
+
 
 //    public void reverse() {
 //        runState = state.REVERSE;
@@ -74,7 +76,7 @@ public class Intake extends SubsystemBase {
 
     public void stop(){
         leftIntake.set(0.0);
-//        rightIntake.set(0.0);
-        runState = State.OFF;
+        rightIntake.set(0.0);
+        runState = STATE.OFF;
     }
 }
