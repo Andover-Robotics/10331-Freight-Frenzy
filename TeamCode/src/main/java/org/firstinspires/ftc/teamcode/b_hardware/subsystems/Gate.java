@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Gate extends SubsystemBase {
     private static final double OPEN = 0.0;
     private static final double CLOSE = 0.5;
-    private Servo gate;
+    private Servo leftGate;
+    private Servo rightGate;
 
 
     public enum State {
@@ -23,29 +24,55 @@ public class Gate extends SubsystemBase {
 
 
     public Gate(OpMode opMode) {
-        gate = opMode.hardwareMap.servo.get("gate");
-        gate.setDirection(Servo.Direction.REVERSE);
-        gate.setPosition(OPEN);
+        leftGate = opMode.hardwareMap.servo.get("leftGate");
+        leftGate.setDirection(Servo.Direction.REVERSE);
+        leftGate.setPosition(OPEN);
+
+        rightGate = opMode.hardwareMap.servo.get("rightGate");
+        rightGate.setDirection(Servo.Direction.REVERSE);
+        rightGate.setPosition(OPEN);
     }
 
-    public void gateToggle() {
+    public void leftGateToggle() {
         if (runState == State.OFF) {
-            closeGateFlap();
+            closeLeftGateFlap();
         } else {
-            openGateFlap();
+            openLeftGateFlap();
+        }
+    }
+
+    public void rightGateToggle() {
+        if (runState == State.OFF) {
+            closeRightGateFlap();
+        } else {
+            openRightGateFlap();
         }
     }
 
 
-    public void closeGateFlap() {
-        gate.setDirection(Servo.Direction.FORWARD);
-        gate.setPosition(CLOSE);
+    public void closeLeftGateFlap() {
+        leftGate.setDirection(Servo.Direction.FORWARD);
+        leftGate.setPosition(CLOSE);
     }
 
 
-    public void openGateFlap() {
-        gate.setDirection(Servo.Direction.REVERSE);
-        gate.setPosition(OPEN);
+    public void openLeftGateFlap() {
+        leftGate.setDirection(Servo.Direction.REVERSE);
+        leftGate.setPosition(OPEN);
     }
+
+
+    public void closeRightGateFlap() {
+        rightGate.setDirection(Servo.Direction.FORWARD);
+        rightGate.setPosition(CLOSE);
+    }
+
+
+    public void openRightGateFlap() {
+        rightGate.setDirection(Servo.Direction.REVERSE);
+        rightGate.setPosition(OPEN);
+    }
+
+
 
 }

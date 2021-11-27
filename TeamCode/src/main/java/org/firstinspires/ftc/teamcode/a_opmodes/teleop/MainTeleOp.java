@@ -10,7 +10,6 @@ import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive.Mode;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.TimingScheduler;
@@ -87,49 +86,77 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //      bot.carousel.stop();
 //    }
 //
-    //clicking intake
-    if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.OFF){
-      bot.intake.run();
+    //clicking left intake
+    if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.OFF){
+      bot.intake.runLeft();
+      bot.gate.openLeftGateFlap();
     }
-    else if(gamepadEx1.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.ON){
+    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.ON){
       bot.intake.stop();
+      bot.gate.closeLeftGateFlap();
     }
 
     //hold down button for intake
-    if(gamepadEx1.isDown(Button.B)){
-      bot.intake.run();
+    if(gamepadEx2.isDown(Button.B)){
+      bot.intake.runLeft();
+      bot.gate.openLeftGateFlap();
     }
     else{
       bot.intake.stop();
+      bot.gate.closeLeftGateFlap();
     }
+
+
+    //clicking right intake
+    if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.OFF){
+      bot.intake.runRight();
+      bot.gate.openRightGateFlap();
+    }
+    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.ON){
+      bot.intake.stop();
+      bot.gate.closeRightGateFlap();
+    }
+
+    //hold down button for intake
+    if(gamepadEx2.isDown(Button.X)){
+      bot.intake.runRight();
+      bot.gate.openRightGateFlap();
+    }
+    else{
+      bot.intake.stop();
+      bot.gate.closeRightGateFlap();
+    }
+
 
 
 
 
 
     //hold down button for carousel
-    if(gamepadEx1.isDown(Button.Y)){
+    if(gamepadEx2.isDown(Button.Y)){
       carousel.set(0.5);
     }
     else{
       carousel.set(0);
     }
 
-    //clicking gate
-    if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.OFF){
-      bot.gate.closeGateFlap();
-    }
-    else if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.ON){
-      bot.gate.openGateFlap();
-    }
 
-    //hold down button
-    if(gamepadEx1.isDown(Button.A)){
-      bot.gate.closeGateFlap();
-    }
-    else{
-      bot.gate.openGateFlap();
-    }
+
+//    //clicking gate
+//    if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.OFF){
+//      bot.gate.closeGateFlap();
+//    }
+//    else if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.ON){
+//      bot.gate.openGateFlap();
+//    }
+//
+//    //hold down button
+//    if(gamepadEx1.isDown(Button.A)){
+//      bot.gate.closeGateFlap();
+//    }
+//    else{
+//      bot.gate.openGateFlap();
+//    }
 
 
     //hold down trigger for outtake to go up

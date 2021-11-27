@@ -31,6 +31,8 @@ public class Intake extends SubsystemBase {
         rightIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 //
+
+
     public void runToggle() {
         if(runState == STATE.OFF) {
             run();
@@ -46,33 +48,41 @@ public class Intake extends SubsystemBase {
         runState = STATE.ON;
     }
 
-
 //    public void reverse() {
 //        runState = state.REVERSE;
 //        leftIntake.set(-SPEED);
-////        rightIntake.set(-SPEED);
+//        rightIntake.set(-SPEED);
 //    }
 //
-//    public void runLeft(){
-////        rightIntake.set(0.0);
+
+//    public void reverseLeft() {
 //        leftIntake.set(SPEED);
-//        runState = state.LEFT;
+//    }
+//
+//    public void reverseRight() {
+//        rightIntake.set(-SPEED);
 //    }
 
-//    public void runRight(){
-//        leftIntake.set(0.0);
-////        rightIntake.set(SPEED);
-//        runState = state.RIGHT;
-//    }
+    public void runLeft(){
+        rightIntake.set(0.0);
+        leftIntake.set(SPEED);
+        runState = STATE.LEFT;
+    }
 
-//    public void switchIntake(){
-//        if (runState == state.LEFT) {
-//            runRight();
-//        }
-//        else {
-//            runLeft();
-//        }
-//    }
+    public void runRight(){
+        leftIntake.set(0.0);
+        rightIntake.set(SPEED);
+        runState = STATE.RIGHT;
+    }
+
+    public void switchIntake(){
+        if (runState == STATE.LEFT) {
+            runRight();
+        }
+        else {
+            runLeft();
+        }
+    }
 
     public void stop(){
         leftIntake.set(0.0);
