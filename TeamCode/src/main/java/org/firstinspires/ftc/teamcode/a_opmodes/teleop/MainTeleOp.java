@@ -143,6 +143,14 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
 
 
+    if(gamepadEx2.isDown(Button.A)){
+      carousel.set(-0.5);
+    }
+    else{
+      carousel.set(0);
+    }
+
+
 
 //    //clicking gate
 //    if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.OFF){
@@ -165,7 +173,11 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     if(gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER)>0.01){
       bot.outtake.run();
     }
-    else if (gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
+    else {
+      bot.outtake.stop();
+    }
+
+    if (gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
       bot.outtake.down();
     }
     else{

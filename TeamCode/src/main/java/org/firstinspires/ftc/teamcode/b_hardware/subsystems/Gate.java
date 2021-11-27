@@ -24,12 +24,10 @@ public class Gate extends SubsystemBase {
 
 
     public Gate(OpMode opMode) {
-        leftGate =opMode.hardwareMap.servo.get("leftGate");
-        leftGate.setDirection(Servo.Direction.REVERSE);
+        leftGate = opMode.hardwareMap.servo.get("leftGate");
         leftGate.setPosition(OPEN);
 
         rightGate = opMode.hardwareMap.servo.get("rightGate");
-        rightGate.setDirection(Servo.Direction.REVERSE);
         rightGate.setPosition(OPEN);
     }
 
@@ -51,14 +49,14 @@ public class Gate extends SubsystemBase {
 
 
     public void closeLeftGateFlap() {
-        leftGate.setDirection(Servo.Direction.FORWARD);
+        leftGate.setDirection(Servo.Direction.REVERSE);
         leftGate.setPosition(CLOSE);
         runState = State.OFF;
     }
 
 
     public void openLeftGateFlap() {
-        leftGate.setDirection(Servo.Direction.REVERSE);
+        leftGate.setDirection(Servo.Direction.FORWARD);
         leftGate.setPosition(OPEN);
         runState = State.LEFT;
 
@@ -66,14 +64,14 @@ public class Gate extends SubsystemBase {
 
 
     public void closeRightGateFlap() {
-        rightGate.setDirection(Servo.Direction.FORWARD);
+        rightGate.setDirection(Servo.Direction.REVERSE);
         rightGate.setPosition(CLOSE);
         runState = State.OFF;
     }
 
 
     public void openRightGateFlap() {
-        rightGate.setDirection(Servo.Direction.REVERSE);
+        rightGate.setDirection(Servo.Direction.FORWARD);
         rightGate.setPosition(OPEN);
         runState = State.RIGHT;
     }
