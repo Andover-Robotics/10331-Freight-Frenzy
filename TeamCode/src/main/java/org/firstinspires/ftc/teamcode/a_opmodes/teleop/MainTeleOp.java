@@ -48,6 +48,8 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
 
   private MotorEx carousel;
+  private MotorEx leftIntake;
+  private MotorEx rightIntake;
 
   void subInit() {
     //TODO: initialize subsystems not initialized in bot constructor
@@ -91,7 +93,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.intake.runLeft();
       bot.gate.openLeftGateFlap();
     }
-    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.ON){
+    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.LEFT){
       bot.intake.stop();
       bot.gate.closeLeftGateFlap();
     }
@@ -112,13 +114,13 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.intake.runRight();
       bot.gate.openRightGateFlap();
     }
-    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.ON){
+    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.RIGHT){
       bot.intake.stop();
       bot.gate.closeRightGateFlap();
     }
 
     //hold down button for intake
-    if(gamepadEx2.isDown(Button.X)){
+    if(gamepadEx2.isDown(Button.A)){
       bot.intake.runRight();
       bot.gate.openRightGateFlap();
     }
@@ -159,21 +161,17 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //    }
 
 
-    //hold down trigger for outtake to go up
+    //hold down triggers for outtake
     if(gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER)>0.01){
       bot.outtake.run();
     }
-    else{
-      bot.outtake.stop();
-    }
-
-    //hold down trigger for outtake to go down
-    if(gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
+    else if (gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
       bot.outtake.down();
     }
     else{
       bot.outtake.stop();
     }
+
 
 
 

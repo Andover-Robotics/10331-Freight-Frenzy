@@ -16,16 +16,12 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
 
     //TODO: reverse this
 
-    enum class AutoType {
-        PARK,
-        CAROUSEL,
-        TESTING
-    }
 
     sealed class AutoPathElement(open val name: String) {
-        class Path(override val name: String, val trajectory: Trajectory): AutoPathElement(name)
+        class Path(override val name: String, val trajectory: Trajectory) : AutoPathElement(name)
+
         //AutoPathElement.Path(name, trajectory)
-        class Action(override val name: String, val runner: () -> Unit): AutoPathElement(name)
+        class Action(override val name: String, val runner: () -> Unit) : AutoPathElement(name)
         //AutoPathElement.Action(name) {actions to take(include sleeps)}
     }
 
@@ -36,20 +32,20 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
     private fun Pose2d.reverse() = copy(heading = heading + PI)
     private var lastPosition: Pose2d = Pose2d()
 
-    fun makePath(name: String, trajectory: Trajectory): AutoPathElement.Path{
+    fun makePath(name: String, trajectory: Trajectory): AutoPathElement.Path {
         lastPosition = trajectory.end()
         return AutoPathElement.Path(name, trajectory)
         //Start of list of trajectories should not be lastPosition
     }
 
     //Probably won't be used, but here just in case
-    fun makeAction(name: String, action: () -> Unit): AutoPathElement.Action{
+    fun makeAction(name: String, action: () -> Unit): AutoPathElement.Action {
         return AutoPathElement.Action(name, action)
         //Redundant but conforms to naming scheme
     }
 
     // Kotlin 1.3 does not support inline instantiation of SAM interfaces
-    class MarkerCallbackImpl(val func: () -> Unit): MarkerCallback {
+    class MarkerCallbackImpl(val func: () -> Unit) : MarkerCallback {
         override fun onMarkerReached() = func()
     }
 
@@ -92,70 +88,70 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
     //TODO: Make Trajectories in trajectorySets
 
     //                                                                              ====================================================
-//    private val trajectorySets: Map<TemplateDetector.PipelineResult, List<AutoPathElement>> = mapOf(
-//            //use !! when accessing maps ie: dropSecondWobble[0]!!
-//            //example
-//            TemplateDetector.PipelineResult.LEFT to run{
-//                listOf(
-//                makePath("forward 4",
-//                    drive.trajectoryBuilder(startPose)
-//                        .lineToConstantHeading(Vector2d(0.0, 12.0))
-//                        .build())
-//                )
-//            },
-//            TemplateDetector.PipelineResult.RIGHT to run{
-//                listOf(
-//                    makePath("forward 8",
-//                        drive.trajectoryBuilder(startPose)
-//                            .lineToConstantHeading(Vector2d(0.0, 24.0))
-//                            .build()),
-//                    makePath("left 8",
-//                        drive.trajectoryBuilder(lastPosition)
-//                            .lineToConstantHeading(Vector2d(24.0, 24.0))
-//                            .build()),
-//                    makePath("back 8",
-//                        drive.trajectoryBuilder(lastPosition)
-//                            .lineToConstantHeading(Vector2d(24.0, 0.0))
-//                            .build()),
-//                    makePath("right 8",
-//                        drive.trajectoryBuilder(lastPosition)
-//                            .lineToConstantHeading(startPose.vec())
-//                            .build()),
-//                    makeAction("wait for 3 seconds"){
-//                        Thread.sleep(3000)
-//                    },
-//                    makePath("spline forward",
-//                        drive.trajectoryBuilder(lastPosition)
-//                            .splineTo(Vector2d(24.0, 24.0), 0.0)
-//                            .build()),
-//                    makePath("spline backward",
-//                        drive.trajectoryBuilder(lastPosition, 180.0)
-//                            .splineTo(startPose.vec(), 180.0)
-//                            .build()),
-//                    makeAction("wait for 3 seconds"){
-//                        Thread.sleep(3000)
-//                    },
-//                    makePath("forward 8",
-//                        drive.trajectoryBuilder(startPose)
-//                            .lineToLinearHeading(Pose2d(0.0, 24.0, 90.toRadians))
-//                            .build()),
-//                    makePath("left 8",
-//                        drive.trajectoryBuilder(lastPosition)
-//                            .lineToLinearHeading(Pose2d(24.0, 24.0, PI))
-//                            .build()),
-//                    makePath("back 8",
-//                        drive.trajectoryBuilder(lastPosition)
-//                            .lineToLinearHeading(Pose2d(24.0, 0.0, -90.toRadians))
-//                            .build()),
-//                    makePath("right 8",
-//                        drive.trajectoryBuilder(lastPosition)
-//                            .lineToLinearHeading(startPose)
-//                            .build())
+    private val trajectorySets: Map<TemplateDetector.PipelineResult, List<AutoPathElement>> = mapOf(
+            //use !! when accessing maps ie: dropSecondWobble[0]!!
+            //example
+            TemplateDetector.PipelineResult.LEFT to run {
+                listOf(
+                        makePath("forward 4",
+                                drive.trajectoryBuilder(startPose)
+                                        .lineToConstantHeading(Vector2d(0.0, 12.0))
+                                        .build())
+                )
+            },
+            TemplateDetector.PipelineResult.RIGHT to run {
+                listOf(
+                        makePath("forward 8",
+                                drive.trajectoryBuilder(startPose)
+                                        .lineToConstantHeading(Vector2d(0.0, 24.0))
+                                        .build()),
+                        makePath("left 8",
+                                drive.trajectoryBuilder(lastPosition)
+                                        .lineToConstantHeading(Vector2d(24.0, 24.0))
+                                        .build()),
+                        makePath("back 8",
+                                drive.trajectoryBuilder(lastPosition)
+                                        .lineToConstantHeading(Vector2d(24.0, 0.0))
+                                        .build()),
+                        makePath("right 8",
+                                drive.trajectoryBuilder(lastPosition)
+                                        .lineToConstantHeading(startPose.vec())
+                                        .build()),
+                        makeAction("wait for 3 seconds") {
+                            Thread.sleep(3000)
+                        },
+                        makePath("spline forward",
+                                drive.trajectoryBuilder(lastPosition)
+                                        .splineTo(Vector2d(24.0, 24.0), 0.0)
+                                        .build()),
+                        makePath("spline backward",
+                                drive.trajectoryBuilder(lastPosition, 180.0)
+                                        .splineTo(startPose.vec(), 180.0)
+                                        .build()),
+                        makeAction("wait for 3 seconds") {
+                            Thread.sleep(3000)
+                        },
+                        makePath("forward 8",
+                                drive.trajectoryBuilder(startPose)
+                                        .lineToLinearHeading(Pose2d(0.0, 24.0, 90.toRadians))
+                                        .build()),
+                        makePath("left 8",
+                                drive.trajectoryBuilder(lastPosition)
+                                        .lineToLinearHeading(Pose2d(24.0, 24.0, PI))
+                                        .build()),
+                        makePath("back 8",
+                                drive.trajectoryBuilder(lastPosition)
+                                        .lineToLinearHeading(Pose2d(24.0, 0.0, -90.toRadians))
+                                        .build()),
+                        makePath("right 8",
+                                drive.trajectoryBuilder(lastPosition)
+                                        .lineToLinearHeading(startPose)
+                                        .build())
+
+                )
+            }
 //
-//                )
-//            }
-////
-//    )
+    )
 
 
     fun park(result: TemplateDetector.PipelineResult): List<AutoPathElement> {
@@ -167,21 +163,13 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
                                     .build())
             )
         }
-    }
 
 
-    private val trajectorySets: Map<AutoType, Map<TemplateDetector.PipelineResult, List<AutoPathElement>>> = mapOf(
-            AutoType.PARK to mapOf(
-                    TemplateDetector.PipelineResult.LEFT to park(TemplateDetector.PipelineResult.LEFT),
-                    TemplateDetector.PipelineResult.RIGHT to park(TemplateDetector.PipelineResult.RIGHT),
-                    TemplateDetector.PipelineResult.MIDDLE to park(TemplateDetector.PipelineResult.MIDDLE)
-            )
-    )
 
 
-    fun getTrajectories(b: AutoType, a: TemplateDetector.PipelineResult): List<AutoPathElement>{
-        return trajectorySets[b]!![a]!!
-    }
+        fun getTrajectories(a: TemplateDetector.PipelineResult): List<AutoPathElement> {
+            return trajectorySets[a]!!
+        }
 
 
-}
+    }}

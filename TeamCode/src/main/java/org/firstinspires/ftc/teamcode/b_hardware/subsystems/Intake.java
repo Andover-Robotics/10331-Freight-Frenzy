@@ -26,27 +26,28 @@ public class Intake extends SubsystemBase {
         leftIntake = new MotorEx(opMode.hardwareMap, "leftIntake", Motor.GoBILDA.RPM_312);
         leftIntake.setRunMode(Motor.RunMode.RawPower);
         leftIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         rightIntake = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_312);
         rightIntake.setRunMode(Motor.RunMode.RawPower);
         rightIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 //
 
+//
+//    public void runToggle() {
+//        if(runState == STATE.OFF) {
+//            run();
+//        }
+//        else {
+//            stop();
+//        }
+//    }
 
-    public void runToggle() {
-        if(runState == STATE.OFF) {
-            run();
-        }
-        else {
-            stop();
-        }
-    }
-
-    public void run(){
-        leftIntake.set(SPEED);
-        rightIntake.set(SPEED);
-        runState = STATE.ON;
-    }
+//    public void run(){
+//        leftIntake.set(SPEED);
+//        rightIntake.set(SPEED);
+//        runState = STATE.ON;
+//    }
 
 //    public void reverse() {
 //        runState = state.REVERSE;

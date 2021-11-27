@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.a_opmodes.auto;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 
 import org.firstinspires.ftc.teamcode.a_opmodes.auto.AutoPaths.AutoPathElement;
 import org.firstinspires.ftc.teamcode.a_opmodes.auto.AutoPaths.AutoPathElement.Action;
@@ -72,7 +70,8 @@ public class MainAutonomous extends LinearOpMode {//TODO: add reversing for comp
 //      detected = PipelineResult.LEFT;
 
     detected = PipelineResult.RIGHT;
-    List<AutoPathElement> trajectories = paths.getTrajectories(detected);
+   // List<AutoPathElement> trajectories = paths.getTrajectories (detected);
+    List<AutoPathElement> trajectories = null;
 //    pipeline.close();
 
 
@@ -88,9 +87,9 @@ public class MainAutonomous extends LinearOpMode {//TODO: add reversing for comp
       telemetry.addData("executing path element", item.getName());
       telemetry.update();
 
-      if (item instanceof AutoPathElement.Path) {
+      if (item instanceof Path) {
         bot.roadRunner.followTrajectory(((Path) item).getTrajectory());
-      } else if (item instanceof AutoPathElement.Action && performActions) {
+      } else if (item instanceof Action && performActions) {
         ((Action) item).getRunner().invoke();
       }
 
@@ -98,4 +97,6 @@ public class MainAutonomous extends LinearOpMode {//TODO: add reversing for comp
         return;
     }
   }
+
+
 }

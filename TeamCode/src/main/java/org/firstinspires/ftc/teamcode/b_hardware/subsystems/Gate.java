@@ -24,7 +24,7 @@ public class Gate extends SubsystemBase {
 
 
     public Gate(OpMode opMode) {
-        leftGate = opMode.hardwareMap.servo.get("leftGate");
+        leftGate =opMode.hardwareMap.servo.get("leftGate");
         leftGate.setDirection(Servo.Direction.REVERSE);
         leftGate.setPosition(OPEN);
 
@@ -33,44 +33,49 @@ public class Gate extends SubsystemBase {
         rightGate.setPosition(OPEN);
     }
 
-    public void leftGateToggle() {
-        if (runState == State.OFF) {
-            closeLeftGateFlap();
-        } else {
-            openLeftGateFlap();
-        }
-    }
-
-    public void rightGateToggle() {
-        if (runState == State.OFF) {
-            closeRightGateFlap();
-        } else {
-            openRightGateFlap();
-        }
-    }
+//    public void leftGateToggle() {
+//        if (runState == State.OFF) {
+//            closeLeftGateFlap();
+//        } else {
+//            openLeftGateFlap();
+//        }
+//    }
+//
+//    public void rightGateToggle() {
+//        if (runState == State.OFF) {
+//            closeRightGateFlap();
+//        } else {
+//            openRightGateFlap();
+//        }
+//    }
 
 
     public void closeLeftGateFlap() {
         leftGate.setDirection(Servo.Direction.FORWARD);
         leftGate.setPosition(CLOSE);
+        runState = State.OFF;
     }
 
 
     public void openLeftGateFlap() {
         leftGate.setDirection(Servo.Direction.REVERSE);
         leftGate.setPosition(OPEN);
+        runState = State.LEFT;
+
     }
 
 
     public void closeRightGateFlap() {
         rightGate.setDirection(Servo.Direction.FORWARD);
         rightGate.setPosition(CLOSE);
+        runState = State.OFF;
     }
 
 
     public void openRightGateFlap() {
         rightGate.setDirection(Servo.Direction.REVERSE);
         rightGate.setPosition(OPEN);
+        runState = State.RIGHT;
     }
 
 
