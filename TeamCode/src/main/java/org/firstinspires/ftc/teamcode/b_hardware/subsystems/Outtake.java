@@ -39,9 +39,10 @@ public class Outtake extends SubsystemBase {
 
 
     public void run(){
-        outtake.set(SPEED*2);
+        outtake.set(SPEED*4);
         runState = State.ON;
     }
+
 
 
     public void down(){

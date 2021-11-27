@@ -89,11 +89,11 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //    }
 //
     //clicking left intake
-    if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.OFF){
+    if(gamepadEx2.stateJustChanged(Button.B) && bot.intake.runState == Intake.STATE.OFF){
       bot.intake.runLeft();
       bot.gate.openLeftGateFlap();
     }
-    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.LEFT){
+    else if(gamepadEx2.stateJustChanged(Button.B) && bot.intake.runState == Intake.STATE.LEFT){
       bot.intake.stop();
       bot.gate.closeLeftGateFlap();
     }
@@ -110,11 +110,11 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
 
     //clicking right intake
-    if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.OFF){
+    if(gamepadEx2.stateJustChanged(Button.A) && bot.intake.runState == Intake.STATE.OFF){
       bot.intake.runRight();
       bot.gate.openRightGateFlap();
     }
-    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.RIGHT){
+    else if(gamepadEx2.stateJustChanged(Button.A) && bot.intake.runState == Intake.STATE.RIGHT){
       bot.intake.stop();
       bot.gate.closeRightGateFlap();
     }
