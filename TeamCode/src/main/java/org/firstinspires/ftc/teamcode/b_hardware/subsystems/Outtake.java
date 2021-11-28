@@ -25,6 +25,7 @@ public class Outtake extends SubsystemBase {
     public Outtake (OpMode opMode){
         outtake = new MotorEx(opMode.hardwareMap, "outtake", Motor.GoBILDA.RPM_312);
         outtake.setRunMode(Motor.RunMode.RawPower);
+        outtake.motor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
 //    public void gateToggle (){
@@ -37,8 +38,7 @@ public class Outtake extends SubsystemBase {
 //    }
 
 
-    public void run(){
-        outtake.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+    public void up(){
         outtake.set(SPEED);
         runState = State.ON;
     }
@@ -46,8 +46,7 @@ public class Outtake extends SubsystemBase {
 
 
     public void down(){
-        outtake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        outtake.set(SPEED);
+        outtake.set(-SPEED);
         runState = State.ON;
     }
 
