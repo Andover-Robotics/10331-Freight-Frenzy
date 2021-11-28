@@ -17,6 +17,7 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
     //TODO: reverse this
 
 
+
     sealed class AutoPathElement(open val name: String) {
         class Path(override val name: String, val trajectory: Trajectory) : AutoPathElement(name)
 
@@ -59,7 +60,11 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
 
     //TODO: insert action vals here
 
-    //                                                                  =======================================================
+//    private val runCarousel = AutoPathElement.Action("Run carousel motor") {
+//        Thread.sleep(2000)
+//        bot.carousel.stop()
+//    }
+//    //                                                                  =======================================================
 
     //example
     //private val shootRings = AutoPathElement.Action("Shoot 3 rings") {

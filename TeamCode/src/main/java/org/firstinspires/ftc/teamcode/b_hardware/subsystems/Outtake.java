@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Outtake extends SubsystemBase {
-    public static final double SPEED = 0.25;
+    public static final double SPEED = 0.5;
     private MotorEx outtake;
 
     public enum State {

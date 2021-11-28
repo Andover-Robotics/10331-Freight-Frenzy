@@ -48,8 +48,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
 
   private MotorEx carousel;
-  private MotorEx leftIntake;
-  private MotorEx rightIntake;
+
 
   void subInit() {
     //TODO: initialize subsystems not initialized in bot constructor
@@ -65,6 +64,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     cycle = 1.0/(time-prevRead);
     prevRead = time;
     timingScheduler.run();
+    long profileStart = System.currentTimeMillis();
 
     //Movement =================================================================================================
     //TODO: change depending on mode :)
@@ -98,6 +98,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.gate.closeLeftGateFlap();
     }
 
+
     //hold down button for intake
     if(gamepadEx2.isDown(Button.B)){
       bot.intake.runLeft();
@@ -107,6 +108,9 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.intake.stop();
       bot.gate.closeLeftGateFlap();
     }
+
+    telemetry.addData("left intake update", System.currentTimeMillis() - profileStart);
+
 
 
     //clicking right intake
@@ -129,6 +133,8 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.gate.closeRightGateFlap();
     }
 
+    telemetry.addData("right intake update", System.currentTimeMillis() - profileStart);
+
 
 
 
@@ -142,13 +148,15 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       carousel.set(0);
     }
 
+    telemetry.addData("carousel update", System.currentTimeMillis() - profileStart);
 
-    if(gamepadEx2.isDown(Button.A)){
-      carousel.set(-0.5);
-    }
-    else{
-      carousel.set(0);
-    }
+//
+//    if(gamepadEx2.isDown(Button.A)){
+//      carousel.set(-0.5);
+//    }
+//    else{
+//      carousel.set(0);
+//    }
 
 
 
@@ -177,6 +185,9 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.outtake.stop();
     }
 
+    telemetry.addData("outtake up update", System.currentTimeMillis() - profileStart);
+
+
     if (gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
       bot.outtake.down();
     }
@@ -184,6 +195,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.outtake.stop();
     }
 
+    telemetry.addData("outtake down update", System.currentTimeMillis() - profileStart);
 
 
 
@@ -230,6 +242,9 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
     // TODO organize this test code
     updateLocalization();
+
+    telemetry.addData("telemetry things update", System.currentTimeMillis() - profileStart);
+
     telemetry.addData("percent", percent);
     telemetry.addData("part", part);
     telemetry.addData("cycle", cycle);
