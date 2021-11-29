@@ -4,8 +4,6 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger;
 import com.arcrobotics.ftclib.geometry.Vector2d;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -47,15 +45,12 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   //If there is a module-specific var, put it in the module class ie slideStage goes in the slides module
 
 
-  private MotorEx carousel;
+
 
 
   void subInit() {
     //TODO: initialize subsystems not initialized in bot constructor
     timingScheduler = new TimingScheduler(this);
-    carousel = new MotorEx(hardwareMap, "carousel");
-    carousel.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-    carousel.set(0);
   }
 
   @Override
@@ -142,20 +137,20 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
     //hold down button for carousel
     if(gamepadEx2.isDown(Button.Y)){
-      carousel.set(0.5);
+      bot.carousel.run();
     }
     else{
-      carousel.set(0);
+      bot.carousel.stop();
     }
 
 //    telemetry.addData("carousel update", System.currentTimeMillis() - profileStart);
 
 //
     if(gamepadEx2.isDown(Button.A)){
-      carousel.set(-0.5);
+      bot.carousel.reverse();
     }
     else{
-      carousel.set(0);
+      bot.carousel.stop();
     }
 
 
