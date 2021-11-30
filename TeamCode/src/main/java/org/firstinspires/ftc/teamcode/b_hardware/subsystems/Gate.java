@@ -26,11 +26,11 @@ public class Gate extends SubsystemBase {
     public Gate(OpMode opMode) {
         leftGate = opMode.hardwareMap.servo.get("leftGate");
         leftGate.setPosition(0.0);
-        leftGate.setDirection(Servo.Direction.FORWARD);
+        leftGate.setDirection(Servo.Direction.REVERSE);
 
         rightGate = opMode.hardwareMap.servo.get("rightGate");
         rightGate.setPosition(0.0);
-        rightGate.setDirection(Servo.Direction.REVERSE);
+        rightGate.setDirection(Servo.Direction.FORWARD);
     }
 
 //    public void leftGateToggle() {

@@ -99,8 +99,6 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     //hold down button for intake
     if(gamepadEx2.isDown(Button.B)){
       bot.intake.runLeft();
-      bot.gate.openLeftGateFlap();
-      bot.gate.takeInRightGateFlap();
     }
     else{
       bot.intake.stop();
@@ -127,8 +125,6 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     //hold down button for intake
     if(gamepadEx2.isDown(Button.X)){
       bot.intake.runRight();
-      bot.gate.openRightGateFlap();
-      bot.gate.takeInLeftGateFlap();
     }
     else{
       bot.intake.stop();
