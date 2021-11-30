@@ -26,11 +26,11 @@ public class Gate extends SubsystemBase {
     public Gate(OpMode opMode) {
         leftGate = opMode.hardwareMap.servo.get("leftGate");
         leftGate.setPosition(0.0);
-        leftGate.setDirection(Servo.Direction.REVERSE);
+        leftGate.setDirection(Servo.Direction.FORWARD);
 
         rightGate = opMode.hardwareMap.servo.get("rightGate");
         rightGate.setPosition(0.0);
-        rightGate.setDirection(Servo.Direction.FORWARD);
+        rightGate.setDirection(Servo.Direction.REVERSE);
     }
 
 //    public void leftGateToggle() {
@@ -51,14 +51,14 @@ public class Gate extends SubsystemBase {
 
 
     public void closeLeftGateFlap() {
-        leftGate.setDirection(Servo.Direction.REVERSE);
+//        leftGate.setDirection(Servo.Direction.REVERSE);
         leftGate.setPosition(OPENCLOSE);
         runState = State.OFF;
     }
 
 
     public void openLeftGateFlap() {
-        leftGate.setDirection(Servo.Direction.FORWARD);
+//        leftGate.setDirection(Servo.Direction.FORWARD);
         leftGate.setPosition(OPENCLOSE);
         runState = State.LEFT;
 
@@ -66,34 +66,34 @@ public class Gate extends SubsystemBase {
 
 
     public void closeRightGateFlap() {
-        rightGate.setDirection(Servo.Direction.FORWARD);
+//        rightGate.setDirection(Servo.Direction.FORWARD);
         rightGate.setPosition(OPENCLOSE);
         runState = State.OFF;
     }
 
 
     public void openRightGateFlap() {
-        rightGate.setDirection(Servo.Direction.REVERSE);
+//        rightGate.setDirection(Servo.Direction.REVERSE);
         rightGate.setPosition(OPENCLOSE);
         runState = State.RIGHT;
     }
 
     public void takeInRightGateFlap() {
-        rightGate.setDirection(Servo.Direction.REVERSE);
+//        rightGate.setDirection(Servo.Direction.REVERSE);
         rightGate.setPosition(TAKEIN);
         runState = State.LEFT;
 
     }
 
     public void takeInLeftGateFlap() {
-        leftGate.setDirection(Servo.Direction.FORWARD);
-        leftGate.setPosition(TAKEIN);
+//        leftGate.setDirection(Servo.Direction.FORWARD);
+        leftGate.setPosition(-TAKEIN);
         runState = State.RIGHT;
 
     }
 
     public void closeTakeInLeft(){
-        leftGate.setDirection(Servo.Direction.REVERSE);
+//        leftGate.setDirection(Servo.Direction.REVERSE);
         leftGate.setPosition(TAKEIN);
         runState = State.LEFT;
     }

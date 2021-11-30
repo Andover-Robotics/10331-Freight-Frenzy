@@ -97,14 +97,14 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
 
     //hold down button for intake
-    if(gamepadEx2.isDown(Button.B)){
-      bot.intake.runLeft();
-    }
-    else{
-      bot.intake.stop();
-      bot.gate.closeLeftGateFlap();
-      bot.gate.closeTakeInRight();
-    }
+//    if(gamepadEx2.isDown(Button.B)){
+//      bot.intake.runLeft();
+//    }
+//    else{
+//      bot.intake.stop();
+//      bot.gate.closeLeftGateFlap();
+//      bot.gate.closeTakeInRight();
+//    }
 
 //    telemetry.addData("left intake update", System.currentTimeMillis() - profileStart);
 
@@ -123,14 +123,14 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
 
     //hold down button for intake
-    if(gamepadEx2.isDown(Button.X)){
-      bot.intake.runRight();
-    }
-    else{
-      bot.intake.stop();
-      bot.gate.closeRightGateFlap();
-      bot.gate.closeTakeInLeft();
-    }
+//    if(gamepadEx2.isDown(Button.X)){
+//      bot.intake.runRight();
+//    }
+//    else{
+//      bot.intake.stop();
+//      bot.gate.closeRightGateFlap();
+//      bot.gate.closeTakeInLeft();
+//    }
 
 //    telemetry.addData("right intake update", System.currentTimeMillis() - profileStart);
 
