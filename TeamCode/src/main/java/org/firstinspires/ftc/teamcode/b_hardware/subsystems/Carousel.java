@@ -5,7 +5,6 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 public class Carousel {
-    public static final double SPEED = 0.35;
     private MotorEx carousel;
 
     public Carousel (OpMode opMode) {
@@ -15,12 +14,12 @@ public class Carousel {
     }
 
     public void run (){
-        carousel.set(SPEED);
+        carousel.set(0.25);
 
     }
 
     public void reverse (){
-       carousel.set(-SPEED);
+       carousel.set(-0.25);
     }
 
 
