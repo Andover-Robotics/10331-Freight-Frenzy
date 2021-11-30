@@ -76,14 +76,14 @@ public class Intake extends SubsystemBase {
         runState = STATE.RIGHT;
     }
 
-    public void switchIntake(){
-        if (runState == STATE.LEFT) {
-            runRight();
-        }
-        else {
-            runLeft();
-        }
-    }
+//    public void switchIntake(){
+//        if (runState == STATE.LEFT) {
+//            runRight();
+//        }
+//        else {
+//            runLeft();
+//        }
+//    }
 
     public void stop(){
         leftIntake.set(0.0);
