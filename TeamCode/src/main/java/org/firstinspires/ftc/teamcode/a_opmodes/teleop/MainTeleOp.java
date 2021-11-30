@@ -91,20 +91,20 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
     else if(gamepadEx2.stateJustChanged(Button.B) && bot.intake.runState == Intake.STATE.LEFT){
       bot.intake.stop();
-      bot.gate.closeLeft();
-      bot.gate.closeTakeInRight();
+//      bot.gate.closeLeft();
+//      bot.gate.closeRight();
     }
 
 
     //hold down button for intake
-//    if(gamepadEx2.isDown(Button.B)){
-//      bot.intake.runLeft();
-//    }
-//    else{
-//      bot.intake.stop();
-//      bot.gate.closeLeftGateFlap();
-//      bot.gate.closeTakeInRight();
-//    }
+    if(gamepadEx2.isDown(Button.B)){
+      bot.intake.runLeft();
+    }
+    else{
+      bot.intake.stop();
+      bot.gate.closeLeft();
+      bot.gate.closeRight();
+    }
 
 //    telemetry.addData("left intake update", System.currentTimeMillis() - profileStart);
 
@@ -118,19 +118,19 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
     else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.RIGHT){
       bot.intake.stop();
-      bot.gate.closeRight();
-      bot.gate.closeTakeInLeft();
+//      bot.gate.closeRight();
+//      bot.gate.closeLeft();
     }
 
-    //hold down button for intake
-//    if(gamepadEx2.isDown(Button.X)){
-//      bot.intake.runRight();
-//    }
-//    else{
-//      bot.intake.stop();
-//      bot.gate.closeRightGateFlap();
-//      bot.gate.closeTakeInLeft();
-//    }
+//    hold down button for intake
+    if(gamepadEx2.isDown(Button.X)){
+      bot.intake.runRight();
+    }
+    else{
+      bot.intake.stop();
+      bot.gate.closeRight();
+      bot.gate.closeLeft();
+    }
 
 //    telemetry.addData("right intake update", System.currentTimeMillis() - profileStart);
 

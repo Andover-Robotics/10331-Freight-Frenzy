@@ -53,13 +53,5 @@ public class Gate extends SubsystemBase {
         leftGate.setPosition(TAKEIN);
     }
 
-    public void closeTakeInLeft(){
-        leftGate.setPosition(0.0);
-    }
-
-
-    public void closeTakeInRight(){
-        rightGate.setPosition(0.0);
-    }
 
 }
