@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Gate extends SubsystemBase {
-    private static final double OPENCLOSE = 0.25;
-    private static final double TAKEIN = 0.05;
     private Servo leftGate;
     private Servo rightGate;
 
@@ -16,41 +14,41 @@ public class Gate extends SubsystemBase {
 
     public Gate(OpMode opMode) {
         leftGate = opMode.hardwareMap.servo.get("leftGate");
-        leftGate.setPosition(0.0);
-        leftGate.setDirection(Servo.Direction.FORWARD);
+        leftGate.setPosition(0.75);
+        leftGate.setDirection(Servo.Direction.REVERSE);
 
         rightGate = opMode.hardwareMap.servo.get("rightGate");
-        rightGate.setPosition(0.0);
-        rightGate.setDirection(Servo.Direction.REVERSE);
+        rightGate.setPosition(0.25);
+        rightGate.setDirection(Servo.Direction.FORWARD);
     }
 
 
 
     public void closeLeft() {
-        leftGate.setPosition(0.0);
+        leftGate.setPosition(0.75);
     }
 
 
     public void openLeft() {
-        leftGate.setPosition(OPENCLOSE);
+        leftGate.setPosition(0.44);
     }
 
 
     public void closeRight() {
-        rightGate.setPosition(0.0);
+        rightGate.setPosition(0.25);
     }
 
 
     public void openRight() {
-        rightGate.setPosition(OPENCLOSE);
+        rightGate.setPosition(0.55);
     }
 
     public void takeInRight() {
-        rightGate.setPosition(TAKEIN);
+        rightGate.setPosition(0.3);
     }
 
     public void takeInLeft() {
-        leftGate.setPosition(TAKEIN);
+        leftGate.setPosition(0.7);
     }
 
 
