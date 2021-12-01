@@ -14,5 +14,6 @@ public class SwapAlliance extends LinearOpMode {
         Bot.instance = null;
         telemetry.addLine(GlobalConfig.alliance + " is now sus");
         telemetry.update();
+        waitForStart();
     }
 }

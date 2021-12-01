@@ -15,11 +15,7 @@ import kotlin.math.roundToInt
 class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths functionality to this
 
     //TODO: reverse this
-    enum class AutoType{
-        PARK,
-        CAROUSEL,
-        TESTING
-    }
+
 
 
     sealed class AutoPathElement(open val name: String) {
@@ -64,11 +60,11 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
 
     //TODO: insert action vals here
 
-    private val runCarousel = AutoPathElement.Action("Run carousel motor") {
-        Thread.sleep(2000)
-        bot.carousel.stop()
-    }
-  //                                                                  =======================================================
+//    private val runCarousel = AutoPathElement.Action("Run carousel motor") {
+//        Thread.sleep(2000)
+//        bot.carousel.stop()
+//    }
+//    //                                                                  =======================================================
 
     //example
     //private val shootRings = AutoPathElement.Action("Shoot 3 rings") {

@@ -4,11 +4,11 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger;
 import com.arcrobotics.ftclib.geometry.Vector2d;
-import com.arcrobotics.ftclib.util.Direction;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.b_hardware.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive.Mode;
 import org.firstinspires.ftc.teamcode.d_util.utilclasses.TimingScheduler;
 
@@ -20,7 +20,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   private boolean centricity = false;
   private boolean isManual = true;
   private int percent = 1, part = 0;
-  private boolean isLeftIntakeRunning = false;
+  private boolean clawIsOpen = false;
 
 
 
@@ -45,33 +45,36 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   //If there is a module-specific var, put it in the module class ie slideStage goes in the slides module
 
 
-
+  private MotorEx carousel;
 
 
   void subInit() {
     //TODO: initialize subsystems not initialized in bot constructor
     timingScheduler = new TimingScheduler(this);
+    carousel = new MotorEx(hardwareMap, "carousel");
+    carousel.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+    carousel.set(0);
   }
 
   @Override
   public void subLoop() {
     //update stuff=================================================================================================
-    cycle = 1.0/(time-prevRead);
+    cycle = 1.0 / (time - prevRead);
     prevRead = time;
     timingScheduler.run();
-//    long profileStart = System.currentTimeMillis();
+    long profileStart = System.currentTimeMillis();
 
     //Movement =================================================================================================
     //TODO: change depending on mode :)
     driveSpeed = 1 - 0.35 * (triggerSignal(Trigger.LEFT_TRIGGER) + triggerSignal(Trigger.RIGHT_TRIGGER));
 
-    if(justPressed(Button.BACK)){
+    if (justPressed(Button.BACK)) {
       isManual = !isManual;
     }
 
-    if(isManual) {
+    if (isManual) {
       drive();
-    }else{
+    } else {
       followPath();
     }
 
@@ -83,75 +86,78 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //      bot.carousel.stop();
 //    }
 //
+
+
+    /*
     //clicking left intake
     if(gamepadEx2.stateJustChanged(Button.B) && bot.intake.runState == Intake.STATE.OFF){
       bot.intake.runLeft();
-      bot.gate.openLeft();
-      bot.gate.takeInRight();
+      bot.gate.openLeftGateFlap();
     }
     else if(gamepadEx2.stateJustChanged(Button.B) && bot.intake.runState == Intake.STATE.LEFT){
       bot.intake.stop();
-//      bot.gate.closeLeft();
-//      bot.gate.closeRight();
+      bot.gate.closeLeftGateFlap();
     }
 
 
     //hold down button for intake
     if(gamepadEx2.isDown(Button.B)){
       bot.intake.runLeft();
+      bot.gate.openLeftGateFlap();
     }
     else{
       bot.intake.stop();
-      bot.gate.closeLeft();
-      bot.gate.closeRight();
+      bot.gate.closeLeftGateFlap();
     }
 
-//    telemetry.addData("left intake update", System.currentTimeMillis() - profileStart);
+    telemetry.addData("left intake update", System.currentTimeMillis() - profileStart);
 
 
 
     //clicking right intake
-//    if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.OFF){
-//      bot.intake.runRight();
-//      bot.gate.openRight();
-//      bot.gate.takeInLeft();
-//    }
-//    else if(gamepadEx2.stateJustChanged(Button.X) && bot.intake.runState == Intake.STATE.RIGHT){
-//      bot.intake.stop();
-////      bot.gate.closeRight();
-////      bot.gate.closeLeft();
-//    }
-
-//    hold down button for intake
-    if(gamepadEx2.isDown(Button.X)){
-      bot.gate.openRight();
-      bot.gate.takeInLeft();
+    if(gamepadEx2.stateJustChanged(Button.A) && bot.intake.runState == Intake.STATE.OFF){
       bot.intake.runRight();
+      bot.gate.openRightGateFlap();
+    }
+    else if(gamepadEx2.stateJustChanged(Button.A) && bot.intake.runState == Intake.STATE.RIGHT){
+      bot.intake.stop();
+      bot.gate.closeRightGateFlap();
+    }
+
+    //hold down button for intake
+    if(gamepadEx2.isDown(Button.A)){
+      bot.intake.runRight();
+      bot.gate.openRightGateFlap();
     }
     else{
       bot.intake.stop();
-      bot.gate.closeRight();
-      bot.gate.closeLeft();
+      bot.gate.closeRightGateFlap();
     }
 
-//    telemetry.addData("right intake update", System.currentTimeMillis() - profileStart);
+    telemetry.addData("right intake update", System.currentTimeMillis() - profileStart);
+
+
+
+
+
+
     //hold down button for carousel
     if(gamepadEx2.isDown(Button.Y)){
-      bot.carousel.run();
+      carousel.set(0.5);
     }
     else{
-      bot.carousel.stop();
+      carousel.set(0);
     }
 
-//    telemetry.addData("carousel update", System.currentTimeMillis() - profileStart);
+    telemetry.addData("carousel update", System.currentTimeMillis() - profileStart);
 
 //
-    if(gamepadEx2.isDown(Button.A)){
-      bot.carousel.reverse();
-    }
-    else{
-      bot.carousel.stop();
-    }
+//    if(gamepadEx2.isDown(Button.A)){
+//      carousel.set(-0.5);
+//    }
+//    else{
+//      carousel.set(0);
+//    }
 
 
 
@@ -171,15 +177,16 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //      bot.gate.openGateFlap();
 //    }
 
+
     //hold down triggers for outtake
     if(gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER)>0.01){
-      bot.outtake.up();
+      bot.outtake.run();
     }
     else {
       bot.outtake.stop();
     }
 
-//    telemetry.addData("outtake up update", System.currentTimeMillis() - profileStart);
+    telemetry.addData("outtake up update", System.currentTimeMillis() - profileStart);
 
 
     if (gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
@@ -189,12 +196,54 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.outtake.stop();
     }
 
-//    telemetry.addData("outtake down update", System.currentTimeMillis() - profileStart);
+    telemetry.addData("outtake down update", System.currentTimeMillis() - profileStart);
+
+*/
+
+
+    if (gamepadEx2.getButton(Button.Y)) {
+      bot.intake.runLeft();
+    }else if (gamepadEx2.getButton(Button.X)){
+      bot.intake.spit();
+    }else if(gamepadEx2.getButton(Button.B)) {
+      bot.intake.runRight();
+    }else{
+      bot.intake.stop();
+    }
 
 
 
 
+    if(gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER) > 0.01){
+      bot.outtake.runArm(gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER));
+    }else if(gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER) > 0.01){
+      bot.outtake.runArm(-gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER));
+    }else{
+      bot.outtake.stopArm();
+    }
 
+    if(gamepadEx2.wasJustPressed(Button.A)){
+      if(clawIsOpen){
+        bot.outtake.clamp();
+        clawIsOpen = false;
+      }else{
+        bot.outtake.open();
+        clawIsOpen = true;
+      }
+    }
+
+    if(gamepadEx2.getButton(Button.RIGHT_BUMPER)) {
+      bot.outtake.receiveRight();
+      clawIsOpen = true;
+    }else if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
+      bot.outtake.receiveLeft();
+      clawIsOpen = true;
+    }
+    if(gamepadEx2.getButton(Button.DPAD_UP)){
+      bot.carousel.run();
+    }else{
+      bot.carousel.stop();
+    }
 
     /*//TODO: make control scheme
     Controller 1
@@ -211,15 +260,17 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     Start:  Back:switch between automation and driving
 
     Controller 2
-    A:      B:      X:      Y:
+    A: toggle claw    B: right intake       X: reverse left and right intake     Y: left intake
     DPAD
-    L:      D:     U:      R:
+    L:      D:     U: carousel      R:
     Joystick
-    L:movement/reset field centric or progress automation
-    R:movement/switch robotfield centric or none
-    Trigger L/R: slow driving
-    Bumper
-    L:none/switch to previous path      R:none/switch to next path
+    L:
+    R:
+    Trigger
+    L: outtake arm thing up (counter clockwise) R:move outtake arm thing down (clockwise)
+    Bumper:
+    L:move claw for left intake  R: move claw for right intake
+
     Other
     Start:  Back:switch between automation and driving
      */
@@ -237,7 +288,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     // TODO organize this test code
     updateLocalization();
 
-//    telemetry.addData("telemetry things update", System.currentTimeMillis() - profileStart);
+    telemetry.addData("telemetry things update", System.currentTimeMillis() - profileStart);
 
     telemetry.addData("percent", percent);
     telemetry.addData("part", part);
@@ -255,9 +306,9 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     final double gyroAngle =
         bot.imu.getAngularOrientation().toAngleUnit(AngleUnit.DEGREES).secondAngle//TODO: make sure that the orientation is correct
             - fieldCentricOffset;
-    Vector2d driveVector = stickSignal(Direction.LEFT),
+    Vector2d driveVector = new Vector2d(gamepadEx1.getLeftX(), gamepadEx1.getLeftY()),
         turnVector = new Vector2d(
-            stickSignal(Direction.RIGHT).getX() * Math.abs(stickSignal(Direction.RIGHT).getX()),
+            gamepadEx1.getRightX() * Math.abs(gamepadEx1.getRightX()),
             0);
     if (bot.roadRunner.mode == Mode.IDLE) {
       if (centricity)//epic java syntax

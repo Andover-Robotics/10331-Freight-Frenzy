@@ -12,15 +12,6 @@ public class Intake extends SubsystemBase {
     MotorEx leftIntake;
     MotorEx rightIntake;
 
-    public enum STATE {
-        ON,
-        OFF,
-        REVERSE,
-        LEFT,
-        RIGHT
-    }
-
-    public STATE runState = STATE.OFF;
 
     public Intake(OpMode opMode){
         leftIntake = new MotorEx(opMode.hardwareMap, "leftIntake", Motor.GoBILDA.RPM_312);
@@ -31,9 +22,9 @@ public class Intake extends SubsystemBase {
         rightIntake.setRunMode(Motor.RunMode.RawPower);
         rightIntake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
-//
 
-//
+
+
 //    public void runToggle() {
 //        if(runState == STATE.OFF) {
 //            run();
@@ -42,7 +33,8 @@ public class Intake extends SubsystemBase {
 //            stop();
 //        }
 //    }
-//
+
+
 //    public void run(){
 //        leftIntake.set(SPEED);
 //        rightIntake.set(SPEED);
@@ -56,24 +48,23 @@ public class Intake extends SubsystemBase {
 //    }
 //
 
-//    public void reverseLeft() {
-//        leftIntake.set(SPEED);
-//    }
-//
-//    public void reverseRight() {
-//        rightIntake.set(-SPEED);
-//    }
+    public void reverseLeft() {
+        leftIntake.set(-SPEED);
+    }
+
+
+    public void reverseRight() {
+        rightIntake.set(-SPEED);
+    }
 
     public void runLeft(){
         leftIntake.set(SPEED);
         rightIntake.set(0.0);
-        runState = STATE.LEFT;
     }
 
     public void runRight(){
         leftIntake.set(0.0);
         rightIntake.set(SPEED);
-        runState = STATE.RIGHT;
     }
 
 //    public void switchIntake(){
@@ -88,6 +79,5 @@ public class Intake extends SubsystemBase {
     public void stop(){
         leftIntake.set(0.0);
         rightIntake.set(0.0);
-        runState = STATE.OFF;
     }
 }
