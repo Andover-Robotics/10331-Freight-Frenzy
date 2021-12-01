@@ -25,6 +25,7 @@ public class Outtake {
         leftGate = opMode.hardwareMap.servo.get("leftClaw");
         leftGate.setDirection(Servo.Direction.REVERSE);
 
+
         rightGate = opMode.hardwareMap.servo.get("rightGate");
         rightGate.setDirection(Servo.Direction.FORWARD);
 
@@ -44,7 +45,7 @@ public class Outtake {
     }
 
     public void receiveRight(){
-        leftGate.setPosition(leftReceive);
+//        leftGate.setPosition(leftReceive);
         rightGate.setPosition(rightOpen);
     }
 
@@ -54,8 +55,12 @@ public class Outtake {
     }
 
     public void clamp(){
-        leftGate.setPosition(leftClosed);
+//        leftGate.setPosition(leftClosed);
         rightGate.setPosition(rightClosed);
+    }
+
+    public void left(){
+        rightGate.setPosition(leftClosed);
     }
 
     public void open(){
@@ -64,7 +69,7 @@ public class Outtake {
     }
 
     public void runArm(double power){
-        motor.set(power);
+        motor.set(power*0.5);
     }
 
     public void stopArm(){
