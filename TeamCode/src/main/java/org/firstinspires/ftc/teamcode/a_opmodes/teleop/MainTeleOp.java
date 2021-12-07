@@ -100,6 +100,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
 
 
+
     //hold down button for intake
     if(gamepadEx2.isDown(Button.B)){
       bot.intake.runLeft();
@@ -198,14 +199,16 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
     telemetry.addData("outtake down update", System.currentTimeMillis() - profileStart);
 
-*/
+ */
 
 
     if (gamepadEx2.getButton(Button.Y)) {
       bot.intake.runLeft();
     }else if (gamepadEx2.getButton(Button.X)){
-      bot.intake.spit();
+      bot.intake.spitLeft();
     }else if(gamepadEx2.getButton(Button.B)) {
+      bot.intake.spitRight();
+    }else if(gamepadEx2.getButton(Button.A)) {
       bot.intake.runRight();
     }else{
       bot.intake.stop();
@@ -222,27 +225,34 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.outtake.stopArm();
     }
 
-    if(gamepadEx2.wasJustPressed(Button.A)){
+    if(gamepadEx2.getButton(Button.DPAD_LEFT)){
       if(clawIsOpen){
         bot.outtake.clamp();
         clawIsOpen = false;
-//      }else{
-//        bot.outtake.open();
-//        clawIsOpen = true;
+      }else{
+        bot.outtake.open();
+        clawIsOpen = true;
       }
     }
-
 
     if(gamepadEx2.getButton(Button.RIGHT_BUMPER)) {
       bot.outtake.receiveRight();
       clawIsOpen = true;
+    }else if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
+      bot.outtake.receiveLeft();
+      clawIsOpen = true;
     }
-//    }else if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
-//      bot.outtake.receiveLeft();
-//      clawIsOpen = true;
+
+
 
     if(gamepadEx2.getButton(Button.DPAD_UP)){
       bot.carousel.run();
+    }else{
+      bot.carousel.stop();
+    }
+
+    if(gamepadEx2.getButton(Button.DPAD_DOWN)){
+      bot.carousel.reverse();
     }else{
       bot.carousel.stop();
     }

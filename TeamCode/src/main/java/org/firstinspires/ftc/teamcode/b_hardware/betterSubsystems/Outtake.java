@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.b_hardware.betterSubsystems;
 
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -8,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.GlobalConfig;
 
-public class Outtake {
+public class Outtake extends SubsystemBase {
     private Servo leftGate;
     private Servo rightGate;
     private MotorEx motor;
@@ -24,7 +25,6 @@ public class Outtake {
     public Outtake(OpMode opMode){
         leftGate = opMode.hardwareMap.servo.get("leftClaw");
         leftGate.setDirection(Servo.Direction.REVERSE);
-
 
         rightGate = opMode.hardwareMap.servo.get("rightGate");
         rightGate.setDirection(Servo.Direction.FORWARD);
@@ -45,7 +45,7 @@ public class Outtake {
     }
 
     public void receiveRight(){
-//        leftGate.setPosition(leftReceive);
+        leftGate.setPosition(leftReceive);
         rightGate.setPosition(rightOpen);
     }
 
@@ -55,12 +55,8 @@ public class Outtake {
     }
 
     public void clamp(){
-//        leftGate.setPosition(leftClosed);
+        leftGate.setPosition(leftClosed);
         rightGate.setPosition(rightClosed);
-    }
-
-    public void left(){
-        rightGate.setPosition(leftClosed);
     }
 
     public void open(){

@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.b_hardware.betterSubsystems;
 
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-public class Intake {
+public class Intake extends SubsystemBase {
     public static double intakeSpeed = 0.6;
     private MotorEx motorLeft;
     private MotorEx motorRight;
