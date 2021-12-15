@@ -15,12 +15,12 @@ public class Outtake extends SubsystemBase {
     private MotorEx motor;
 
     //TODO: find positions
-    private static double leftOpen = 0.44,
-    leftClosed = 0.75,
-    leftReceive = 0.7,
-    rightOpen = 0.55,
-    rightClosed = 0.25,
-    rightReceive = 0.3;
+    private static double leftOpen = 0.6,
+    leftClosed = 0.9,
+    leftReceive = 0.85,
+    rightOpen = 0.85,
+    rightClosed = 0.5,
+    rightReceive = 0.55;
 
     public Outtake(OpMode opMode){
         leftGate = opMode.hardwareMap.servo.get("leftClaw");

@@ -4,10 +4,11 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Carousel extends SubsystemBase {
     public static double carouselSpeed = 0.25;
-    private MotorEx motor;
+    private MotorEx motor; //game
 
     public Carousel(OpMode opMode){
         motor = new MotorEx(opMode.hardwareMap, " carousel", Motor.GoBILDA.RPM_435);
@@ -18,10 +19,12 @@ public class Carousel extends SubsystemBase {
 
     public void run(){
         motor.set(carouselSpeed);
+        motor.motor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void reverse() {
-        motor.set(-carouselSpeed);
+        motor.set(carouselSpeed);
+        motor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void stop(){

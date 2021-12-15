@@ -54,6 +54,8 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     carousel = new MotorEx(hardwareMap, "carousel");
     carousel.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
     carousel.set(0);
+    bot.outtake.clamp();
+
   }
 
   @Override

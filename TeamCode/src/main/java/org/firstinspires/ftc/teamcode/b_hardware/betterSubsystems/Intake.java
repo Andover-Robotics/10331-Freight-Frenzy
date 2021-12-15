@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
         motorLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
         motorLeft.motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        motorRight = new MotorEx(opMode.hardwareMap, "leftIntake", Motor.GoBILDA.RPM_435);
+        motorRight = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_435);
         motorRight.setRunMode(Motor.RunMode.RawPower);
         motorRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
         motorRight.motor.setDirection(DcMotorSimple.Direction.FORWARD);
