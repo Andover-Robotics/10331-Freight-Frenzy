@@ -10,21 +10,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.GlobalConfig;
 
 public class Outtake extends SubsystemBase {
-    private Servo leftGate;
+    private Servo left;
     private Servo rightGate;
     private MotorEx motor;
 
     //TODO: find positions
-    private static double leftOpen = 0.44,
-    leftClosed = 0.75,
-    leftReceive = 0.7,
-    rightOpen = 0.55,
-    rightClosed = 0.25,
-    rightReceive = 0.3;
+    private static double leftOpen = 0.6,
+    leftClosed = 0.9,
+    leftReceive = 0.85,
+    rightOpen = 0.4,
+    rightClosed = 0.15,
+    rightReceive = 0.2;
 
     public Outtake(OpMode opMode){
-        leftGate = opMode.hardwareMap.servo.get("leftClaw");
-        leftGate.setDirection(Servo.Direction.REVERSE);
+        left = opMode.hardwareMap.servo.get("leftClaw");
+        left.setDirection(Servo.Direction.REVERSE);
 
         rightGate = opMode.hardwareMap.servo.get("rightGate");
         rightGate.setDirection(Servo.Direction.FORWARD);
@@ -45,22 +45,22 @@ public class Outtake extends SubsystemBase {
     }
 
     public void receiveRight(){
-        leftGate.setPosition(leftReceive);
+        left.setPosition(leftReceive);
         rightGate.setPosition(rightOpen);
     }
 
     public void receiveLeft(){
-        leftGate.setPosition(leftOpen);
+        left.setPosition(leftOpen);
         rightGate.setPosition(rightReceive);
     }
 
     public void clamp(){
-        leftGate.setPosition(leftClosed);
+        left.setPosition(leftClosed);
         rightGate.setPosition(rightClosed);
     }
 
     public void open(){
-        leftGate.setPosition(leftOpen);
+        left.setPosition(leftOpen);
         rightGate.setPosition(rightOpen);
     }
 

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 public class Carousel extends SubsystemBase {
     public static double carouselSpeed = 0.25;
-    private MotorEx motor;
+    private MotorEx motor; //game
 
     public Carousel(OpMode opMode){
         motor = new MotorEx(opMode.hardwareMap, " carousel", Motor.GoBILDA.RPM_435);
@@ -18,10 +18,12 @@ public class Carousel extends SubsystemBase {
 
     public void run(){
         motor.set(carouselSpeed);
+//        motor.motor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void reverse() {
         motor.set(-carouselSpeed);
+  //      motor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void stop(){

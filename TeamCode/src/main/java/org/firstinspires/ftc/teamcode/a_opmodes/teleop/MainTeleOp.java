@@ -4,8 +4,6 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger;
 import com.arcrobotics.ftclib.geometry.Vector2d;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -20,7 +18,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   private boolean centricity = false;
   private boolean isManual = true;
   private int percent = 1, part = 0;
-  private boolean clawIsOpen = false;
+ // private boolean clawIsOpen = false;
 
 
 
@@ -45,15 +43,17 @@ public class MainTeleOp extends BaseOpMode {//required vars here
   //If there is a module-specific var, put it in the module class ie slideStage goes in the slides module
 
 
-  private MotorEx carousel;
+//  private MotorEx carousel;
 
 
   void subInit() {
     //TODO: initialize subsystems not initialized in bot constructor
     timingScheduler = new TimingScheduler(this);
-    carousel = new MotorEx(hardwareMap, "carousel");
-    carousel.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-    carousel.set(0);
+//    carousel = new MotorEx(hardwareMap, "carousel");
+//    carousel.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+//    carousel.set(0);
+   // bot.outtake.clamp();
+
   }
 
   @Override
@@ -226,21 +226,25 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     }
 
     if(gamepadEx2.getButton(Button.DPAD_LEFT)){
-      if(clawIsOpen){
+      //if(clawIsOpen){
         bot.outtake.clamp();
-        clawIsOpen = false;
-      }else{
-        bot.outtake.open();
-        clawIsOpen = true;
+      //  clawIsOpen = false;
       }
+    //else{
+    if(gamepadEx2.getButton(Button.DPAD_RIGHT)){
+        bot.outtake.open();
+       // clawIsOpen = true;
+      //}
     }
 
     if(gamepadEx2.getButton(Button.RIGHT_BUMPER)) {
       bot.outtake.receiveRight();
-      clawIsOpen = true;
-    }else if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
+    //  clawIsOpen = true;
+    }
+
+    if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
       bot.outtake.receiveLeft();
-      clawIsOpen = true;
+      //clawIsOpen = true;
     }
 
 
