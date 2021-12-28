@@ -255,11 +255,11 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.carousel.stop();
     }
 
-    if(gamepadEx2.getButton(Button.DPAD_DOWN)){
-      bot.carousel.reverse();
-    }else{
-      bot.carousel.stop();
-    }
+//    if(gamepadEx2.getButton(Button.DPAD_DOWN)){
+//      bot.carousel.reverse();
+//    }else{
+//      bot.carousel.stop();
+//    }
 
     /*//TODO: make control scheme
     Controller 1

@@ -71,7 +71,7 @@ public class MainAutonomous extends LinearOpMode {//TODO: add reversing for comp
 
     detected = PipelineResult.RIGHT;
    // List<AutoPathElement> trajectories = paths.getTrajectories (detected);
-    List<AutoPathElement> trajectories = null;
+    List<AutoPathElement> trajectories = paths.getTrajectories(detected);
 //    pipeline.close();
 
 
