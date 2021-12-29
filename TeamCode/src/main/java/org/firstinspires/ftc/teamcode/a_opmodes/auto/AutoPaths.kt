@@ -57,14 +57,40 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
         }
     }
 
+    private val liftArm = AutoPathElement.Action("Run outtake motor") {
+        Thread.sleep(1000)
+        bot.outtake.stopArm()
+    }
+
+    private val runToHigh = AutoPathElement.Action("Run outtake motor for high level"){
+        bot.outtake.runToHigh();
+    }
+
+    private val runToMid = AutoPathElement.Action("Run outtake motor for middle level"){
+        bot.outtake.runToMid();
+    }
+
+    private val runToLow = AutoPathElement.Action("Run outtake motor for low level"){
+        bot.outtake.runToLow();
+    }
+
+    private val clamp = AutoPathElement.Action("Clamp claw"){
+        bot.outtake.clamp();
+    }
+
+    private val open = AutoPathElement.Action("Clamp open"){
+        bot.outtake.open();
+    }
+
 
     //TODO: insert action vals here
 
-//    private val runCarousel = AutoPathElement.Action("Run carousel motor") {
-//        Thread.sleep(2000)
-//        bot.carousel.stop()
-//    }
-//    //                                                                  =======================================================
+    private val runCarousel = AutoPathElement.Action("Run carousel motor") {
+        bot.carousel.run()
+        Thread.sleep(2000)
+        bot.carousel.stop()
+    }
+    //                                                                  =======================================================
 
     //example
     //private val shootRings = AutoPathElement.Action("Shoot 3 rings") {
@@ -88,7 +114,7 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
     //            4 to Pose2d(48 - 5.1, -48.0 - 3.0556 - 3f, (-90.0 + 30.268).toRadians)
     //    )
 
-    val startPose = Pose2d( -36.0, 0.0, 0.0)
+    val startPose = Pose2d(  65.5, -36.0, -PI/2)
 
     //TODO: Make Trajectories in trajectorySets
 
@@ -96,25 +122,47 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
     private val trajectorySets: Map<TemplateDetector.PipelineResult, List<AutoPathElement>> = mapOf(
             //use !! when accessing maps ie: dropSecondWobble[0]!!
             //example
+        //
             TemplateDetector.PipelineResult.LEFT to run {
                 listOf(
+                    clamp,
+                    runToHigh,
+                    makePath("move to shipping hub",
+                        drive.trajectoryBuilder(Pose2d( 65.5, -36.0, -PI/2))
+                            .lineToSplineHeading(Pose2d(40.0, -12.0, 0.0)).build()),
+                    open,
                     makePath("move to carousel",
-                        drive.trajectoryBuilder(Pose2d(-36.0, 0.0, 0.0), 0.0).
-                        splineToSplineHeading(Pose2d(-63.0, -68.0, PI/4), -PI/2).build())
+                        drive.trajectoryBuilder(Pose2d(40.0, -12.0, 0.0))
+                            .lineToSplineHeading(Pose2d(65.0,-65.0,-PI/2)).build()),
+                    runCarousel
                 )
             },
             TemplateDetector.PipelineResult.MIDDLE to run {
                 listOf(
+                    clamp,
+                    runToHigh,
+                    makePath("move to shipping hub",
+                        drive.trajectoryBuilder(Pose2d( 65.5, -36.0, -PI/2))
+                            .lineToSplineHeading(Pose2d(40.0, -12.0, 0.0)).build()),
+                    open,
                     makePath("move to carousel",
-                        drive.trajectoryBuilder(Pose2d( -36.0, 0.0, 0.0), 0.0).
-                        splineToSplineHeading(Pose2d(-63.0, -68.0, PI/4), -PI/2).build())
+                        drive.trajectoryBuilder(Pose2d(40.0, -12.0, 0.0))
+                            .lineToSplineHeading(Pose2d(65.0,-65.0,-PI/2)).build()),
+                    runCarousel
                 )
             },
             TemplateDetector.PipelineResult.RIGHT to run {
                 listOf(
-                    makePath("move to carousel",
-                        drive.trajectoryBuilder(Pose2d(-36.0, 0.0, 0.0), 0.0).
-                        splineToSplineHeading(Pose2d(-63.0, -68.0, PI/4), -PI/2).build())
+                        clamp,
+                        runToHigh,
+                        makePath("move to shipping hub",
+                                drive.trajectoryBuilder(Pose2d( 65.5, -36.0, -PI/2))
+                                        .lineToSplineHeading(Pose2d(40.0, -12.0, 0.0)).build()),
+                        open,
+                        makePath("move to carousel",
+                                drive.trajectoryBuilder(Pose2d(40.0, -12.0, 0.0))
+                                        .lineToSplineHeading(Pose2d(65.0,-65.0,-PI/2)).build()),
+                    runCarousel
                 )
             }
 //
