@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class Intake extends SubsystemBase {
     public static double intakeSpeed = 0.6;
     private MotorEx motorLeft;
-    private MotorEx motorRight;
+//    private MotorEx motorRight;
 
     public Intake(OpMode opMode){
 
@@ -19,51 +19,51 @@ public class Intake extends SubsystemBase {
         motorLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
         motorLeft.motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        motorRight = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_435);
-        motorRight.setRunMode(Motor.RunMode.RawPower);
-        motorRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
-        motorRight.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        motorRight = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_435);
+//        motorRight.setRunMode(Motor.RunMode.RawPower);
+//        motorRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+//        motorRight.motor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-    public void run(double speed){
-        motorLeft.setVelocity(speed);
-        motorRight.setVelocity(speed);
-    }
+//    public void run(double speed){
+//        motorLeft.setVelocity(speed);
+//        motorRight.setVelocity(speed);
+//    }
 
     public void runLeft(double speed){
         motorLeft.set(speed);
     }
 
-    public void runRight(double speed){
-        motorRight.set(speed);
-    }
+//    public void runRight(double speed){
+//        motorRight.set(speed);
+//    }
 
     public void runLeft(){
         runLeft(intakeSpeed);
     }
 
-    public void runRight(){
-        runRight(intakeSpeed);
-    }
+//    public void runRight(){
+//        runRight(intakeSpeed);
+//    }
 
     public void spitLeft(){
         runLeft(-intakeSpeed);
     }
 
-    public void spitRight(){
-        runRight(-intakeSpeed);
-    }
+//    public void spitRight(){
+//        runRight(-intakeSpeed);
+//    }
 
     public void run(){
         run(intakeSpeed);
     }
 
-    public void spit(){
-        run(-0.5);
-    }
+//    public void spit(){
+//        run(-0.5);
+//    }
 
     public void stop(){
         motorLeft.stopMotor();
-        motorRight.stopMotor();
+//        motorRight.stopMotor();
     }
 }

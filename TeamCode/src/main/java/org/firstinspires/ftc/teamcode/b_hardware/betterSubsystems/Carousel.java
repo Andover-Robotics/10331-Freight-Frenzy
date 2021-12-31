@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.GlobalConfig;
 
 public class Carousel extends SubsystemBase {
-    public static double carouselSpeed = 0.25;
+    public static double carouselSpeed = 0.35;
     private MotorEx motor; //game
 
     public Carousel(OpMode opMode){
@@ -21,16 +21,13 @@ public class Carousel extends SubsystemBase {
     }
 
     public void run(){
-         // test -carouselspeed to check that run() works as intended
-       // motor.motor.setDirection(DcMotorEx.Direction.FORWARD);
         motor.set(carouselSpeed);
     }
 
-    public void reverse() {
-
-        motor.motor.setDirection(DcMotorEx.Direction.REVERSE);
-        motor.set(carouselSpeed);
-    }
+//    public void reverse() {
+//        motor.motor.setDirection(DcMotorEx.Direction.REVERSE);
+//        motor.set(carouselSpeed);
+//    }
 
     public void stop(){
         motor.stopMotor();

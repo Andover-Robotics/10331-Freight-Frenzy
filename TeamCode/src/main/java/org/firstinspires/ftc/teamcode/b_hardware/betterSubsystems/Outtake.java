@@ -7,21 +7,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.ejml.equation.IntegerSequence;
-import org.firstinspires.ftc.teamcode.GlobalConfig;
-
 public class Outtake extends SubsystemBase {
     private Servo left;
     private Servo rightGate;
     private MotorEx motor;
 
     //TODO: find positions
-    private static double leftOpen = 0.15,
-    leftClosed = 0.3,
-    leftReceive = 0.85,
-    rightOpen = 0.25,
-    rightClosed = 0.1,
-    rightReceive = 0.2;
+    private static double
+            leftOpen = 0.15,
+            leftClosed = 0.3,
+            rightOpen = 0.2,
+            rightClosed = 0.1;
+
 
     public Outtake(OpMode opMode){
         left = opMode.hardwareMap.servo.get("leftClaw");
@@ -37,23 +34,23 @@ public class Outtake extends SubsystemBase {
         motor.motor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-    public void receive(){//TODO: test if the alliance is right
-        if(GlobalConfig.alliance == GlobalConfig.Alliance.RED){
-            receiveLeft();
-        }else{
-            receiveRight();
-        }
-    }
+//    public void receive(){//TODO: test if the alliance is right
+//        if(GlobalConfig.alliance == GlobalConfig.Alliance.RED){
+//            receiveLeft();
+//        }else{
+//            receiveRight();
+//        }
+//    }
 
-    public void receiveRight(){
-        left.setPosition(leftReceive);
-        rightGate.setPosition(rightOpen);
-    }
-
-    public void receiveLeft(){
-        left.setPosition(leftOpen);
-        rightGate.setPosition(rightReceive);
-    }
+//    public void receiveRight(){
+//        left.setPosition(leftReceive);
+//        rightGate.setPosition(rightOpen);
+//    }
+//
+//    public void receiveLeft(){
+//        left.setPosition(leftOpen);
+//        rightGate.setPosition(rightReceive);
+//    }
 
     public void clamp(){
         left.setPosition(leftClosed);
@@ -94,6 +91,17 @@ public class Outtake extends SubsystemBase {
         motor.setRunMode(Motor.RunMode.PositionControl);
         motor.setPositionTolerance(40);
         motor.setTargetPosition(2783);
+        while(!motor.atTargetPosition()){
+            motor.set(0.5);
+        }
+        motor.stopMotor();
+        motor.setRunMode(Motor.RunMode.RawPower);
+    }
+
+    public void restArm(){
+        motor.setRunMode(Motor.RunMode.PositionControl);
+        motor.setPositionTolerance(40);
+        motor.setTargetPosition(-211);
         while(!motor.atTargetPosition()){
             motor.set(0.5);
         }

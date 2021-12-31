@@ -1,18 +1,18 @@
 package org.firstinspires.ftc.teamcode.a_opmodes.auto
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.trajectory.MarkerCallback
 import com.acmerobotics.roadrunner.trajectory.Trajectory
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.a_opmodes.auto.pipeline.TemplateDetector
+import org.firstinspires.ftc.teamcode.GlobalConfig;
 import org.firstinspires.ftc.teamcode.c_drive.RRMecanumDrive
 import org.firstinspires.ftc.teamcode.b_hardware.Bot
 import java.lang.Math.toRadians
 import kotlin.math.PI
 import kotlin.math.roundToInt
 
-class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths functionality to this
+class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths functionality to this
 
     //TODO: reverse this
 
@@ -57,6 +57,21 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
         }
     }
 
+
+
+
+
+    fun p2d(x: Double, y: Double, h: Double): Pose2d {
+        return Pose2d(
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
+            y,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h+PI
+        )
+    }
+
+
+
+
     private val liftArm = AutoPathElement.Action("Run outtake motor") {
         Thread.sleep(1000)
         bot.outtake.stopArm()
@@ -87,9 +102,16 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
 
     private val runCarousel = AutoPathElement.Action("Run carousel motor") {
         bot.carousel.run()
-        Thread.sleep(2000)
+        Thread.sleep(5000)
         bot.carousel.stop()
     }
+
+    private val downArm = AutoPathElement.Action("Run outtake motor to rest") {
+        bot.outtake.restArm();
+    }
+
+
+
     //                                                                  =======================================================
 
     //example
@@ -114,7 +136,9 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
     //            4 to Pose2d(48 - 5.1, -48.0 - 3.0556 - 3f, (-90.0 + 30.268).toRadians)
     //    )
 
-    val startPose = Pose2d(  65.5, -36.0, -PI/2)
+
+
+    val startPose = p2d(  65.5, -36.0, -PI/2)
 
     //TODO: Make Trajectories in trajectorySets
 
@@ -126,29 +150,39 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
             TemplateDetector.PipelineResult.LEFT to run {
                 listOf(
                     clamp,
-                    runToHigh,
+                    runToLow,
                     makePath("move to shipping hub",
-                        drive.trajectoryBuilder(Pose2d( 65.5, -36.0, -PI/2))
-                            .lineToSplineHeading(Pose2d(40.0, -12.0, 0.0)).build()),
+                        drive.trajectoryBuilder(p2d( 65.5, -36.0, -PI/2))
+                            .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()),
                     open,
                     makePath("move to carousel",
-                        drive.trajectoryBuilder(Pose2d(40.0, -12.0, 0.0))
-                            .lineToSplineHeading(Pose2d(65.0,-65.0,-PI/2)).build()),
-                    runCarousel
+                        drive.trajectoryBuilder(p2d(38.0, -10.0, 0.0))
+                            .lineToSplineHeading(p2d(63.0,-61.0,-PI/2)).build()),
+                    runCarousel,
+                    makePath("move to red parking",
+                        drive.trajectoryBuilder(p2d(63.0,-61.0,-PI/2))
+                            .lineToSplineHeading(p2d(34.0, -60.0,-PI/2)).build()),
+                    clamp,
+                    downArm
                 )
             },
             TemplateDetector.PipelineResult.MIDDLE to run {
                 listOf(
                     clamp,
-                    runToHigh,
+                    runToMid,
                     makePath("move to shipping hub",
-                        drive.trajectoryBuilder(Pose2d( 65.5, -36.0, -PI/2))
-                            .lineToSplineHeading(Pose2d(40.0, -12.0, 0.0)).build()),
+                        drive.trajectoryBuilder(p2d( 65.5, -36.0, -PI/2))
+                            .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()),
                     open,
                     makePath("move to carousel",
-                        drive.trajectoryBuilder(Pose2d(40.0, -12.0, 0.0))
-                            .lineToSplineHeading(Pose2d(65.0,-65.0,-PI/2)).build()),
-                    runCarousel
+                        drive.trajectoryBuilder(p2d(38.0, -10.0, 0.0))
+                            .lineToSplineHeading(p2d(63.0,-61.0,-PI/2)).build()),
+                    runCarousel,
+                    makePath("move to red parking",
+                        drive.trajectoryBuilder(p2d(63.0,-61.0,-PI/2))
+                            .lineToSplineHeading(p2d(34.0, -60.0,-PI/2)).build()),
+                    clamp,
+                    downArm
                 )
             },
             TemplateDetector.PipelineResult.RIGHT to run {
@@ -156,14 +190,19 @@ class AutoPaths(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPaths 
                         clamp,
                         runToHigh,
                         makePath("move to shipping hub",
-                                drive.trajectoryBuilder(Pose2d( 65.5, -36.0, -PI/2))
-                                        .lineToSplineHeading(Pose2d(40.0, -12.0, 0.0)).build()),
+                                drive.trajectoryBuilder(p2d( 65.5, -36.0, -PI/2))
+                                        .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()),
                         open,
                         makePath("move to carousel",
-                                drive.trajectoryBuilder(Pose2d(40.0, -12.0, 0.0))
-                                        .lineToSplineHeading(Pose2d(65.0,-65.0,-PI/2)).build()),
-                    runCarousel
-                )
+                                drive.trajectoryBuilder(p2d(38.0, -10.0, 0.0))
+                                        .lineToSplineHeading(p2d(63.0,-61.0,-PI/2)).build()),
+                        runCarousel,
+                        makePath("move to red parking",
+                            drive.trajectoryBuilder(p2d(63.0,-61.0,-PI/2))
+                                .lineToSplineHeading(p2d(34.0, -60.0,-PI/2)).build()),
+                        clamp,
+                        downArm
+                    )
             }
 //
     )
