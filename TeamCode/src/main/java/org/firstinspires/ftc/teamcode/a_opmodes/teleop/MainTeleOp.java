@@ -237,15 +237,15 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       //}
     }
 
-    if(gamepadEx2.getButton(Button.RIGHT_BUMPER)) {
-      bot.outtake.receiveRight();
-    //  clawIsOpen = true;
-    }
-
-    if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
-      bot.outtake.receiveLeft();
-      //clawIsOpen = true;
-    }
+//    if(gamepadEx2.getButton(Button.RIGHT_BUMPER)) {
+//      bot.outtake.receiveRight();
+//    //  clawIsOpen = true;
+//    }
+//
+//    if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
+//      bot.outtake.receiveLeft();
+//      //clawIsOpen = true;
+//    }
 
 
 

@@ -74,6 +74,7 @@ public class TemplateDetector {//TODO: Change this to control hub
     NormalDistribution one_nd = new NormalDistribution(ONE_RING_AREA, ST_DEV);
     NormalDistribution four_nd = new NormalDistribution(FOUR_RING_AREA, ST_DEV);
 
+
     final Mat test = new Mat(),
         edgeDetector = new Mat(),
         smoothEdges = new Mat(),
