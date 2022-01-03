@@ -68,9 +68,9 @@ public class Outtake extends SubsystemBase {
     public void runToHigh(){
         motor.setRunMode(Motor.RunMode.PositionControl);
         motor.setPositionTolerance(40);
-        motor.setTargetPosition(5000);
+        motor.setTargetPosition(4500);//5000
         while(!motor.atTargetPosition()){
-          motor.set(0.5);
+          motor.set(0.8);
         }
         motor.stopMotor();
         motor.setRunMode(Motor.RunMode.RawPower);
@@ -79,9 +79,9 @@ public class Outtake extends SubsystemBase {
     public void runToMid(){
         motor.setRunMode(Motor.RunMode.PositionControl);
         motor.setPositionTolerance(40);
-        motor.setTargetPosition(3000);
+        motor.setTargetPosition(3000);//3000
         while(!motor.atTargetPosition()){
-            motor.set(0.5);
+            motor.set(0.8);
         }
         motor.stopMotor();
         motor.setRunMode(Motor.RunMode.RawPower);
@@ -90,9 +90,9 @@ public class Outtake extends SubsystemBase {
     public void runToLow(){
         motor.setRunMode(Motor.RunMode.PositionControl);
         motor.setPositionTolerance(40);
-        motor.setTargetPosition(2783);
+        motor.setTargetPosition(2783);//2783
         while(!motor.atTargetPosition()){
-            motor.set(0.5);
+            motor.set(0.8);
         }
         motor.stopMotor();
         motor.setRunMode(Motor.RunMode.RawPower);
@@ -101,16 +101,16 @@ public class Outtake extends SubsystemBase {
     public void restArm(){
         motor.setRunMode(Motor.RunMode.PositionControl);
         motor.setPositionTolerance(40);
-        motor.setTargetPosition(-211);
+        motor.setTargetPosition(0);
         while(!motor.atTargetPosition()){
-            motor.set(0.5);
+            motor.set(0.8);
         }
         motor.stopMotor();
         motor.setRunMode(Motor.RunMode.RawPower);
     }
 
     public void runArm(double power){
-        motor.set(power*0.5);
+        motor.set(power*0.95);
     }
 
     public void stopArm(){

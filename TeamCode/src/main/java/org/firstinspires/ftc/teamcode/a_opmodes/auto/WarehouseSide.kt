@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.a_opmodes.auto
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.trajectory.MarkerCallback
 import com.acmerobotics.roadrunner.trajectory.Trajectory
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -53,9 +54,11 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
         return Pose2d(
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
             y,
-            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else -h
-        )
-    }
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h-PI/2
+        )}
+
+
+
 
     private fun turn(from: Double, to: Double): AutoPathElement.Action {
         return AutoPathElement.Action(
@@ -106,7 +109,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
     }
 
     private val runIntake = AutoPathElement.Action ("Run Intake") {
-        bot.intake.runLeft();
+        bot.intake.spitLeft();
         Thread.sleep(2000);
         bot.intake.stop();
     }
@@ -137,7 +140,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
     //    )
 
 
-    val startPose = p2d(65.5, 12.0, -PI / 2)
+    val startPose = p2d(65.5, 0.0, -PI/2)
 
     //TODO: Make Trajectories in trajectorySets
 
@@ -150,112 +153,12 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
             listOf(
                 clamp,
                 runToLow,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(Pose2d(65.5, 12.0, -PI / 2))
-                        .lineToSplineHeading(Pose2d(38.0, -10.0, 0.0)).build()
-                ),
-                open,
-                makePath(
-                    "move to warehouse",
-                    drive.trajectoryBuilder(p2d(63.0, -61.0, -PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 36.0, PI / 2)).build()
-                ),
-                open,
-                runIntake,
-                clamp,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 36.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()
-                ),
-                runToHigh,
-                open,
-                clamp,
-                downArm,
-                makePath(
-                    "move to warehouse",
-                    drive.trajectoryBuilder(p2d(63.0, -61.0, -PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 36.0, PI / 2)).build()
-                ),
-                open,
-                runIntake,
-                clamp,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 36.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()
-                ),
-                runToHigh,
-                open,
-                clamp,
-                downArm,
-                makePath(
-                    "move to warehouse parking",
-                    drive.trajectoryBuilder(p2d(38.0,-10.0,0.0))
-                        .lineToSplineHeading(p2d(65.5,12.0,PI/2))
-                        .lineToSplineHeading(p2d(65.5,38.0,PI/2)).build()
-                )
             )
         },
         TemplateDetector.PipelineResult.MIDDLE to run {
             listOf(
                 clamp,
                 runToMid,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(Pose2d(65.5, 12.0, -PI / 2))
-                        .lineToSplineHeading(Pose2d(38.0, -10.0, 0.0)).build()
-                ),
-                open,
-                makePath(
-                    "move to warehouse",
-                    drive.trajectoryBuilder(p2d(63.0, -61.0, -PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 36.0, PI / 2)).build()
-                ),
-                open,
-                runIntake,
-                clamp,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 36.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()
-                ),
-                runToHigh,
-                open,
-                clamp,
-                downArm,
-                makePath(
-                    "move to warehouse",
-                    drive.trajectoryBuilder(p2d(63.0, -61.0, -PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 36.0, PI / 2)).build()
-                ),
-                open,
-                runIntake,
-                clamp,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 36.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()
-                ),
-                runToHigh,
-                open,
-                clamp,
-                downArm,
-                makePath(
-                    "move to warehouse parking",
-                    drive.trajectoryBuilder(p2d(38.0,-10.0,0.0))
-                        .lineToSplineHeading(p2d(65.5,12.0,PI/2))
-                        .lineToSplineHeading(p2d(65.5,38.0,PI/2)).build()
-                )
             )
         },
         TemplateDetector.PipelineResult.RIGHT to run {
@@ -264,55 +167,49 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
                 runToHigh,
                 makePath(
                     "move to shipping hub",
-                    drive.trajectoryBuilder(Pose2d(65.5, 12.0, -PI / 2))
-                        .lineToSplineHeading(Pose2d(38.0, -10.0, 0.0)).build()
+                    drive.trajectoryBuilder(p2d(65.5, 0.0, -PI/2))
+                        .lineToSplineHeading(p2d(40.0,-20.0,0.0)).build()
                 ),
                 open,
                 makePath(
-                    "move to warehouse",
-                    drive.trajectoryBuilder(p2d(63.0, -61.0, -PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 36.0, PI / 2)).build()
+                    "move to edge (hub to warehouse)",
+                    drive.trajectoryBuilder(p2d(40.0,-20.0,0.0))
+                        .lineToSplineHeading(p2d(65.5, 0.0,PI/2)).build()
+                ),
+                clamp,
+                downArm,
+                makePath(
+                    "move into warehouse",
+                    drive.trajectoryBuilder(p2d(65.5, 0.0, PI/2))
+                        .forward(48.0).build()
                 ),
                 open,
                 runIntake,
                 clamp,
+                runToHigh,
+                makePath(
+                    "move to edge (warehouse to hub)",
+                    drive.trajectoryBuilder(p2d(65.5, 48.0, PI/2))
+                        .back(48.0).build()
+                ),
                 makePath(
                     "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 36.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()
+                    drive.trajectoryBuilder(p2d(65.5, 0.0, PI/2))
+                    .lineToSplineHeading(p2d(40.0,-15.0,0.0)).build()
                 ),
-                runToHigh,
                 open,
-                clamp,
-                downArm,
                 makePath(
-                    "move to warehouse",
-                    drive.trajectoryBuilder(p2d(63.0, -61.0, -PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 36.0, PI / 2)).build()
+                    "move to edge (hub to warehouse)",
+                    drive.trajectoryBuilder(p2d(40.0,-15.0,0.0))
+                        .lineToSplineHeading(p2d(65.5, 0.0, PI/2)).build()
                 ),
-                open,
-                runIntake,
                 clamp,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 36.0, PI / 2))
-                        .lineToSplineHeading(p2d(65.5, 12.0, PI / 2))
-                        .lineToSplineHeading(p2d(38.0, -10.0, 0.0)).build()
-                ),
-                runToHigh,
-                open,
-                clamp,
-                downArm,
                 makePath(
                     "move to warehouse parking",
-                    drive.trajectoryBuilder(p2d(38.0,-10.0,0.0))
-                        .lineToSplineHeading(p2d(65.5,12.0,PI/2))
-                        .lineToSplineHeading(p2d(65.5,38.0,PI/2)).build()
-                )
-
+                    drive.trajectoryBuilder(p2d(65.5,0.0,PI/2))
+                        .forward(48.0).build()
+                ),
+                downArm
             )
         }
 //

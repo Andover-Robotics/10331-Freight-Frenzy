@@ -76,6 +76,8 @@ public class MainAutonomousWarehouse extends LinearOpMode {//TODO: add reversing
 
         telemetry.update();
 
+        waitForStart();
+
 
         // List<AutoPathElement> trajectories = paths.getTrajectories (detected);
         List<WarehouseSide.AutoPathElement> trajectories = paths.getTrajectories(detected);

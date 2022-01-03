@@ -76,6 +76,8 @@ public class MainAutonomousCarousel extends LinearOpMode {//TODO: add reversing 
 
         telemetry.update();
 
+        waitForStart();
+
 
         // List<AutoPathElement> trajectories = paths.getTrajectories (detected);
         List<CarouselSide.AutoPathElement> trajectories = paths.getTrajectories(detected);

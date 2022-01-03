@@ -206,10 +206,10 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.intake.runLeft();
     }else if (gamepadEx2.getButton(Button.X)){
       bot.intake.spitLeft();
-    }else if(gamepadEx2.getButton(Button.B)) {
-      bot.intake.spitRight();
-    }else if(gamepadEx2.getButton(Button.A)) {
-      bot.intake.runRight();
+//    }else if(gamepadEx2.getButton(Button.B)) {
+//      bot.intake.spitRight();
+//    }else if(gamepadEx2.getButton(Button.A)) {
+//      bot.intake.runRight();
     }else{
       bot.intake.stop();
     }

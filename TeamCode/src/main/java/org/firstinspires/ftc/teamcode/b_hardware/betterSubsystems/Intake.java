@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Intake extends SubsystemBase {
-    public static double intakeSpeed = 0.6;
+    public static double intakeSpeed = 0.7;
     private MotorEx motorLeft;
 //    private MotorEx motorRight;
 
@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
 //        motorRight.motor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-//    public void run(double speed){
+//    public void run(double speed){                         game
 //        motorLeft.setVelocity(speed);
 //        motorRight.setVelocity(speed);
 //    }
@@ -54,9 +54,9 @@ public class Intake extends SubsystemBase {
 //        runRight(-intakeSpeed);
 //    }
 
-    public void run(){
-        run(intakeSpeed);
-    }
+//    public void run(){
+//        run(intakeSpeed);
+//    }
 
 //    public void spit(){
 //        run(-0.5);

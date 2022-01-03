@@ -5,9 +5,10 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
-import org.firstinspires.ftc.teamcode.a_opmodes.auto.AutoPaths;
+//import org.firstinspires.ftc.teamcode.a_opmodes.auto.AutoPaths;
 import org.firstinspires.ftc.teamcode.c_drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.d_util.utilclasses.Encoder.Direction;
+import org.firstinspires.ftc.teamcode.d_util.utilclasses.Encoder.Direction
+        ;
 @Config
 public class GlobalConfig {//make all fields final
   //control + click class to go to it
@@ -26,7 +27,7 @@ public class GlobalConfig {//make all fields final
   //TODO add more config stuff
   public static final String motorFL = "motorFL", motorFR = "motorFR", motorBL = "motorBL", motorBR = "motorBR";
   public static Alliance alliance = Alliance.BLUE;
-  public static AutoPaths.Auto auto = AutoPaths.Auto.TEST;
+//  public static AutoPaths.Auto auto = AutoPaths.Auto.TEST;
 
 
   public static class SensorFusionValues{
