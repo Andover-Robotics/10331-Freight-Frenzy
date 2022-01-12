@@ -318,6 +318,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
   private void drive(){//Driving ===================================================================================
     updateState();
+    double slowModeSpeed = 0.5;
 
     final double gyroAngle =
         bot.imu.getAngularOrientation().toAngleUnit(AngleUnit.DEGREES).secondAngle//TODO: make sure that the orientation is correct
@@ -327,26 +328,30 @@ public class MainTeleOp extends BaseOpMode {//required vars here
             gamepadEx1.getRightX() * Math.abs(gamepadEx1.getRightX()),
             0);
     if (bot.roadRunner.mode == Mode.IDLE) {
-      if (centricity)//epic java syntax
+
+      if (centricity) //epic java syntax
         bot.drive.driveFieldCentric(
-            driveVector.getX() * driveSpeed,
-            driveVector.getY() * driveSpeed,
-            turnVector.getX() * driveSpeed,
-            gyroAngle);
+                driveVector.getX() * driveSpeed,
+                driveVector.getY() * driveSpeed,
+                turnVector.getX() * driveSpeed,
+                gyroAngle);
+
+      else if (gamepadEx1.getTrigger(Trigger.LEFT_TRIGGER) > 0.01 || gamepadEx1.getTrigger(Trigger.RIGHT_TRIGGER) > 0.01)
+        bot.drive.driveRobotCentric(
+                driveVector.getX() * slowModeSpeed,
+                driveVector.getY() * slowModeSpeed,
+                turnVector.getX() * slowModeSpeed
+        );
+
       else
         bot.drive.driveRobotCentric(
-            driveVector.getX() * driveSpeed,
-            driveVector.getY() * driveSpeed,
-            turnVector.getX() * driveSpeed
+                driveVector.getX() * driveSpeed,
+                driveVector.getY() * driveSpeed,
+                turnVector.getX() * driveSpeed
         );
+
     }
-    if (justPressed(Button.LEFT_STICK_BUTTON)) {
-      fieldCentricOffset = bot.imu.getAngularOrientation()
-          .toAngleUnit(AngleUnit.DEGREES).firstAngle;
-    }
-    if(justPressed(Button.RIGHT_STICK_BUTTON)){
-      centricity = !centricity;
-    }
+
   }
 
   private void followPath(){//Path following ===================================================================================

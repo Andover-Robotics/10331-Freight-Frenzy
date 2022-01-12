@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Intake extends SubsystemBase {
-    public static double intakeSpeed = 0.7;
+    public static double intakeSpeed = 0.6;
     private MotorEx motorLeft;
 //    private MotorEx motorRight;
 

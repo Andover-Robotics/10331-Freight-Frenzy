@@ -80,7 +80,7 @@ class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPat
 
     fun p2DwMore(x: Double, y: Double, h: Double): Pose2d {
         return Pose2d(
-            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -52.0,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -55.0,
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) y else -64.0,
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h-(PI/2)
 

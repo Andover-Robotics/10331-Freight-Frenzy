@@ -50,12 +50,28 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
         override fun onMarkerReached() = func()
     }
 
+    fun p2dToHub(x: Double, y: Double, h: Double): Pose2d {
+        return Pose2d(
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
+            y,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h+PI
+        )}
+
     fun p2d(x: Double, y: Double, h: Double): Pose2d {
         return Pose2d(
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
             y,
-            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h-PI/2
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else -h
+        )
+        }
+
+    fun p2dSame (x: Double, y: Double, h: Double): Pose2d {
+        return Pose2d(
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
+            y,
+            h
         )}
+
 
 
 
@@ -110,7 +126,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
 
     private val runIntake = AutoPathElement.Action ("Run Intake") {
         bot.intake.spitLeft();
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         bot.intake.stop();
     }
 
@@ -140,7 +156,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
     //    )
 
 
-    val startPose = p2d(65.5, 0.0, -PI/2)
+    val startPose = p2d(65.5, 6.0, -PI/2)
 
     //TODO: Make Trajectories in trajectorySets
 
@@ -167,20 +183,20 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
                 runToHigh,
                 makePath(
                     "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 0.0, -PI/2))
-                        .lineToSplineHeading(p2d(40.0,-20.0,0.0)).build()
+                    drive.trajectoryBuilder(p2d(65.5, 6.0, -PI/2))
+                        .lineToSplineHeading(p2dToHub(40.0,-20.0,0.0)).build()
                 ),
                 open,
                 makePath(
                     "move to edge (hub to warehouse)",
-                    drive.trajectoryBuilder(p2d(40.0,-20.0,0.0))
-                        .lineToSplineHeading(p2d(65.5, 0.0,PI/2)).build()
+                    drive.trajectoryBuilder(p2dToHub(40.0,-20.0,0.0))
+                        .lineToSplineHeading(p2dSame(65.5, 0.0,PI/2)).build()
                 ),
                 clamp,
                 downArm,
                 makePath(
                     "move into warehouse",
-                    drive.trajectoryBuilder(p2d(65.5, 0.0, PI/2))
+                    drive.trajectoryBuilder(p2dSame(65.5, 0.0, PI/2))
                         .forward(48.0).build()
                 ),
                 open,
@@ -189,24 +205,25 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
                 runToHigh,
                 makePath(
                     "move to edge (warehouse to hub)",
-                    drive.trajectoryBuilder(p2d(65.5, 48.0, PI/2))
+                    drive.trajectoryBuilder(p2dSame(65.5, 48.0, PI/2))
                         .back(48.0).build()
                 ),
+
                 makePath(
                     "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 0.0, PI/2))
-                    .lineToSplineHeading(p2d(40.0,-15.0,0.0)).build()
+                    drive.trajectoryBuilder(p2dSame(65.5, 0.0, PI/2))
+                    .lineToSplineHeading(p2dToHub(40.0,-15.0,0.0)).build()
                 ),
                 open,
                 makePath(
                     "move to edge (hub to warehouse)",
-                    drive.trajectoryBuilder(p2d(40.0,-15.0,0.0))
-                        .lineToSplineHeading(p2d(65.5, 0.0, PI/2)).build()
+                    drive.trajectoryBuilder(p2dToHub(40.0,-15.0,0.0))
+                        .lineToSplineHeading(p2dSame(65.5, 0.0, PI/2)).build()
                 ),
                 clamp,
                 makePath(
                     "move to warehouse parking",
-                    drive.trajectoryBuilder(p2d(65.5,0.0,PI/2))
+                    drive.trajectoryBuilder(p2dSame(65.5,0.0,PI/2))
                         .forward(48.0).build()
                 ),
                 downArm
