@@ -53,7 +53,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
     fun p2dToHub(x: Double, y: Double, h: Double): Pose2d {
         return Pose2d(
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
-            y,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) y else y+15,
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h+PI
         )}
 
@@ -63,7 +63,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
             y,
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else -h
         )
-        }
+    }
 
     fun p2dSame (x: Double, y: Double, h: Double): Pose2d {
         return Pose2d(
@@ -73,7 +73,13 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
         )}
 
 
-
+    fun p2D(x: Double, y: Double, h: Double): Pose2d {
+        return Pose2d(
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
+            y,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h - (PI / 2)
+        )
+    }
 
 
     private fun turn(from: Double, to: Double): AutoPathElement.Action {
@@ -86,49 +92,125 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
     }
 
 
-    private val liftArm = AutoPathElement.Action("Run outtake motor") {
+
+    val liftArm = WarehouseSide.AutoPathElement.Action("Run outtake motor") {
         Thread.sleep(1000)
         bot.outtake.stopArm()
     }
 
-    private val runToHigh = AutoPathElement.Action("Run outtake motor for high level") {
+
+    val runToHigh = WarehouseSide.AutoPathElement.Action("Run outtake motor for high level") {
         bot.outtake.runToHigh();
     }
 
-    private val runToMid = AutoPathElement.Action("Run outtake motor for middle level") {
+    val runToMid = WarehouseSide.AutoPathElement.Action("Run outtake motor for middle level") {
         bot.outtake.runToMid();
     }
 
-    private val runToLow = AutoPathElement.Action("Run outtake motor for low level") {
+    val runToLow = WarehouseSide.AutoPathElement.Action("Run outtake motor for low level") {
         bot.outtake.runToLow();
     }
 
-    private val clamp = AutoPathElement.Action("Clamp claw") {
+    val restArm = WarehouseSide.AutoPathElement.Action("outake to rest position"){
+        bot.outtake.restArm();
+    }
+
+
+    val runIntake = WarehouseSide.AutoPathElement.Action("Run intake") {
+        bot.intake.run();
+    }
+
+    val stopIntake = WarehouseSide.AutoPathElement.Action("stop intake") {
+        bot.intake.stop();
+    }
+
+    val flip = WarehouseSide.AutoPathElement.Action("flip bucket"){
+        bot.intake.flipBucket();
+    }
+
+    val unflip = WarehouseSide.AutoPathElement.Action ("unflip bucket"){
+        bot.intake.unflipBucket();
+    }
+
+
+    val clamp = WarehouseSide.AutoPathElement.Action("Clamp claw") {
         bot.outtake.clamp();
     }
 
-    private val open = AutoPathElement.Action("Clamp open") {
+    val open = WarehouseSide.AutoPathElement.Action("Clamp open") {
         bot.outtake.open();
     }
 
 
     //TODO: insert action vals here
 
-    private val runCarousel = AutoPathElement.Action("Run carousel motor") {
+    val runCarousel = WarehouseSide.AutoPathElement.Action("Run carousel motor") {
         bot.carousel.run()
-        Thread.sleep(5000)
+        Thread.sleep(2500)
         bot.carousel.stop()
     }
 
-    private val downArm = AutoPathElement.Action("Run outtake motor to rest") {
-        bot.outtake.restArm();
+
+
+
+    // to go edge while... clamp, restArm, flip,
+    fun edgeIn (): WarehouseSide.AutoPathElement.Path{
+        return WarehouseSide.AutoPathElement.Path ("edge", bot.roadRunner.trajectoryBuilder(p2dToHub(40.0, -20.0, 0.0))
+            .lineToSplineHeading(p2dSame(65.5, 0.0, PI / 2))
+            .addTemporalMarker(0.01, clamp.runner)
+            .addTemporalMarker(5.0, restArm.runner)
+            .addTemporalMarker(0.2,flip.runner)
+            .build())
     }
 
-    private val runIntake = AutoPathElement.Action ("Run Intake") {
-        bot.intake.spitLeft();
-        Thread.sleep(3000);
-        bot.intake.stop();
+
+
+    // go inside the warehouse while.... run intake, unflip, stopintake, flip
+    fun inside (): WarehouseSide.AutoPathElement.Path{
+        return WarehouseSide.AutoPathElement.Path ("Into Warehouse", bot.roadRunner.trajectoryBuilder(p2dSame(65.5, 0.0, PI / 2))
+            .forward(48.0)
+            .addTemporalMarker(0.01, runIntake.runner)
+            .addTemporalMarker(0.01, unflip.runner)
+            .addTemporalMarker(0.01, open.runner)
+            .build())
     }
+
+    fun out (): WarehouseSide.AutoPathElement.Path{
+        return WarehouseSide.AutoPathElement.Path ("Out of Warehouse", bot.roadRunner.trajectoryBuilder(p2dSame(65.5, 40.0, PI / 2))
+            .back(48.0)
+            .addTemporalMarker (0.1, flip.runner)
+            .addTemporalMarker(0.3, runIntake.runner)
+            .build())
+    }
+
+
+
+    fun startShippingHub (): WarehouseSide.AutoPathElement.Path{
+        return WarehouseSide.AutoPathElement.Path ("Going to Shipping Hub", bot.roadRunner.trajectoryBuilder(p2d(65.5, 6.0, -PI/2))
+            .lineToSplineHeading(p2dToHub(40.0, -20.0, 0.0))
+            .addTemporalMarker(0.03, runToHigh.runner)
+            .build()
+        )
+    }
+
+    fun shippingHub (): WarehouseSide.AutoPathElement.Path{
+        return WarehouseSide.AutoPathElement.Path ("Going to Shipping Hub", bot.roadRunner.trajectoryBuilder(p2dSame(65.5, -8.0, PI / 2))
+            .lineToSplineHeading(p2dToHub(40.0, -20.0, 0.0))
+            .addTemporalMarker(0.03, runToHigh.runner)
+            .build()
+        )
+    }
+
+
+    fun parkWarehouse(): WarehouseSide.AutoPathElement.Path{
+        return WarehouseSide.AutoPathElement.Path ("park in Warehouse", bot.roadRunner.trajectoryBuilder(p2dSame(65.5, 0.0, PI / 2))
+            .addTemporalMarker (0.01, clamp.runner)
+            .addTemporalMarker(0.1, restArm.runner)
+            .forward (40.0)
+            .build()
+        )
+    }
+
 
 
     //                                                                  =======================================================
@@ -161,7 +243,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
     //TODO: Make Trajectories in trajectorySets
 
     //                                                                              ====================================================
-    private val trajectorySets: Map<TemplateDetector.PipelineResult, List<AutoPathElement>> = mapOf(
+    private val trajectorySets: Map<TemplateDetector.PipelineResult, List<Any>> = mapOf(
         //use !! when accessing maps ie: dropSecondWobble[0]!!
         //example
         //
@@ -169,64 +251,78 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
             listOf(
                 clamp,
                 runToLow,
+                startShippingHub(),
+                open,
+                edgeIn(),
+                inside(),
+                stopIntake,
+                flip,
+                out(),
+                stopIntake,
+                shippingHub(),
+                open,
+                edgeIn(),
+                inside(),
+                stopIntake,
+                flip,
+                out(),
+                stopIntake,
+                shippingHub(),
+                open,
+                edgeIn(),
+                parkWarehouse()
             )
         },
         TemplateDetector.PipelineResult.MIDDLE to run {
             listOf(
                 clamp,
                 runToMid,
+                startShippingHub(),
+                open,
+                edgeIn(),
+                inside(),
+                stopIntake,
+                flip,
+                out(),
+                stopIntake,
+                shippingHub(),
+                open,
+                edgeIn(),
+                inside(),
+                stopIntake,
+                flip,
+                out(),
+                stopIntake,
+                shippingHub(),
+                open,
+                edgeIn(),
+                parkWarehouse()
             )
         },
         TemplateDetector.PipelineResult.RIGHT to run {
             listOf(
                 clamp,
                 runToHigh,
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(p2d(65.5, 6.0, -PI/2))
-                        .lineToSplineHeading(p2dToHub(40.0,-20.0,0.0)).build()
-                ),
+                startShippingHub(),
                 open,
-                makePath(
-                    "move to edge (hub to warehouse)",
-                    drive.trajectoryBuilder(p2dToHub(40.0,-20.0,0.0))
-                        .lineToSplineHeading(p2dSame(65.5, 0.0,PI/2)).build()
-                ),
-                clamp,
-                downArm,
-                makePath(
-                    "move into warehouse",
-                    drive.trajectoryBuilder(p2dSame(65.5, 0.0, PI/2))
-                        .forward(48.0).build()
-                ),
+                edgeIn(),
+                inside(),
+                stopIntake,
+                flip,
+                out(),
+                stopIntake,
+                shippingHub(),
                 open,
-                runIntake,
-                clamp,
-                runToHigh,
-                makePath(
-                    "move to edge (warehouse to hub)",
-                    drive.trajectoryBuilder(p2dSame(65.5, 48.0, PI/2))
-                        .back(48.0).build()
-                ),
-
-                makePath(
-                    "move to shipping hub",
-                    drive.trajectoryBuilder(p2dSame(65.5, 0.0, PI/2))
-                    .lineToSplineHeading(p2dToHub(40.0,-15.0,0.0)).build()
-                ),
+                edgeIn(),
+                inside(),
+                stopIntake,
+                flip,
+                out(),
+                stopIntake,
+                shippingHub(),
                 open,
-                makePath(
-                    "move to edge (hub to warehouse)",
-                    drive.trajectoryBuilder(p2dToHub(40.0,-15.0,0.0))
-                        .lineToSplineHeading(p2dSame(65.5, 0.0, PI/2)).build()
-                ),
-                clamp,
-                makePath(
-                    "move to warehouse parking",
-                    drive.trajectoryBuilder(p2dSame(65.5,0.0,PI/2))
-                        .forward(48.0).build()
-                ),
-                downArm
+                edgeIn(),
+                parkWarehouse()
             )
         }
 //
@@ -248,7 +344,7 @@ class WarehouseSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPa
 
 
     fun getTrajectories(a: TemplateDetector.PipelineResult): List<AutoPathElement> {
-        return trajectorySets[a]!!
+        return (trajectorySets[a] as List<AutoPathElement>?)!!
     }
 
 

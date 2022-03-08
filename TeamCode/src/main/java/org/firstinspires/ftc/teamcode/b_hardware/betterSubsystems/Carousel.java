@@ -24,10 +24,7 @@ public class Carousel extends SubsystemBase {
         motor.set(carouselSpeed);
     }
 
-//    public void reverse() {
-//        motor.motor.setDirection(DcMotorEx.Direction.REVERSE);
-//        motor.set(carouselSpeed);
-//    }
+
 
     public void stop(){
         motor.stopMotor();

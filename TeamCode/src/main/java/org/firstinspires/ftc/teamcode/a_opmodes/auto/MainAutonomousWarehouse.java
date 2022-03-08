@@ -8,9 +8,16 @@ package org.firstinspires.ftc.teamcode.a_opmodes.auto;
         import org.firstinspires.ftc.teamcode.a_opmodes.auto.WarehouseSide.AutoPathElement;
         import org.firstinspires.ftc.teamcode.a_opmodes.auto.WarehouseSide.AutoPathElement.Action;
         import org.firstinspires.ftc.teamcode.a_opmodes.auto.WarehouseSide.AutoPathElement.Path;
+        import org.firstinspires.ftc.teamcode.a_opmodes.auto.pipeline.BarcodeDetector;
         import org.firstinspires.ftc.teamcode.a_opmodes.auto.pipeline.TemplateDetector;
         import org.firstinspires.ftc.teamcode.a_opmodes.auto.pipeline.TemplateDetector.PipelineResult;
         import org.firstinspires.ftc.teamcode.b_hardware.Bot;
+
+        import org.openftc.easyopencv.OpenCvCamera;
+        import org.openftc.easyopencv.OpenCvCameraFactory;
+        import org.openftc.easyopencv.OpenCvCameraRotation;
+        import org.openftc.easyopencv.OpenCvInternalCamera;
+
 
         import java.util.List;
 
@@ -18,6 +25,8 @@ package org.firstinspires.ftc.teamcode.a_opmodes.auto;
 public class MainAutonomousWarehouse extends LinearOpMode {//TODO: add reversing for competition
 
     private Bot bot;
+
+    OpenCvCamera phoneCam;
 
     TemplateDetector.PipelineResult detected;
     double confidence;
@@ -31,6 +40,34 @@ public class MainAutonomousWarehouse extends LinearOpMode {//TODO: add reversing
         Bot.instance = null;
         bot = Bot.getInstance(this);
         gamepad = new GamepadEx(gamepad1);
+
+        int cameraMonitorViewId = hardwareMap.appContext
+                .getResources().getIdentifier ("cameraMonitorViewId",
+                    "id", hardwareMap.appContext.getPackageName());
+
+        phoneCam = OpenCvCameraFactory.getInstance()
+                .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+
+        BarcodeDetector detector = new BarcodeDetector(telemetry);
+        phoneCam.setPipeline(detector);
+        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+              {
+                  @Override
+                  public void onOpened()
+                  {
+                      phoneCam.startStreaming(1280,720,OpenCvCameraRotation.SIDEWAYS_LEFT);
+                  }
+
+                  @Override
+                  public void onError(int errorCode) {
+
+                  }
+
+              }
+               // () -> phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT)
+        );
+
+
 
         WarehouseSide paths = new WarehouseSide(this);
 //    pipeline = new TemplateDetector(this);
@@ -70,7 +107,7 @@ public class MainAutonomousWarehouse extends LinearOpMode {//TODO: add reversing
 //    if (detected == null)
 //      detected = PipelineResult.LEFT;
 
-        detected = TemplateDetector.PipelineResult.RIGHT;
+//        detected = TemplateDetector.PipelineResult.RIGHT;
 
         telemetry.addLine(GlobalConfig.alliance + " is selected alliance");
 
@@ -78,6 +115,22 @@ public class MainAutonomousWarehouse extends LinearOpMode {//TODO: add reversing
 
         waitForStart();
 
+        switch (detector.getPosition()){
+            case LEFT:
+                detected = TemplateDetector.PipelineResult.LEFT;
+                break;
+            case MIDDLE:
+                detected = TemplateDetector.PipelineResult.MIDDLE;
+                break;
+            case RIGHT:
+                detected = TemplateDetector.PipelineResult.RIGHT;
+                break;
+            case NOT_FOUND:
+                detected = TemplateDetector.PipelineResult.RIGHT;
+                break;
+        }
+
+        phoneCam.stopStreaming();
 
         // List<AutoPathElement> trajectories = paths.getTrajectories (detected);
         List<WarehouseSide.AutoPathElement> trajectories = paths.getTrajectories(detected);

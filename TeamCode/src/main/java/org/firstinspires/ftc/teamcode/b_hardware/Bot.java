@@ -38,6 +38,10 @@ public class Bot {
 //  public final Cosmetics cosmetics;
 //  public Pair<ExpansionHubEx, ExpansionHubEx> hubs = null;
   public OpMode opMode;
+
+
+  public final BNO055IMU imu0;
+  public final BNO055IMU imu1;
 //    public ChUpdaterCommManager.ChUpdaterBroadcastReceiver.AllowancePeriodExpiredRunnable intake;
 
     /** Get the current Bot instance from somewhere other than an OpMode */
@@ -91,6 +95,8 @@ public class Bot {
     this.roadRunner = new RRMecanumDrive(opMode.hardwareMap);
 //    this.cosmetics = new Cosmetics(opMode);
     imu = roadRunner.imu;
+    imu0 = roadRunner.imu;
+    imu1 = (roadRunner.imu2 != null) ? roadRunner.imu2 : null;
   }
 
 //  private void initializeImu() {

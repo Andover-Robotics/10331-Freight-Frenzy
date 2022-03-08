@@ -48,7 +48,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 
   void subInit() {
     //TODO: initialize subsystems not initialized in bot constructor
-    timingScheduler = new TimingScheduler(this);
+//    timingScheduler = new TimingScheduler(this);
 //    carousel = new MotorEx(hardwareMap, "carousel");
 //    carousel.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 //    carousel.set(0);
@@ -61,7 +61,7 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     //update stuff=================================================================================================
     cycle = 1.0 / (time - prevRead);
     prevRead = time;
-    timingScheduler.run();
+    //timingScheduler.run();
     long profileStart = System.currentTimeMillis();
 
     //Movement =================================================================================================
@@ -88,135 +88,56 @@ public class MainTeleOp extends BaseOpMode {//required vars here
 //
 
 
-    /*
-    //clicking left intake
-    if(gamepadEx2.stateJustChanged(Button.B) && bot.intake.runState == Intake.STATE.OFF){
-      bot.intake.runLeft();
-      bot.gate.openLeftGateFlap();
-    }
-    else if(gamepadEx2.stateJustChanged(Button.B) && bot.intake.runState == Intake.STATE.LEFT){
-      bot.intake.stop();
-      bot.gate.closeLeftGateFlap();
-    }
-
-
-
-    //hold down button for intake
-    if(gamepadEx2.isDown(Button.B)){
-      bot.intake.runLeft();
-      bot.gate.openLeftGateFlap();
-    }
-    else{
-      bot.intake.stop();
-      bot.gate.closeLeftGateFlap();
-    }
-
-    telemetry.addData("left intake update", System.currentTimeMillis() - profileStart);
-
-
-
-    //clicking right intake
-    if(gamepadEx2.stateJustChanged(Button.A) && bot.intake.runState == Intake.STATE.OFF){
-      bot.intake.runRight();
-      bot.gate.openRightGateFlap();
-    }
-    else if(gamepadEx2.stateJustChanged(Button.A) && bot.intake.runState == Intake.STATE.RIGHT){
-      bot.intake.stop();
-      bot.gate.closeRightGateFlap();
-    }
-
-    //hold down button for intake
-    if(gamepadEx2.isDown(Button.A)){
-      bot.intake.runRight();
-      bot.gate.openRightGateFlap();
-    }
-    else{
-      bot.intake.stop();
-      bot.gate.closeRightGateFlap();
-    }
-
-    telemetry.addData("right intake update", System.currentTimeMillis() - profileStart);
-
-
-
-
-
-
-    //hold down button for carousel
-    if(gamepadEx2.isDown(Button.Y)){
-      carousel.set(0.5);
-    }
-    else{
-      carousel.set(0);
-    }
-
-    telemetry.addData("carousel update", System.currentTimeMillis() - profileStart);
-
-//
-//    if(gamepadEx2.isDown(Button.A)){
-//      carousel.set(-0.5);
-//    }
-//    else{
-//      carousel.set(0);
-//    }
-
-
-
-//    //clicking gate
-//    if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.OFF){
-//      bot.gate.closeGateFlap();
-//    }
-//    else if(gamepadEx1.stateJustChanged(Button.A) && bot.gate.runState == Gate.State.ON){
-//      bot.gate.openGateFlap();
-//    }
-//
-//    //hold down button
-//    if(gamepadEx1.isDown(Button.A)){
-//      bot.gate.closeGateFlap();
-//    }
-//    else{
-//      bot.gate.openGateFlap();
-//    }
-
-
-    //hold down triggers for outtake
-    if(gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER)>0.01){
-      bot.outtake.run();
-    }
-    else {
-      bot.outtake.stop();
-    }
-
-    telemetry.addData("outtake up update", System.currentTimeMillis() - profileStart);
-
-
-    if (gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER)>0.01){
-      bot.outtake.down();
-    }
-    else{
-      bot.outtake.stop();
-    }
-
-    telemetry.addData("outtake down update", System.currentTimeMillis() - profileStart);
-
- */
 
 
     if (gamepadEx2.getButton(Button.Y)) {
-      bot.intake.runLeft();
-    }else if (gamepadEx2.getButton(Button.X)){
-      bot.intake.spitLeft();
-//    }else if(gamepadEx2.getButton(Button.B)) {
-//      bot.intake.spitRight();
-//    }else if(gamepadEx2.getButton(Button.A)) {
-//      bot.intake.runRight();
+      bot.intake.run();
+    }else if (gamepadEx2.getButton(Button.X)) {
+      bot.intake.spit();
     }else{
       bot.intake.stop();
     }
 
+    if (gamepadEx2.getButton(Button.B)) {
+      bot.outtake.clamp();
+    }else if (gamepadEx2.getButton(Button.A)) {
+      bot.outtake.open();
+    }
+
+    //carousel
+    if(gamepadEx1.getButton(Button.A)){
+      bot.carousel.run();
+    }else{
+      bot.carousel.stop();
+    }
+
+    //flip buckets
+    if(gamepadEx2.getButton(Button.LEFT_BUMPER)) {
+      bot.intake.flipBucket();
+      bot.outtake.open();
+      bot.intake.spit();
+    }else if (gamepadEx2.getButton(Button.RIGHT_BUMPER)){
+      bot.intake.unflipBucket();
+    }
+
+
+    //positions for outtake arm
+    if (gamepadEx2.getButton(Button.DPAD_LEFT)){
+      bot.outtake.runToMid();
+    }
+    if (gamepadEx2.getButton(Button.DPAD_UP)){
+      bot.outtake.runToHigh();
+    }
+    if (gamepadEx2.getButton(Button.DPAD_RIGHT)) {
+      bot.outtake.runToLow();
+    }
+    if (gamepadEx2.getButton(Button.DPAD_DOWN)){
+      bot.outtake.restArm();
+    }
 
 
 
+  //move outtake arm by itself
     if(gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER) > 0.01){
       bot.outtake.runArm(gamepadEx2.getTrigger(Trigger.RIGHT_TRIGGER));
     }else if(gamepadEx2.getTrigger(Trigger.LEFT_TRIGGER) > 0.01){
@@ -225,41 +146,17 @@ public class MainTeleOp extends BaseOpMode {//required vars here
       bot.outtake.stopArm();
     }
 
-    if(gamepadEx2.getButton(Button.DPAD_LEFT)){
-      //if(clawIsOpen){
-        bot.outtake.clamp();
-      //  clawIsOpen = false;
-      }
-    //else{
-    if(gamepadEx2.getButton(Button.DPAD_RIGHT)){
-        bot.outtake.open();
-       // clawIsOpen = true;
-      //}
+
+    if(gamepadEx2.getButton(Button.RIGHT_STICK_BUTTON)) {
+      bot.outtake.runArmSlow();
     }
 
-//    if(gamepadEx2.getButton(Button.RIGHT_BUMPER)) {
-//      bot.outtake.receiveRight();
-//    //  clawIsOpen = true;
-//    }
-//
-//    if(gamepadEx2.getButton(Button.LEFT_BUMPER)){
-//      bot.outtake.receiveLeft();
-//      //clawIsOpen = true;
-//    }
 
-
-
-    if(gamepadEx2.getButton(Button.DPAD_UP)){
-      bot.carousel.run();
-    }else{
-      bot.carousel.stop();
+    if(gamepadEx2.getButton(Button.LEFT_STICK_BUTTON)) {
+      bot.outtake.downArmSlow();
     }
 
-//    if(gamepadEx2.getButton(Button.DPAD_DOWN)){
-//      bot.carousel.reverse();
-//    }else{
-//      bot.carousel.stop();
-//    }
+
 
     /*//TODO: make control scheme
     Controller 1
@@ -269,23 +166,23 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     Joystick
     L:Field centric movement
     R:Set orientation / Rotation (Determine through practice)
-    Trigger L/R: slow driving (maybe)
+    Trigger L/R: slow driving
     Bumper
     L:none/switch to previous path      R:none/switch to next path
     Other
     Start:  Back:switch between automation and driving
 
     Controller 2
-    A: toggle claw    B: right intake       X: reverse left and right intake     Y: left intake
+    A: Carousel    B: Close Claw       X: Intake (take in) & open claw     Y: Intake (spit out)
     DPAD
-    L:      D:     U: carousel      R:
+    L: Arm: Middle Level      D: Arm: rest Position    U: Arm: High Level      R: Arm: Low Level
     Joystick
     L:
     R:
     Trigger
-    L: outtake arm thing up (counter clockwise) R:move outtake arm thing down (clockwise)
+    L: outtake arm thing down (clockwise) R:move outtake arm thing up (Counter clockwise)
     Bumper:
-    L:move claw for left intake  R: move claw for right intake
+    L: flip bucket                 R: unflip bucket
 
     Other
     Start:  Back:switch between automation and driving
@@ -313,6 +210,11 @@ public class MainTeleOp extends BaseOpMode {//required vars here
     telemetry.addData("y", bot.roadRunner.getPoseEstimate().getY());
     telemetry.addData("heading", bot.roadRunner.getPoseEstimate().getHeading());
     telemetry.addData("current raw angle", bot.imu.getAngularOrientation().toAngleUnit(AngleUnit.DEGREES).firstAngle);
+   // telemetry.addData("sensor", bot.intake.isPressedBucket());
+
+    telemetry.addData("color sensor value", bot.intake.bucketSensor.alpha());
+//    telemetry.addData("is freight in claw: ", bot.intake.isFreightInClaw());
+//    telemetry.addData("alpha value: ", bot.intake.alphaValue());
   }
 
 

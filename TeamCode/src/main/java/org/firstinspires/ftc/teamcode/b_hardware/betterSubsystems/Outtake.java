@@ -12,45 +12,33 @@ public class Outtake extends SubsystemBase {
     private Servo rightGate;
     private MotorEx motor;
 
+
     //TODO: find positions
     private static double
-            leftOpen = 0.15,
-            leftClosed = 0.3,
-            rightOpen = 0.2,
-            rightClosed = 0.1;
+            leftOpen = 0.2,
+            leftClosed = 0.1,
+            rightOpen = 0.15,
+            rightClosed = 0.25;
 
 
     public Outtake(OpMode opMode){
+
         left = opMode.hardwareMap.servo.get("leftClaw");
         left.setDirection(Servo.Direction.FORWARD);
+
 
         rightGate = opMode.hardwareMap.servo.get("rightGate");
         rightGate.setDirection(Servo.Direction.FORWARD);
 
         clamp();
 
-        motor = new MotorEx(opMode.hardwareMap, "outtake", Motor.GoBILDA.RPM_312);
+        motor = new MotorEx(opMode.hardwareMap, "outtake", Motor.GoBILDA.RPM_1150);
         motor.setRunMode(Motor.RunMode.RawPower);
         motor.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor.setPositionCoefficient(0.15);
+
     }
 
-//    public void receive(){//TODO: test if the alliance is right
-//        if(GlobalConfig.alliance == GlobalConfig.Alliance.RED){
-//            receiveLeft();
-//        }else{
-//            receiveRight();
-//        }
-//    }
-
-//    public void receiveRight(){
-//        left.setPosition(leftReceive);
-//        rightGate.setPosition(rightOpen);
-//    }
-//
-//    public void receiveLeft(){
-//        left.setPosition(leftOpen);
-//        rightGate.setPosition(rightReceive);
-//    }
 
     public void clamp(){
         left.setPosition(leftClosed);
@@ -62,13 +50,20 @@ public class Outtake extends SubsystemBase {
         left.setPosition(leftOpen);
         rightGate.setPosition(rightOpen);
     }
+
+    public void capping(){
+        left.setPosition(0.25);
+        rightGate.setPosition(0.15);
+    }
+
+
     //5000
     //3000
     //2783
     public void runToHigh(){
         motor.setRunMode(Motor.RunMode.PositionControl);
-        motor.setPositionTolerance(40);
-        motor.setTargetPosition(4500);//5000
+        motor.setPositionTolerance(5);
+        motor.setTargetPosition(1205);//5000//1454
         while(!motor.atTargetPosition()){
           motor.set(0.8);
         }
@@ -78,8 +73,8 @@ public class Outtake extends SubsystemBase {
 
     public void runToMid(){
         motor.setRunMode(Motor.RunMode.PositionControl);
-        motor.setPositionTolerance(40);
-        motor.setTargetPosition(3000);//3000
+        motor.setPositionTolerance(5);
+        motor.setTargetPosition(829);//3000//1024
         while(!motor.atTargetPosition()){
             motor.set(0.8);
         }
@@ -89,8 +84,8 @@ public class Outtake extends SubsystemBase {
 
     public void runToLow(){
         motor.setRunMode(Motor.RunMode.PositionControl);
-        motor.setPositionTolerance(40);
-        motor.setTargetPosition(2783);//2783
+        motor.setPositionTolerance(5);
+        motor.setTargetPosition(600);//2783//5591
         while(!motor.atTargetPosition()){
             motor.set(0.8);
         }
@@ -100,7 +95,7 @@ public class Outtake extends SubsystemBase {
 
     public void restArm(){
         motor.setRunMode(Motor.RunMode.PositionControl);
-        motor.setPositionTolerance(40);
+        motor.setPositionTolerance(10);
         motor.setTargetPosition(0);
         while(!motor.atTargetPosition()){
             motor.set(0.8);
@@ -109,11 +104,27 @@ public class Outtake extends SubsystemBase {
         motor.setRunMode(Motor.RunMode.RawPower);
     }
 
-    public void runArm(double power){
-        motor.set(power*0.95);
+    public void runArmSlow() {
+        motor.set(0.5);
+    }
+
+    public void downArmSlow(){
+        motor.set(-1);
+    }
+
+       public void runArm(double power){
+        motor.set(power*2.0);
     }
 
     public void stopArm(){
         motor.stopMotor();
     }
+
+//    @Override
+//    public void periodic() {
+//        if (motor.getCurrentPosition() < 0.0) {
+//            open();
+//        }
+//    }
 }
+

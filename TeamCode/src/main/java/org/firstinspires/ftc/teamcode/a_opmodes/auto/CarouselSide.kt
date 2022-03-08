@@ -72,8 +72,8 @@ class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPat
 
     fun p2D(x: Double, y: Double, h: Double): Pose2d {
         return Pose2d(
-            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
-            y,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x+8,
+            y-7,
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h-(PI/2)
         )
     }
@@ -81,7 +81,7 @@ class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPat
     fun p2DwMore(x: Double, y: Double, h: Double): Pose2d {
         return Pose2d(
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -55.0,
-            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) y else -64.0,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) y else -65.0,
             if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h-(PI/2)
 
 //        if (GlobalConfig.alliance == GlobalConfig.Alliance.RED)
@@ -93,6 +93,19 @@ class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPat
         )
     }
 
+    fun p2dToHub(x: Double, y: Double, h: Double): Pose2d {
+        return Pose2d(
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) y else y,
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h+PI
+        )}
+
+    fun p2dSame (x: Double, y: Double, h: Double): Pose2d {
+        return Pose2d(
+            if (GlobalConfig.alliance == GlobalConfig.Alliance.RED) x else -x,
+            y,
+            h
+        )}
 
     fun v2D(v: Vector2d, h: Double): Pose2d{
         return Pose2d(if(GlobalConfig.alliance == GlobalConfig.Alliance.RED) v.x else -v.x, v.y, if(GlobalConfig.alliance == GlobalConfig.Alliance.RED) h else h-(PI/2))
@@ -104,46 +117,132 @@ class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPat
 
 
 
-    private val liftArm = AutoPathElement.Action("Run outtake motor") {
+
+    val liftArm = CarouselSide.AutoPathElement.Action("Run outtake motor") {
         Thread.sleep(1000)
         bot.outtake.stopArm()
     }
 
-    private val runToHigh = AutoPathElement.Action("Run outtake motor for high level"){
+
+    val runToHigh = CarouselSide.AutoPathElement.Action("Run outtake motor for high level") {
         bot.outtake.runToHigh();
     }
 
-    private val runToMid = AutoPathElement.Action("Run outtake motor for middle level"){
+    val runToMid = CarouselSide.AutoPathElement.Action("Run outtake motor for middle level") {
         bot.outtake.runToMid();
     }
 
-    private val runToLow = AutoPathElement.Action("Run outtake motor for low level"){
+    val runToLow = CarouselSide.AutoPathElement.Action("Run outtake motor for low level") {
         bot.outtake.runToLow();
     }
 
-    private val clamp = AutoPathElement.Action("Clamp claw"){
+    val restArm = CarouselSide.AutoPathElement.Action("outake to rest position"){
+        bot.outtake.restArm();
+    }
+
+
+    val runIntake = CarouselSide.AutoPathElement.Action("Run intake") {
+        bot.intake.spit();
+    }
+
+    val stopIntake = CarouselSide.AutoPathElement.Action("stop intake") {
+        bot.intake.stop();
+    }
+
+    val flip = CarouselSide.AutoPathElement.Action("flip bucket"){
+        bot.intake.flipBucket();
+    }
+
+    val unflip = CarouselSide.AutoPathElement.Action ("unflip bucket"){
+        bot.intake.unflipBucket();
+    }
+
+
+    val clamp = CarouselSide.AutoPathElement.Action("Clamp claw") {
         bot.outtake.clamp();
     }
 
-    private val open = AutoPathElement.Action("Clamp open"){
+    val open = CarouselSide.AutoPathElement.Action("Clamp open") {
         bot.outtake.open();
     }
 
 
-
-
     //TODO: insert action vals here
 
-    private val runCarousel = AutoPathElement.Action("Run carousel motor") {
+    val runCarousel = CarouselSide.AutoPathElement.Action("Run carousel motor") {
         bot.carousel.run()
-        Thread.sleep(2500)
+        Thread.sleep(3500)
         bot.carousel.stop()
     }
 
-    private val downArm = AutoPathElement.Action("Run outtake motor to rest") {
-        bot.outtake.restArm();
+
+    fun edgeIn (): CarouselSide.AutoPathElement.Path{
+        return CarouselSide.AutoPathElement.Path ("edge", bot.roadRunner.trajectoryBuilder(p2d(40.0, -20.0, 0.0))
+            .lineToSplineHeading(p2dSame(65.5, 0.0, PI / 2))
+            .addTemporalMarker(0.01, clamp.runner)
+            .addTemporalMarker(0.2, restArm.runner)
+            .addTemporalMarker(0.2,flip.runner)
+            .build())
     }
 
+
+
+    // go inside the warehouse while.... run intake, unflip, stopintake, flip
+    fun inside (): CarouselSide.AutoPathElement.Path{
+        return CarouselSide.AutoPathElement.Path ("Into Warehouse", bot.roadRunner.trajectoryBuilder(p2dSame(65.5, 0.0, PI / 2))
+            .forward(48.0)
+            .addTemporalMarker(0.01, runIntake.runner)
+            .addTemporalMarker(0.01, unflip.runner)
+            .build())
+    }
+
+    fun out (): CarouselSide.AutoPathElement.Path{
+        return CarouselSide.AutoPathElement.Path ("Out of Warehouse", bot.roadRunner.trajectoryBuilder(p2dSame(65.5, 40.0, PI / 2))
+            .back(48.0)
+            .addTemporalMarker (0.1, flip.runner)
+            .addTemporalMarker(0.3, runIntake.runner)
+            .build())
+    }
+
+    fun startShippingHub (): CarouselSide.AutoPathElement.Path{
+        return CarouselSide.AutoPathElement.Path ("Going to Shipping Hub", bot.roadRunner.trajectoryBuilder(p2D(63.0, -65.0, -PI / 2))
+            .lineToSplineHeading(p2dToHub(40.0, -15.0, 0.0))
+            .addTemporalMarker(0.03, runToHigh.runner)
+            .build()
+        )
+    }
+
+
+
+
+
+    fun carousel (): CarouselSide.AutoPathElement.Path{
+        return CarouselSide.AutoPathElement.Path ("carousel", bot.roadRunner.trajectoryBuilder(p2d(65.5, -45.0, -PI / 2))
+            .lineToSplineHeading(p2D(63.0, -65.0, -PI / 2))
+            .build()
+        )
+    }
+
+
+
+    fun parkWarehouse(): CarouselSide.AutoPathElement.Path{
+        return CarouselSide.AutoPathElement.Path ("park in Warehouse", bot.roadRunner.trajectoryBuilder(p2dSame(65.5, 0.0, PI / 2))
+            .addTemporalMarker (0.01, clamp.runner)
+            .addTemporalMarker(0.1, restArm.runner)
+            .forward (40.0)
+            .build()
+        )
+    }
+
+
+    fun parkColor () :CarouselSide.AutoPathElement.Path {
+        return CarouselSide.AutoPathElement.Path(
+            "park in colored square thing",
+            bot.roadRunner.trajectoryBuilder(p2d(40.0, -25.0, 0.0))
+                .splineToLinearHeading(Pose2d(v2D(34.0, -70.0), -PI / 2), -PI / 2)
+                .build()
+        )
+    }
 
 
     //                                                                  =======================================================
@@ -172,76 +271,74 @@ class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPat
 
 
 
-    val startPose = p2d(  65.5, -31.0, -PI/2)
+    val startPose = p2d(  65.5, -36.0, -PI/2)
 
     //TODO: Make Trajectories in trajectorySets
 
     //                                                                              ====================================================
-    private val trajectorySets: Map<TemplateDetector.PipelineResult, List<AutoPathElement>> = mapOf(
-            //use !! when accessing maps ie: dropSecondWobble[0]!!
-            //example
+    private val trajectorySets: Map<TemplateDetector.PipelineResult, List<Any>> = mapOf(
+        //use !! when accessing maps ie: dropSecondWobble[0]!!
+        //example
         //
-            TemplateDetector.PipelineResult.LEFT to run {
-                listOf(
-                    clamp,
-                    runToLow,
-                    makePath("move to shipping hub",
-                        drive.trajectoryBuilder(p2d( 65.5, -36.0, -PI/2))
-                            .lineToSplineHeading(p2d(42.0, -12.0, 0.0)).build()),
-                    open,
-                    makePath("move to carousel",
-                        drive.trajectoryBuilder(p2d(42.0, -12.0, 0.0))
-                            .lineToSplineHeading(p2D(60.0,-56.0,-PI/2)).build()),
-                    runCarousel,
-                    makePath("move to red parking",
-                        drive.trajectoryBuilder(p2D(60.0,-56.0,-PI/2))
-                            .lineToSplineHeading(p2D(40.0, -67.0,-PI/2)).build()),
-                    clamp,
-                    downArm
-                )
-            },
-            TemplateDetector.PipelineResult.MIDDLE to run {
-                listOf(
-                    clamp,
-                    runToMid,
-                    makePath("move to shipping hub",
-                        drive.trajectoryBuilder(p2d( 65.5, -36.0, -PI/2))
-                            .lineToSplineHeading(p2d(42.0, -12.0, 0.0)).build()),
-                    open,
-                    makePath("move to carousel",
-                        drive.trajectoryBuilder(p2d(42.0, -12.0, 0.0))
-                            .lineToSplineHeading(p2D(60.0,-56.0,-PI/2)).build()),
-                    runCarousel,
-                    makePath("move to red parking",
-                        drive.trajectoryBuilder(p2D(60.0,-56.0,-PI/2))
-                            .lineToSplineHeading(p2D(40.0, -67.0,-PI/2)).build()),
-                    clamp,
-                    downArm
-                )
-            },
-            TemplateDetector.PipelineResult.RIGHT to run {
-                listOf(
-                        clamp,
-                        runToHigh,
-                        makePath("move to shipping hub",
-                                drive.trajectoryBuilder(p2d( 65.5, -36.0, -PI/2))
-                                        .lineToSplineHeading(p2d(40.0, -10.0, 0.0)).build()),
-                        open,
-                        makePath("move to carousel",
-                                drive.trajectoryBuilder(p2d(40.0, -10.0, 0.0))
-                                        .lineToSplineHeading(p2DwMore(63.0,-56.0,-PI/2)).build()),
-                        runCarousel,
-                        clamp,
-                        makePath("move to red parking",
-                                drive.trajectoryBuilder(p2DwMore(63.0,-56.0,-PI/2),PI/2)
-                                    .splineToLinearHeading(Pose2d(v2D(34.0, -66.0), -PI/2), -PI/2).build()),
-                        downArm
-                    )
-            }
+        TemplateDetector.PipelineResult.LEFT to run {
+            listOf(
+                clamp,
+                carousel(),
+                runCarousel,
+                runToLow,
+                startShippingHub(),
+                open,
+                parkColor(),
+                clamp,
+                restArm
+//                clamp,
+//                runToLow,
+//                makePath("move to shipping hub",
+//                    drive.trajectoryBuilder(p2d( 65.5, -36.0, -PI/2))
+//                        .lineToSplineHeading(p2d(38.0, -13.0, 0.0)).build()),
+//                open,
+//                makePath("move to carousel",
+//                    drive.trajectoryBuilder(p2d(38.0, -13.0, 0.0))
+//                        .lineToSplineHeading(p2D(61.0,-60.0,-PI/2)).build()),
+//                runCarousel,
+//                makePath("move to red parking",
+//                    drive.trajectoryBuilder(p2D(61.0,-60.0,-PI/2))
+//                        .lineToSplineHeading(p2D(34.0, -66.0,-PI/2)).build()),
+//                clamp,
+//                restArm
+            )
+        },
+        TemplateDetector.PipelineResult.MIDDLE to run {
+            listOf(
+                clamp,
+                carousel(),
+                runCarousel,
+                runToMid,
+                startShippingHub(),
+                open,
+
+                parkColor(),
+                clamp,
+                restArm
+            )
+        },
+        TemplateDetector.PipelineResult.RIGHT to run {
+            listOf(
+                clamp,
+                carousel(),
+                runCarousel,
+                runToHigh,
+                startShippingHub(),
+                open,
+                parkColor(),
+                clamp,
+                restArm
+            )
+        }
 //
     )
 
-    
+
 
 
     fun park(result: TemplateDetector.PipelineResult): List<AutoPathElement> {
@@ -260,9 +357,10 @@ class CarouselSide(val opMode: LinearOpMode) {//TODO: possibly add the TeleOpPat
 
 
 
-        fun getTrajectories(a: TemplateDetector.PipelineResult): List<AutoPathElement> {
-            return trajectorySets[a]!!
-        }
-
-
+    fun getTrajectories(a: TemplateDetector.PipelineResult): List<AutoPathElement> {
+        return (trajectorySets[a] as List<AutoPathElement>?)!!
     }
+
+
+}
+

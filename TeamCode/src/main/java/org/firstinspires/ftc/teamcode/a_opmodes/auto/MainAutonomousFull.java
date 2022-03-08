@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.a_opmodes.auto;
 
+
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -20,10 +21,12 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.List;
 
-@Autonomous(name = "Main Autonomous Carousel Side", group = "Competition")
-public class MainAutonomousCarousel extends LinearOpMode {//TODO: add reversing for competition
+@Autonomous(name = "Main Autonomous Full Side", group = "Competition")
+public class MainAutonomousFull extends LinearOpMode {//TODO: add reversing for competition
 
     private Bot bot;
+
+    OpenCvCamera phoneCam;
 
     TemplateDetector.PipelineResult detected;
     double confidence;
@@ -31,7 +34,7 @@ public class MainAutonomousCarousel extends LinearOpMode {//TODO: add reversing 
     boolean performActions = true;
     GamepadEx gamepad;
 
-    OpenCvCamera phoneCam;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,23 +52,25 @@ public class MainAutonomousCarousel extends LinearOpMode {//TODO: add reversing 
         BarcodeDetector detector = new BarcodeDetector(telemetry);
         phoneCam.setPipeline(detector);
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+                                       {
+                                           @Override
+                                           public void onOpened()
                                            {
-                                               @Override
-                                               public void onOpened()
-                                               {
-                                                   phoneCam.startStreaming(1280,720, OpenCvCameraRotation.SIDEWAYS_LEFT);
-                                               }
+                                               phoneCam.startStreaming(1280,720, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                                           }
 
-                                               @Override
-                                               public void onError(int errorCode) {
-
-                                               }
+                                           @Override
+                                           public void onError(int errorCode) {
 
                                            }
+
+                                       }
                 // () -> phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT)
         );
 
-        CarouselSide paths = new CarouselSide(this);
+
+
+        FullSide paths = new FullSide(this);
 //    pipeline = new TemplateDetector(this);
 
         //TODO: add initialization here
@@ -103,32 +108,34 @@ public class MainAutonomousCarousel extends LinearOpMode {//TODO: add reversing 
 //    if (detected == null)
 //      detected = PipelineResult.LEFT;
 
+//        detected = TemplateDetector.PipelineResult.RIGHT;
 
         telemetry.addLine(GlobalConfig.alliance + " is selected alliance");
 
         telemetry.update();
 
+
         waitForStart();
 
         switch (detector.getPosition()){
             case LEFT:
-                detected = TemplateDetector.PipelineResult.LEFT;
+                detected = PipelineResult.LEFT;
                 break;
             case MIDDLE:
-                detected = TemplateDetector.PipelineResult.MIDDLE;
+                detected = PipelineResult.MIDDLE;
                 break;
             case RIGHT:
-                detected = TemplateDetector.PipelineResult.RIGHT;
+                detected = PipelineResult.RIGHT;
                 break;
             case NOT_FOUND:
-                detected = TemplateDetector.PipelineResult.RIGHT;
+                detected = PipelineResult.RIGHT;
                 break;
         }
 
         phoneCam.stopStreaming();
 
         // List<AutoPathElement> trajectories = paths.getTrajectories (detected);
-        List<CarouselSide.AutoPathElement> trajectories = paths.getTrajectories(detected);
+        List<FullSide.AutoPathElement> trajectories = paths.getTrajectories(detected);
 //    pipeline.close();
 
 
@@ -139,15 +146,15 @@ public class MainAutonomousCarousel extends LinearOpMode {//TODO: add reversing 
         if (isStopRequested())
             return;
 
-        for (CarouselSide.AutoPathElement item : trajectories) {
+        for (FullSide.AutoPathElement item : trajectories) {
 
             telemetry.addData("executing path element", item.getName());
             telemetry.update();
 
-            if (item instanceof CarouselSide.AutoPathElement.Path) {
-                bot.roadRunner.followTrajectory(((CarouselSide.AutoPathElement.Path) item).getTrajectory());
-            } else if (item instanceof CarouselSide.AutoPathElement.Action && performActions) {
-                ((CarouselSide.AutoPathElement.Action) item).getRunner().invoke();
+            if (item instanceof FullSide.AutoPathElement.Path) {
+                bot.roadRunner.followTrajectory(((FullSide.AutoPathElement.Path) item).getTrajectory());
+            } else if (item instanceof FullSide.AutoPathElement.Action && performActions) {
+                ((FullSide.AutoPathElement.Action) item).getRunner().invoke();
             }
 
             if (isStopRequested())
@@ -157,5 +164,3 @@ public class MainAutonomousCarousel extends LinearOpMode {//TODO: add reversing 
 
 
 }
-
-

@@ -1,69 +1,115 @@
 package org.firstinspires.ftc.teamcode.b_hardware.betterSubsystems;
 
+
+import com.arcrobotics.ftclib.command.Command;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Intake extends SubsystemBase {
-    public static double intakeSpeed = 0.6;
-    private MotorEx motorLeft;
-//    private MotorEx motorRight;
+    public static double intakeSpeed = 0.8;
+    private MotorEx intake;
+    public ColorSensor bucketSensor;
 
-    public Intake(OpMode opMode){
+    private Servo flip;
+
+
+
+    private static boolean bucketFlipped = false;
+
+
+
+
+    public Intake(OpMode opMode) {
 
         //TODO: reverse if not right
-        motorLeft = new MotorEx(opMode.hardwareMap, "leftIntake", Motor.GoBILDA.RPM_435);
-        motorLeft.setRunMode(Motor.RunMode.RawPower);
-        motorLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
-        motorLeft.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake = new MotorEx(opMode.hardwareMap, "intake", Motor.GoBILDA.RPM_312);
+        intake.setRunMode(Motor.RunMode.RawPower);
+        intake.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+        intake.motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        motorRight = new MotorEx(opMode.hardwareMap, "rightIntake", Motor.GoBILDA.RPM_435);
-//        motorRight.setRunMode(Motor.RunMode.RawPower);
-//        motorRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
-//        motorRight.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        flip = opMode.hardwareMap.servo.get("flip");
+        flip.setDirection(Servo.Direction.FORWARD);
+
+
+        bucketSensor = opMode.hardwareMap.get(ColorSensor.class, "bucketSensor");
+
+
     }
 
-//    public void run(double speed){                         game
-//        motorLeft.setVelocity(speed);
-//        motorRight.setVelocity(speed);
-//    }
 
-    public void runLeft(double speed){
-        motorLeft.set(speed);
+//    public double alphaValue() { return bucketSensor.alpha();}
+//
+//    public boolean isFreightInClaw() {
+//        return clawSensor.alpha() > 500;
+//    }
+//
+
+
+    public boolean isFreightInBucket() {
+        return bucketSensor.alpha() > 500;
     }
 
-//    public void runRight(double speed){
-//        motorRight.set(speed);
-//    }
 
-    public void runLeft(){
-        runLeft(intakeSpeed);
+
+    public void run(double speed){
+        intake.set(speed);
     }
 
-//    public void runRight(){
-//        runRight(intakeSpeed);
-//    }
 
-    public void spitLeft(){
-        runLeft(-intakeSpeed);
+    public void run(){
+        run(intakeSpeed);
     }
 
-//    public void spitRight(){
-//        runRight(-intakeSpeed);
-//    }
 
-//    public void run(){
-//        run(intakeSpeed);
-//    }
 
-//    public void spit(){
-//        run(-0.5);
-//    }
+    public void spit(){
+        run(-intakeSpeed);
+    }
+
 
     public void stop(){
-        motorLeft.stopMotor();
-//        motorRight.stopMotor();
+        intake.stopMotor();
     }
+
+    public void flipBucket() {
+        flip.setPosition(0.6); //0.15
+        bucketFlipped = true;
+    }
+
+    public void unflipBucket() {
+        flip.setPosition(0.1); //0.55
+        bucketFlipped = false;
+    }
+
+    public void toggleBucket() {
+        if (bucketFlipped) {
+            unflipBucket();
+        } else if (!bucketFlipped) {
+            flipBucket();
+        }
+    }
+
+
+
+  // @Override
+//    public void periodic() {
+//        if (isFreightIn() && !bucketFlipped) {
+//            flipBucket();
+//        } else if (isFreightIn() && bucketFlipped) {
+//            run();
+//            if (!isFreightIn() && bucketFlipped){
+//                stop();
+//                unflipBucket();
+//            }
+//        }
+//    }
 }
